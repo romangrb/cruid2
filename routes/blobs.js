@@ -1,20 +1,19 @@
 var express = require('express'),
-    router = express.Router(),
-    mongoose = require('mongoose'), //mongo connection
-    bodyParser = require('body-parser'), //parses information from POST
-    methodOverride = require('method-override'); //used to manipulate POST
-
+  router = express.Router(),
+  mongoose = require('mongoose'), //mongo connection
+  bodyParser = require('body-parser'), //parses information from POST
+  methodOverride = require('method-override'); //used to manipulate POST
 //Any requests to this controller must pass through this 'use' function
 //Copy and pasted from method-override
-router.use(bodyParser.urlencoded({ extended: true }))
+router.use(bodyParser.urlencoded({ extended: true }));
 router.use(methodOverride(function(req, res){
-      if (req.body && typeof req.body === 'object' && '_method' in req.body) {
-        // look in urlencoded POST bodies and delete it
-        var method = req.body._method
-        delete req.body._method
-        return method
-      }
-}))
+  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+    // look in urlencoded POST bodies and delete it
+    var method = req.body._method;
+    delete req.body._method;
+    return method;
+  }
+}));
 
 //build the REST operations at the base for blobs
 //this will be accessible from http://127.0.0.1:3000/blobs if the default route for / is left unchanged
@@ -77,36 +76,55 @@ router.route('/')
                     }
                 });
               }
-        })
+        });
     });
-
 /* GET New Blob page. */
 router.get('/new', function(req, res) {
     res.render('blobs/new', { title: 'Add New Blob' });
 });
 
-router.route('/top')
-  //GET fixed records
-  .get(function(req, res, next) {
-    mongoose.model('Blob').find({}, function (err, blobs) {
+/*MyModel.find( { createdOn: { $lte: request.createdOnBefore } } )
+.limit( 10 )
+.sort( '-createdOn' )
+MyModel.find(query, fields, { skip: 10, limit: 5 }, function(err, results) { ... });
+
+*/
+// https://cruid2-romangrb-1.c9users.io/blobs/docs?skip=1&lim=0
+function isNumeric(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
+router.get('/docs*', function(req, res) {
+  
+  var q = {}, qReq = req.query, skipNum=0, limNum=5;
+  
+  if (Object.keys(req.query).length){
+    q.skip = ((qReq.skip)&&isNumeric(qReq.skip))?parseInt(qReq.skip, 10):skipNum;
+    q.limNum = ((qReq.lim)&&isNumeric(qReq.lim))?parseInt(qReq.lim, 10):limNum;
+  }
+  
+  mongoose.model('Blob')
+          .find({}, {}, q, function (err, blobs) {
       if (err) {
         return console.error(err);
       } else {
-        res.format({
-          html: function(){
-            res.render('blobs/index', {
-              title: 'Fixed blobs',
-              "blobs" : blobs
-            });
-          },
-          //JSON response will show all blobs in JSON format
-          json: function(){
-            res.json(blobs);
-          }
-        });
-      }     
-    });
-  })
+
+      res.format({
+        html: function(){
+          res.render('blobs/index', {
+            title: 'All my Blobs',
+            "blobs" : blobs
+          });
+        },
+        //JSON response will show all blobs in JSON format
+        json: function(){
+          res.json(blobs);
+        }
+      });
+    }    
+  });
+});
+
 
 // route middleware to validate :id
 router.param('id', function(req, res, next, id) {
@@ -116,7 +134,7 @@ router.param('id', function(req, res, next, id) {
         //if it isn't found, we are going to repond with 404
         if (err) {
             console.log(id + ' was not found');
-            res.status(404)
+            res.status(404);
             var err = new Error('Not Found');
             err.status = 404;
             res.format({
@@ -147,7 +165,32 @@ router.route('/:id')
       } else {
         console.log('GET Retrieving ID: ' + blob._id);
         var blobdob = blob.dob.toISOString();
-        blobdob = blobdob.substring(0, blobdob.indexOf('T'))
+        blobdob = blobdob.substring(0, blobdob.indexOf('T'));
+        res.format({
+          html: function(){
+              res.render('blobs/show', {
+                "blobdob" : blobdob,
+                "blob" : blob
+              });
+          },
+          json: function(){
+              res.json(blob);
+          }
+        });
+      }
+    });
+  });
+
+
+router.route('/next')
+  .get(function(req, res) {
+    mongoose.model('Blob').findById(req.id, function (err, blob) {
+      if (err) {
+        console.log('GET Error: There was a problem retrieving: ' + err);
+      } else {
+        console.log('GET Retrieving ID: ' + blob._id);
+        var blobdob = blob.dob.toISOString();
+        blobdob = blobdob.substring(0, blobdob.indexOf('T'));
         res.format({
           html: function(){
               res.render('blobs/show', {
@@ -174,7 +217,7 @@ router.route('/:id/edit')
 	            //Return the blob
 	            console.log('GET Retrieving ID: ' + blob._id);
               var blobdob = blob.dob.toISOString();
-              blobdob = blobdob.substring(0, blobdob.indexOf('T'))
+              blobdob = blobdob.substring(0, blobdob.indexOf('T'));
 	            res.format({
 	                //HTML response will render the 'edit.jade' template
 	                html: function(){
