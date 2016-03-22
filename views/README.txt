@@ -7,6 +7,11 @@ express-node-mongo-skeleton was made to have a simple skeleton for a completed W
 - Make sure MongoDB is installed (`brew install mongodb`)
 - Create a MongoDB database named `enmskeleton` (`use enmskeleton`)
 - Install packages and start the express.js web service (`npm install && npm start`)
+- Install bower dependencies (`bower install`) 
+- move it's components to public/lib 
+  mv bower_components public/lib
+  rm bower_components
+  
 - Navigate to `http://127.0.0.1:3000` to see the express.js welcome page
 
 ## Usage Instructions
