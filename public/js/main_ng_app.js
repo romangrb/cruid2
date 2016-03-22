@@ -4,21 +4,22 @@
   
   var galleryApp = angular.module("galleryApp", ['ngRoute', 'ngAnimate']);
   
-    galleryApp.config(function($routeProvider) {
-      $routeProvider
-      	.when('/', {
+    galleryApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+      $routeProvider.
+        when('/', {
     			templateUrl: '/views/home.html',
     			controller: 'homeCtrl'
-    		})
-    		.when('/home', {
+    		}).
+    		when('/home', {
     			templateUrl: '/views/home.html',
     			controller: 'homeCtrl'
-    		})
-    		.when('/crud', {
+    		}).
+    		when('/crud', {
     			templateUrl: 'views/crud.html',
     			controller: 'crudCtrl'	
     		});
-    });
+    		$locationProvider.html5Mode(true);
+    }]);
     
   return galleryApp;
   

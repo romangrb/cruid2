@@ -3,6 +3,9 @@
 <html ng-app="galleryApp">
 	
 	<head>
+		
+		<base href="/">
+		
 		<meta charset="UTF-8">
 	
 		<title>Gallery application on MEAN stack</title>
@@ -31,9 +34,9 @@
 	  <div class="container" >
 	  	
 		  <div class="collection">
-		  	<a href="/crud" class="collection-item">CRUD PAGE</a>
-		  	<a href="/home" class="collection-item">home</a>
-		    <!-- ANGULAR DYNAMIC CONTENT -->
+				<a href="/crud" class="collection-item">CRUD PAGE</a>
+			 	<a href="/home" class="collection-item">home</a>
+			  <!-- ANGULAR DYNAMIC CONTENT -->
 				<div ng-view></div>
 		  </div>
 		  

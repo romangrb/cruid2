@@ -11,7 +11,7 @@
           getAllData : function(){
             return $http.get(this._DEFLT_BASE);
           },
-   
+            
           getData : function(restQuery){
             return $http.get(this._DEFLT_BASE + restQuery);
           }

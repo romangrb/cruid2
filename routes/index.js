@@ -13,9 +13,4 @@ router.get('/', function(req, res, next) {
   res.sendfile('./public/index.html');
 });
 
-router.get('/h', function(req, res, next) {
-  /*res.render('index', { title: 'Express' });*/
-  res.sendfile('./public/views/home.html');
-});
-
 module.exports = router;
