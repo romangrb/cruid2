@@ -1,9 +1,7 @@
 <!doctype html>
 <html lang="en">
-<head>
+<head ng-app="sampleApp">
 	<meta charset="UTF-8">
-	<base href="/">
-
 	<title>Starter Node and Angular</title>
 
 	<!-- CSS -->
@@ -25,21 +23,9 @@
   <script type="text/javascript" src="lib/Materialize/dist/js/materialize.min.js"></script>
 
 </head>
-<body ng-app="sampleApp" ng-controller="NerdController">
-
-	<nav>
-    <div class="nav-wrapper">
-      <a href="/" class="brand-logo">MAIN</a>
-      <ul class="right hide-on-med-and-down">
-        <li><a href="#"><i class="material-icons">search</i></a></li>
-        <li><a href="#"><i class="material-icons">view_module</i></a></li>
-        <li><a href="#"><i class="material-icons">refresh</i></a></li>
-        <li><a href="#"><i class="material-icons">more_vert</i></a></li>
-      </ul>
-    </div>
-  </nav>
+<body>
   
-  <div class="collection">
+  <div class="collection" ng-controller="NerdController">
   	<a href="/" class="collection-item">main</a>
     <a href="/nerds" class="collection-item">nerds</a>
     <a href="/geeks" class="collection-item">geeks</a>
