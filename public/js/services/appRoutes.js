@@ -2,16 +2,18 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
 
 	$routeProvider
 
-		// home page
 		.when('/', {
 			templateUrl: 'views/home.html',
 			controller: 'MainController'
+		})
+		.when('/home', {
+			templateUrl: 'views/home.html',
+			controller: 'HomeController'
 		})
 		.when('/nerds', {
 			templateUrl: 'views/nerd.html',
 			controller: 'NerdController'
 		})
-
 		.when('/geeks', {
 			templateUrl: 'views/geek.html',
 			controller: 'GeekController'	
