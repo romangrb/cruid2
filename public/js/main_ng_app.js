@@ -17,7 +17,10 @@
     		when('/crud', {
     			templateUrl: 'views/crud.html',
     			controller: 'crudCtrl'	
-    		});
+    		}).
+    		otherwise({
+          redirectTo: '/'
+        });
     		$locationProvider.html5Mode(true);
     }]);
     
