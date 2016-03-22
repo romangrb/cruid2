@@ -20,7 +20,7 @@
         
         console.error(
           'name : ', err.name, '\n', 
-          'message : ', err.message,
+          'message : ', err.message, '\n',
           'message : ', err.stack
         );
         
