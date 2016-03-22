@@ -17,6 +17,10 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
 		.when('/geeks', {
 			templateUrl: 'views/geek.html',
 			controller: 'GeekController'	
+		})
+		.when('/blobs', {
+			templateUrl: 'views/ext.html',
+			controller: 'MainController'	
 		});
 
 	$locationProvider.html5Mode(true);
