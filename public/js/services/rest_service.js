@@ -3,12 +3,12 @@
   'use strict';
 
   angular
-    .module('sampleApp')
+    .module('galleryApp')
       .factory('RestService', ['$http', '$location','$route', function($http, $location, $route) { 
          
         var RestQueryBuild = {
           
-          getAlldata : function(){
+          getAllData : function(){
             return $http.get(this._DEFLT_BASE);
           },
    

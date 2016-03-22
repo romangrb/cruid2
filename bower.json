@@ -4,6 +4,6 @@
   "dependencies": {
     "angular": "latest",
     "angular-route": "latest",
-    "Materialize": "materialize#^0.97.5"
+    "materialize": "materialize#^0.97.5"
   }
 }

@@ -1,40 +1,39 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+
+<html ng-app="galleryApp">
+	
 <head>
 	<meta charset="UTF-8">
-	<base href="/">
 
-	<title>Node and Angular</title>
+	<title>Gallery application on MEAN stack</title>
 
 	<!-- CSS -->
 	<link rel="stylesheet" href="css/style.css"> <!-- custom styles -->
-	<!--Import Google Icon Font-->
-	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 	<!--Import materialize.css-->
-	<link type="text/css" rel="stylesheet" href="lib/Materialize/dist/css/materialize.min.css"  media="screen,projection"/>
+	<link type="text/css" rel="stylesheet" href="lib/materialize/dist/css/materialize.min.css"  media="screen,projection"/>
 
 	<!--Let browser know website is optimized for mobile-->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	
 	<!-- JS -->
 	<script src="lib/angular/angular.min.js"></script>
 	<script src="lib/angular-route/angular-route.min.js"></script>
 	
  	<!--Import jQuery before materialize.js-->
   <script type="text/javascript" src="lib/jquery/dist/jquery.min.js"></script>
-  <script type="text/javascript" src="lib/Materialize/dist/js/materialize.min.js"></script>
+  <script type="text/javascript" src="lib/materialize/dist/js/materialize.min.js"></script>
   
   <!-- Angular main app module -->
-  <script src="js/app.js"></script>
+  <script src="js/main_ng_app.js"></script>
 
 </head>
 
 <body>
-  <div class="container" ng-app="sampleApp">
-	  <div class="collection" ng-controller="NerdController">
-	  	<a href="/blobs" class="collection-item">DOWNLOAD PAGE</a>
-	  	<a href="/" class="collection-item">home</a>
-	    <a href="/nerds" class="collection-item">nerds</a>
-	    <a href="/geeks" class="collection-item">geeks</a>
+  <div class="container">
+	  <div class="collection">
+	  	<a href="/crud" class="collection-item">CRUD PAGE</a>
+	  	<a href="/home" class="collection-item">home</a>
 	    <!-- ANGULAR DYNAMIC CONTENT -->
 			<div ng-view></div>
 	  </div>
@@ -42,17 +41,12 @@
   
 	<!-- ANGULAR CUSTOM -->
 	<!-- services -->
-	<script src="js/services/appRoutes.js"></script>
-	<script src="js/services/restService.js"></script>
-	<script src="js/services/NerdService.js"></script>
-	<script src="js/services/GeekService.js"></script>
+	<script src="js/services/rest_service.js"></script>
 	<!-- models -->
-	<!--<script src="js/models/appDirectives.js"></script>-->
+	
 	<!-- controllers -->
-	<script src="js/controllers/MainCtrl.js"></script>
-	<script src="js/controllers/NerdCtrl.js"></script>
-	<script src="js/controllers/HomeCtrl.js"></script>
-	<script src="js/controllers/GeekCtrl.js"></script>
+	<script src="js/controllers/home_ctrl.js"></script>
+	<script src="js/controllers/crud_ctrl.js"></script>
 	
 </body>
 </html>
