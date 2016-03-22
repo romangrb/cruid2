@@ -10,13 +10,11 @@
       
       var RestServ = new RestService();
       
-      RestServ.getAllData()
-        .then(function(data){
-          console.log(data);
-          $scope.listImg = data.data;
-        }).catch(function(err) {
-          errorHandler(err);
-        });
+      RestServ.getAllData().then(function(data){
+        $scope.listImg = data.data;
+      }).catch(function(err) {
+        errorHandler(err);
+      });
         
       function errorHandler(err){
         
