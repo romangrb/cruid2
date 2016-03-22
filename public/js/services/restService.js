@@ -6,10 +6,12 @@
     .module('sampleApp')
       .factory('RestService', ['$http', '$location','$route', function($http, $location, $route) { 
          
-        var RestQueryBuild = {  
-          constructor : function fn(){
-            this._DEFLT_BASE = '/blobs';
+        var RestQueryBuild = {
+          
+          getAlldata : function(){
+            return $http.get(this._DEFLT_BASE);
           },
+   
           getData : function(restQuery){
             return $http.get(this._DEFLT_BASE + restQuery);
           }
@@ -19,11 +21,13 @@
           
           var those = this;
           
+          this._DEFLT_BASE = '/blobs';
+          
           this._changeBase = function(url){
             those._DEFLT_BASE = url;
-          }
+          };
           
-        };
+        }
         
         PrivProtMethRest.prototype = RestQueryBuild;
        
