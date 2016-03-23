@@ -46,11 +46,14 @@
     	
     	
     	<div class="row">
-   		<!--for checkboxes uses db id label. it's temporary. 256 id is only allow on the page for good responsible -->	
+   		<!--for checkboxes uses db id label. it's temporary.
+   		256 id is only allow on the page for good responsible 
+   		attr DATA!!!!!!! going to use
+   		-->	
 	      <div class="col s1">
 	      	<input type="checkbox" id={{img._id}} class="filled-in" 
-	      		name="recCollection"
-	      		ng-model="recCollection.id"
+	      		ng-click="checkRec(this.img._id, confirmed)" 
+	      		ng-model="confirmed"
 	      	/>
 					<label for={{img._id}}></label>
 				</div>

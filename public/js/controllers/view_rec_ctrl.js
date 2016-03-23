@@ -9,8 +9,9 @@
       $scope.tagline = ' Name';
       
       // for selection rec collection
-      var recId = {};
-      $scope.recCollection = {};
+      var recHash = {};
+        $scope.recCollection = {};
+        $scope.confirmed = false;
       // Activating the dropdown menu
       
       $(document).ready(function(){
@@ -21,22 +22,32 @@
       $(document).ready(function(){
         $('.tooltipped').tooltip({delay: 50});
       });
-      
-      
-      
+     
       var RestServ = new RestService();
       
       RestServ.getAllData().then(function(data){
         
-        //var hashRec = data.data; 
-          /*recId = initRecMirror(hashRec, recId);*/
-          $scope.listImg = recId = data.data;
-     
+        $scope.listImg = data.data;
+        recHash = convToHashData($scope.listImg, recHash);
+        
       }).catch(function(err) {
         errorHandler(err);
       });
         
+      function convToHashData (srcObj, targObj){
+        // if hash is not emptied than set empty
+        if (Object.keys(targObj).length) targObj = {};
         
+        angular.forEach(srcObj, function(value, key){
+          var hashKeyId = value._id;
+            value.selected = false;
+            
+            targObj[hashKeyId] = value;
+        });
+        
+        return targObj;
+      }
+       
       function errorHandler(err){
         
         console.error(
@@ -47,25 +58,26 @@
         
       }
       
-      /*function initRecMirror(srcObg, targObj){
+      $scope.checkRec = function(id, isCheck){
+
+        recHash[id].selected = isCheck;
         
-       for (var key in srcObg){
-          targObj[key] = srcObg[key]['_id'];
-        }
-        return targObj;
-      }*/
-      
-      $scope.selectAll = function(obj){
-        
-        console.info('fuc', recId[0]._id);
+        console.info(id, isCheck, recHash[id]);
         
       };
       
+      $scope.selectAll = function(obj){
+        
+        console.info('hash', recHash);
+        
+      };
       
-      
-      
-      
-      
+      $scope.shufleAll = function(obj){
+        
+        console.info('hash', recHash);
+        
+      };
+     
     }]);
 
 })();
