@@ -11,14 +11,14 @@
   </li>
 </ul>
 
-
+<form>
 <nav>
   <div class="nav-wrapper">
     <ul class="collection left ul_no_style">
     	<li>
     		<!-- data-position can be : bottom, top, left, or right -->
   			<!-- data-delay controls delay before tooltip shows (in milliseconds)-->
-    		<a href="#" class="tooltipped" data-position="top" data-delay="50" data-tooltip="select all"><i class="material-icons">done_all</i></a>
+    		<a ng-click="selectAll(recCollection);" class="tooltipped" data-position="top" data-delay="50" data-tooltip="select all"><i class="material-icons">done_all</i></a>
     	</li>
     	<li>
     		<a href="#" class="tooltipped" data-position="top" data-delay="50" data-tooltip="shufle"><i class="material-icons">shuffle</i></a>
@@ -39,24 +39,31 @@
 </nav>
 
 <div class="container">
-
+	
 	<!--<p>{{ listImg }}</p>-->
-  <ul class="collection">
+  <ul class="collection ul_no_style">
     <li class="collection-item" ng-repeat="img in listImg">
+    	
+    	
     	<div class="row">
-    	<!--for checkboxes uses db id label. it's temporary. 256 id is only allow on the page for good responsible -->	
+   		<!--for checkboxes uses db id label. it's temporary. 256 id is only allow on the page for good responsible -->	
 	      <div class="col s1">
-	      	<input type="checkbox" id={{img._id}} class="filled-in" />
+	      	<input type="checkbox" id={{img._id}} class="filled-in" 
+	      		name="recCollection"
+	      		ng-model="recCollection.id"
+	      	/>
 					<label for={{img._id}}></label>
 				</div>
 				
 	      <div class="col s7">{{img.name}}</div>
 	      
-	      <div class="col s4">small img here</div>
+	      <div class="col s3">small img here</div>
       </div>
   </ul>
  
 </div>
+
+</form>
 
 <ul class="pagination">
   <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
