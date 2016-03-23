@@ -6,7 +6,14 @@
     .module('galleryApp')
       .controller('viewRecCtrl', ['$scope', 'RestService', function ($scope, RestService) {
         
-      $scope.tagline = 'This is EDIT controler !';
+      $scope.tagline = ' Name';
+      
+      // Activating the dropdown menu
+      
+      $(document).ready(function(){
+        $(".dropdown-button").dropdown();
+      });
+      
       
       var RestServ = new RestService();
       
