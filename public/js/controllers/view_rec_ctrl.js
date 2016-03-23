@@ -14,6 +14,11 @@
         $(".dropdown-button").dropdown();
       });
       
+      // Activating tooltips
+      $(document).ready(function(){
+        $('.tooltipped').tooltip({delay: 50});
+      });
+      
       
       var RestServ = new RestService();
       

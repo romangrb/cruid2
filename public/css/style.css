@@ -22,3 +22,10 @@
   -webkit-font-feature-settings: 'liga';
   -webkit-font-smoothing: antialiased;
 }
+/* defolts style for elements */
+
+.ul_no_style {
+  margin:0;
+  padding:0;
+  border:none
+}
