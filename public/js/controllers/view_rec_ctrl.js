@@ -11,6 +11,7 @@
       // for selection rec collection
       var recHash = {};
         $scope.recCollection = {};
+        
         $scope.confirmed = false;
       // Activating the dropdown menu
       
@@ -29,6 +30,7 @@
         
         $scope.listImg = data.data;
         recHash = convToHashData($scope.listImg, recHash);
+        $scope.recCollection = recHash;
         
       }).catch(function(err) {
         errorHandler(err);

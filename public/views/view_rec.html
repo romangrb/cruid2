@@ -40,7 +40,7 @@
 
 <div class="container">
 	
-	<p>{{ collection }}1</p>
+	<p>{{ recCollection }}1</p>
   <ul class="collection ul_no_style">
     <li class="collection-item" ng-repeat="img in listImg">
     	
@@ -55,8 +55,8 @@
 	      		ng-click="checkRec(this.img._id, confirmed)"
 	      		ng-model="confirmed"
 	      		
-	      		ng-model="collection"
-	      		ng-name="collection.id"
+	      		ng-model="recCollection"
+	      		name="recCollection.id"
 	      	/>
 					<label for={{img._id}}></label>
 				</div>
