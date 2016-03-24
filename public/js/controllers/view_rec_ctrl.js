@@ -70,16 +70,39 @@
         
       };
       
-      $scope.selectAll = function(obj){
+      function objCycle(targObj, isSelected, isShufle){
         
-        console.info('hash', recHash);
+        if (!Object.keys(targObj).length) return;
         
+        for (var key in targObj) {
+          
+          if (!isShufle) {
+            targObj[key].selected = isSelected;
+          }else{
+            
+            targObj[key].selected = isSelected;
+            
+          }
+        }
+        
+        return targObj;
+      }
+      
+      $scope.selectAll = function(elem){
+        
+        recHash = objCycle(recHash, true, false);
+        
+        console.info('hash', recHash, elem);
       };
       
-      $scope.shufleAll = function(obj){
-        
+      $scope.unSelectAll = function(){
+        recHash = objCycle(recHash, false, false);
         console.info('hash', recHash);
-        
+      };
+      
+      $scope.shufleAll = function(){
+        recHash = objCycle(recHash, false, true);
+        console.info('hash', recHash);
       };
      
     }]);
