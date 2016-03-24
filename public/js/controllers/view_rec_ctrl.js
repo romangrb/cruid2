@@ -67,9 +67,24 @@
       $scope.checkRec = function(id, isCheck){
 
         recHash[id].selected = isCheck;
-        
         console.info(id, isCheck, recHash[id]);
+      };
+      
+      $scope.selectAll = function(elem){
         
+        recHash = objCycle(recHash, true, false);
+        $scope.recCollection = recHash;
+        console.info('hash', recHash, elem);
+      };
+      
+      $scope.unSelectAll = function(){
+        recHash = objCycle(recHash, false, false);
+        console.info('hash', recHash);
+      };
+      
+      $scope.shufleAll = function(){
+        recHash = objCycle(recHash, false, true);
+        console.info('hash', recHash);
       };
       
       function objCycle(targObj, isSelected, isShufle){
@@ -90,22 +105,7 @@
         return targObj;
       }
       
-      $scope.selectAll = function(elem){
-        
-        recHash = objCycle(recHash, true, false);
-        
-        console.info('hash', recHash, elem);
-      };
       
-      $scope.unSelectAll = function(){
-        recHash = objCycle(recHash, false, false);
-        console.info('hash', recHash);
-      };
-      
-      $scope.shufleAll = function(){
-        recHash = objCycle(recHash, false, true);
-        console.info('hash', recHash);
-      };
      
     }]);
 

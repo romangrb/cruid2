@@ -49,14 +49,18 @@
    		<!--for checkboxes uses db id label. it's temporary.
    		256 id is only allow on the page for good responsible 
    		attr DATA!!!!!!! going to use
+   		<input id="56efd8bfe984c7560e0d26f9" 
+   		class="filled-in ng-pristine ng-untouched ng-valid ng-empty" 
+   		ng-click="checkRec(this.img._id, confirmed)" ng-model="confirmed" 
+   		name="56efd8bfe984c7560e0d26f9" type="checkbox">
    		-->	
 	      <div class="col s1">
 	      	<input type="checkbox" id={{img._id}} class="filled-in" 
 	      		ng-click="checkRec(this.img._id, confirmed)"
 	      		ng-model="confirmed"
 	      		
-	      		ng-model="recCollection"
-	      		name="recCollection.id"
+	      		ng-model="recCollection.name"
+	      		name={{img._id}}
 	      	/>
 					<label for={{img._id}}></label>
 				</div>
