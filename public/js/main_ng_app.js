@@ -18,13 +18,17 @@
     			templateUrl: 'views/crud.html',
     			controller: 'crudCtrl'	
     		}).
-    		when('/edit_rec', {
-    			templateUrl: 'views/edit_rec.html',
-    			controller: 'editRecCtrl'	
-    		}).
     		when('/view_rec', {
     			templateUrl: 'views/view_rec.html',
     			controller: 'viewRecCtrl'	
+    		}).
+    		when('/create_rec', {
+    			templateUrl: 'views/create_rec.html',
+    			controller: 'createRecCtrl'	
+    		}).
+    		when('/edit_rec', {
+    			templateUrl: 'views/edit_rec.html',
+    			controller: 'editRecCtrl'	
     		}).
     		otherwise({
           redirectTo: '/'

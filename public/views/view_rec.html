@@ -1,8 +1,8 @@
 <!-- Dropdown Structure -->
 <ul id="tools" class="dropdown-content">
-  <!--<li><a href="#">
+  <li><a href="#">
   	<i class="material-icons">playlist_add</i></a>
-  </li>-->
+  </li>
  	<li><a href="#">
   	<i class="material-icons">delete</i></a>
   </li>
@@ -18,22 +18,43 @@
     	<li>
     		<!-- data-position can be : bottom, top, left, or right -->
   			<!-- data-delay controls delay before tooltip shows (in milliseconds)-->
-    		<a ng-click="selectAll();" class="tooltipped" data-position="top" data-delay="50" data-tooltip="select all"><i class="material-icons">done_all</i></a>
+    		<a ng-click="selectAll();" class="tooltipped" data-position="top" data-delay="50" data-tooltip="select all">
+    			<i class="material-icons">done_all</i>
+    		</a>
     	</li>
     	<li>
-    		<a ng-click="shufleAll();" class="tooltipped" data-position="top" data-delay="50" data-tooltip="shufle"><i class="material-icons">shuffle</i></a>
+    		<a ng-click="shufleAll();" class="tooltipped" data-position="top" data-delay="50" data-tooltip="shufle">
+    			<i class="material-icons">shuffle</i>
+    		</a>
     	</li>
    	  <li>
-   	  	<a ng-click="unSelectAll();" class="tooltipped" data-position="top" data-delay="50" data-tooltip="unselect all"><i class="material-icons">not_interested</i></a>
+   	  	<a ng-click="unSelectAll();" class="tooltipped" data-position="top" data-delay="50" data-tooltip="unselect all">
+   	  		<i class="material-icons">not_interested</i>
+   	  	</a>
    	  </li>
     	
     </ul>	
 
     <ul class="right">
-      <!-- Dropdown Trigger -->
+      <!-- Dropdown Trigger 
 	    <li><a href="#!" class="dropdown-button tooltipped" data-position="top" data-delay="50" data-tooltip="tools" data-activates="tools">
 	    	<i class="material-icons"> settings  </i></a>
-	    </li>
+	    </li> -->
+	    <li>
+	    	<a href="create_rec" class="tooltipped" data-position="top" data-delay="50" data-tooltip="new..">
+		  		<i class="material-icons">playlist_add</i>
+		  	</a>
+		  </li>
+		  <li>
+		  	<a href="edit_rec" class="tooltipped" data-position="top" data-delay="50" data-tooltip="edit">
+		  		<i class="material-icons">edit</i>
+		  	</a>
+		  </li>
+		 	<li>
+		 		<a ng-click="delete_rec" class="tooltipped" data-position="top" data-delay="50" data-tooltip="delete">
+		  		<i class="material-icons">delete</i>
+		  	</a>
+		  </li>
     </ul>
   </div>
 </nav>
