@@ -64,10 +64,10 @@
         
       }
       
-      $scope.checkRec = function(id, isCheck){
+      $scope.checkRec = function(id, isCheck, name){
 
         recHash[id].selected = isCheck;
-        console.info(id, isCheck, recHash[id]);
+        console.info('name', name, '\n',  id, isCheck, recHash[id]);
       };
       
       $scope.selectAll = function(elem){
@@ -92,21 +92,13 @@
         if (!Object.keys(targObj).length) return;
         
         for (var key in targObj) {
-          
-          if (!isShufle) {
-            targObj[key].selected = isSelected;
-          }else{
-            
-            targObj[key].selected = isSelected;
-            
-          }
+          targObj[key]['selected'] = 
+            (!isShufle)? isSelected : !targObj[key]['selected'];
         }
         
         return targObj;
       }
       
-      
-     
     }]);
 
 })();
