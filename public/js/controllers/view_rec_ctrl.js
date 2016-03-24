@@ -39,10 +39,14 @@
         if (Object.keys(targObj).length) targObj = {};
         
         angular.forEach(srcObj, function(value, key){
-          var hashKeyId = value._id;
-            value.selected = false;
+          var hashKeyId = value._id,
+            obj = {};
             
-            targObj[hashKeyId] = value;
+            obj.hash = value;
+            obj['selected'] = false;
+            
+            targObj[hashKeyId] = obj;
+           
         });
         
         return targObj;
