@@ -4,7 +4,7 @@
   
   angular
     .module('galleryApp')
-      .controller('viewRecCtrl', ['$scope', 'RestService', function ($scope, RestService) {
+      .controller('viewRecCtrl', ['$scope', '$location', 'RestService', 'vDataService', function ($scope, $location, RestService, vDataService) {
       
       // init selection rec collection
       var recHash = {},
@@ -62,7 +62,10 @@
       $scope.edit_rec = function(){
         
         recSelectedHash = setSelectedRec(recHash, recSelectedHash);
-        console.info('edit', recSelectedHash);
+        vDataService.setVdata(recSelectedHash);
+        
+        (Object.keys(recSelectedHash).length)?
+            $location.path('/edit_rec'): alert('no selected');
         
       };
       

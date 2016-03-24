@@ -4,14 +4,13 @@
   
   angular
     .module('galleryApp')
-      .controller('editRecCtrl', ['$scope', 'RestService', function ($scope, RestService) {
+      .controller('editRecCtrl', ['$scope', 'RestService', 'vDataService', function ($scope, RestService, vDataService) {
         
-      $scope.tagline = 'This is EDIT controler !';
+      $scope.recCollection = vDataService.getVdata();
       
-  
+      console.log('virtD', vDataService.getVdata());
       
-
-
+      
     }]);
 
 })();

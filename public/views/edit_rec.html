@@ -1,8 +1,51 @@
-<div>
-	<h1>EDIT</h1>
+<form name="editItems">
+<nav>
+  <div class="nav-wrapper">
+    <ul class="collection left ul_no_style">
+    	<li>
+    		<a ng-click="selectAll();" class="tooltipped" data-position="top" data-delay="50" data-tooltip="select all">
+    			<i class="material-icons">done</i>
+    		</a>
+    	</li>
+    	<li>
+    		<a ng-click="shufleAll();" class="tooltipped" data-position="top" data-delay="50" data-tooltip="shufle">
+    			<i class="material-icons">cancel</i>
+    		</a>
+    	</li>
+    </ul>	
 
-	<p>{{ tagline }}</p>
+    <ul class="right">
+		  <li>
+		 		<a ng-click="cancel_rec" class="tooltipped" data-position="top" data-delay="50" data-tooltip="cancel">
+		  		<i class="material-icons">close</i>
+		  	</a>
+		  </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container">
 	
-	<p>{{ listImg }}</p>
-	
+	<!--<p>{{ recCollection }}</p>-->
+  <ul class="collection ul_no_style">
+    <li class="collection-item" ng-repeat="img in recCollection">
+    	<div class="row">
+    		
+	      <div class="col s1">
+	      	<input type="checkbox" id={{img._id}} class="filled-in" 
+	      		ng-click="checkRec(this.img._id, confirmed)"
+	      		ng-model="confirmed"
+	      		ng-checked="recCollection[this.img._id]['selected']"
+	      	/>
+					<label for={{img._id}}></label>
+				</div>
+				
+	      <div class="col s7">{{img.name}}</div>
+	      
+	      <div class="col s3">small img here</div>
+      </div>
+  </ul>
+  
 </div>
+
+</form>
