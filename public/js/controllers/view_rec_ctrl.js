@@ -5,14 +5,14 @@
   angular
     .module('galleryApp')
       .controller('viewRecCtrl', ['$scope', 'RestService', function ($scope, RestService) {
-        
-      $scope.tagline = ' Name';
       
-      // for selection rec collection
-      var recHash = {};
-        $scope.recCollection = {};
+      // init selection rec collection
+      var recHash = {},
+        recSelectedHash = {};
+      
+      $scope.recCollection = {};
         
-        $scope.confirmed = false;
+      $scope.confirmed = false;
       // Activating the dropdown menu
       
       $(document).ready(function(){
@@ -35,7 +35,49 @@
       }).catch(function(err) {
         errorHandler(err);
       });
+      
+      $scope.checkRec = function(id, isCheck, name){
+
+        recHash[id].selected = isCheck;
+        console.info('name', name, '\n',  id, isCheck, recHash[id]);
+      };
+      
+      $scope.selectAll = function(elem){
         
+        recHash = objCycle(recHash, true, false);
+        $scope.recCollection = recHash;
+        console.info('hash', recHash, elem);
+      };
+      
+      $scope.unSelectAll = function(){
+        recHash = objCycle(recHash, false, false);
+        console.info('hash', recHash);
+      };
+      
+      $scope.shufleAll = function(){
+        recHash = objCycle(recHash, false, true);
+        console.info('hash', recHash);
+      };
+      
+      $scope.edit_rec = function(){
+        
+        recSelectedHash = setSelectedRec(recHash, recSelectedHash);
+        console.info('edit', recSelectedHash);
+        
+      };
+      
+      function setSelectedRec(srcObj, targObj){
+        
+        if (!Object.keys(srcObj).length) return;
+          targObj = {};
+        
+        for (var key in srcObj) {
+          if (srcObj[key]['selected']) targObj[key] = srcObj[key]['hash'];
+        }
+        return targObj;
+
+      }
+      
       function convToHashData (srcObj, targObj){
         // if hash is not emptied than set empty
         if (Object.keys(targObj).length) targObj = {};
@@ -63,29 +105,6 @@
         );
         
       }
-      
-      $scope.checkRec = function(id, isCheck, name){
-
-        recHash[id].selected = isCheck;
-        console.info('name', name, '\n',  id, isCheck, recHash[id]);
-      };
-      
-      $scope.selectAll = function(elem){
-        
-        recHash = objCycle(recHash, true, false);
-        $scope.recCollection = recHash;
-        console.info('hash', recHash, elem);
-      };
-      
-      $scope.unSelectAll = function(){
-        recHash = objCycle(recHash, false, false);
-        console.info('hash', recHash);
-      };
-      
-      $scope.shufleAll = function(){
-        recHash = objCycle(recHash, false, true);
-        console.info('hash', recHash);
-      };
       
       function objCycle(targObj, isSelected, isShufle){
         
