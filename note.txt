@@ -121,3 +121,12 @@
 </ul>
 
 </form>
+
+
+hadouke:~/workspace (main_page) $ git remote add host_project https://github.com/romangrb/cruid2.git
+hadouke:~/workspace (main_page) $ git remote -v
+host_project    https://github.com/romangrb/cruid2.git (fetch)
+host_project    https://github.com/romangrb/cruid2.git (push)
+origin  git@github.com:hadouke/cruid2.git (fetch)
+origin  git@github.com:hadouke/cruid2.git (push)
+hadouke:~/workspace (main_page) $ 
