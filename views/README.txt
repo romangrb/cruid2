@@ -12,6 +12,28 @@ express-node-mongo-skeleton was made to have a simple skeleton for a completed W
   mv bower_components public/lib
   rm bower_components
   
+- import db 
+
+  run mongo service:
+    - mongod
+  import database
+    - mongoimport --db enmskeleton --file gallery.json 
+
+- how to export db for example for backup
+  
+  run mongo service:
+    - mongod
+      list of databases
+    - show dbs 
+      quit to bash
+    - press ctrl+C
+    - export to fs
+      
+      mongoexport --db databaseName --collection collectionNaame --out fileName.json
+      ex. mongoexport --db enmskeleton --collection blobs --out gallery.json
+  
+
+  
 - Navigate to `http://127.0.0.1:3000` to see the express.js welcome page
 
 ## Usage Instructions
