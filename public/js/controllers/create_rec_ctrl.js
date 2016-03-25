@@ -10,6 +10,16 @@
       
       var RestServ = new RestService();
       
+      var item = {};
+      
+      $scope.createRec = function(obj){
+        
+        console.log(obj);
+        
+      }
+     
+      
+      
      
       
     }]);

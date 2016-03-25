@@ -1,8 +1,66 @@
-<div>
-	<h1>CREATE</h1>
+<form name="createItems">
+	<nav>
+	  <div class="nav-wrapper">
+	   <ul class="right">
+			  <li>
+			 		<a ng-click="cancel_rec" class="tooltipped" data-position="top" data-delay="50" data-tooltip="cancel">
+			  		<i class="material-icons">close</i>
+			  	</a>
+			  </li>
+	    </ul>
+	  </div>
+	</nav>
 
-	<p>{{ tagline }}</p>
-	
-	<p>{{ listImg }}</p>
-	
-</div>
+	<div class="container">
+
+	<div class="row">
+    	<div class="col s12">
+      <div class="row">
+        <div class="input-field col s12">
+          <i class="material-icons prefix">picture_in_picture</i>
+          <input id="icon_prefix" 
+	          type="text" 
+	          class="validate"
+	          
+		      	ng-model="item.name"
+		      	name="name"
+          >
+          
+          <label for="icon_prefix">name</label>
+        </div>
+        
+        <div class="input-field col s12">
+          <i class="material-icons prefix">mode_edit</i>
+          <textarea id="icon_prefix2" class="materialize-textarea"
+	           
+		      	ng-model="item.description"
+		      	name="description"
+          >
+          	
+          	
+          </textarea>
+          <label for="icon_prefix2">description</label>
+        </div>
+      </div>
+    </div>
+    {{item}}
+  </div>
+  
+  <a class="waves-effect waves-light btn" ng-click="createRec(item)">
+  	<i class="material-icons left">play_for_work</i>upload
+  </a>
+  
+  
+
+   <!-- <div class="file-field input-field">
+      <div class="btn">
+        <span>File</span>
+        <input type="file" multiple>
+      </div>
+      <div class="file-path-wrapper">
+        <input class="file-path validate" type="text" placeholder="Upload one or more files">
+      </div>
+    </div>
+	</div>-->
+
+</form>

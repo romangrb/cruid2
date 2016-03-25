@@ -6,9 +6,13 @@
   
     galleryApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
       $routeProvider.
-        when('/', {
+        /*when('/', {
     			templateUrl: '/views/home.html',
     			controller: 'homeCtrl'
+    		}).*/
+    		when('/', {
+    			templateUrl: 'views/create_rec.html',
+    			controller: 'createRecCtrl'	
     		}).
     		when('/home', {
     			templateUrl: '/views/home.html',
