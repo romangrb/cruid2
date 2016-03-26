@@ -14,6 +14,10 @@
             
           getData : function(restQuery){
             return $http.get(this._DEFLT_BASE + restQuery);
+          },
+          
+          createData : function (dataObj) {
+            return $http.post(this._DEFLT_NEW_REC, dataObj);
           }
         };
         
@@ -22,6 +26,8 @@
           var those = this;
           
           this._DEFLT_BASE = '/blobs';
+          
+          this._DEFLT_NEW_REC = this._DEFLT_BASE+'/new';
           
           this._changeBase = function(url){
             those._DEFLT_BASE = url;
