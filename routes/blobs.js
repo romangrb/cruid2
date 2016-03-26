@@ -164,12 +164,9 @@ router.route('/:id')
         console.log('GET Error: There was a problem retrieving: ' + err);
       } else {
         console.log('GET Retrieving ID: ' + blob._id);
-        var blobdob = blob.dob.toISOString();
-        blobdob = blobdob.substring(0, blobdob.indexOf('T'));
         res.format({
           html: function(){
               res.render('blobs/show', {
-                "blobdob" : blobdob,
                 "blob" : blob
               });
           },
@@ -189,12 +186,9 @@ router.route('/next')
         console.log('GET Error: There was a problem retrieving: ' + err);
       } else {
         console.log('GET Retrieving ID: ' + blob._id);
-        var blobdob = blob.dob.toISOString();
-        blobdob = blobdob.substring(0, blobdob.indexOf('T'));
         res.format({
           html: function(){
               res.render('blobs/show', {
-                "blobdob" : blobdob,
                 "blob" : blob
               });
           },
@@ -216,14 +210,11 @@ router.route('/:id/edit')
       } else {
         //Return the blob
         console.log('GET Retrieving ID: ' + blob._id);
-        var blobdob = blob.dob.toISOString();
-        blobdob = blobdob.substring(0, blobdob.indexOf('T'));
         res.format({
           //HTML response will render the 'edit.jade' template
           html: function(){
             res.render('blobs/edit', {
               title: 'Blob' + blob._id,
-              "blobdob" : blobdob,
               "blob" : blob
             });
            },
