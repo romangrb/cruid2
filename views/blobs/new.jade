@@ -5,12 +5,10 @@ block content
 		#{title}
 	form#formAddBlob(name="addblob",method="post",action="/blobs")
 		p Name: 
-			input#inputName(type="text", placeholder="ex. John Smith", name="name")
-		p Badge:
-			input#inputBadge(type="number", placeholder="ex. 123456", name="badge")
-		p DOB: 
-			input#inputDob(type="date", name="dob")
-		p Are You Loved?: 
-			input#inputIsLoved(type="checkbox", name="isloved")
+			input#inputName(type="text", placeholder="ex. Nordswing castle", name="name")
+		p Src:
+			input#inputName(type="text", placeholder="", name="src")
+		p Is_deleted?: 
+			input#Is_deleted(type="checkbox", name="is_deleted")
 		p
 			button#btnSubmit(type="submit") submit

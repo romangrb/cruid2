@@ -46,16 +46,13 @@ router.route('/')
     .post(function(req, res) {
       // Get values from POST request. These can be done through forms or REST calls. These rely on the "name" attributes for forms
       var name = req.body.name;
-      var badge = req.body.badge;
-      var dob = req.body.dob;
-      var company = req.body.company;
-      var isloved = req.body.isloved;
+      var src = req.body.src;
+      var is_deleted = req.body.is_deleted;
       //call the create function for our database
       mongoose.model('Blob').create({
           name : name,
-          badge : badge,
-          dob : dob,
-          isloved : isloved
+          src : src,
+          is_deleted : is_deleted
       }, function (err, blob) {
         if (err) {
           res.send("There was a problem adding the information to the database.");
@@ -241,20 +238,17 @@ router.route('/:id/edit')
 	//PUT to update a blob by ID
 	.put(function(req, res) {
     // Get our REST or form values. These rely on the "name" attributes
-    var name = req.body.name;
-    var badge = req.body.badge;
-    var dob = req.body.dob;
-    var company = req.body.company;
-    var isloved = req.body.isloved;
+      var name = req.body.name;
+      var src = req.body.src;
+      var is_deleted = req.body.is_deleted;
       
       //find the document by ID
       mongoose.model('Blob').findById(req.id, function (err, blob) {
         //update it
         blob.update({
           name : name,
-          badge : badge,
-          dob : dob,
-          isloved : isloved
+          src : src,
+          is_deleted : is_deleted
         }, function (err, blobID) {
           if (err) {
             res.send("There was a problem updating the information to the database: " + err);
