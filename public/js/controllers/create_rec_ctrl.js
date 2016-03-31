@@ -14,7 +14,7 @@
       $scope.createRec = function(obj){
         
         
-        console.log(obj);
+        console.log(obj,1);
         
       }
      
