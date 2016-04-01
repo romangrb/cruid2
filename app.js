@@ -1,66 +1,90 @@
-var express = require('express'),
+  var express = require('express'),
     path = require('path'),
-    favicon = require('serve-favicon'),
     logger = require('morgan'),
     cookieParser = require('cookie-parser'),
-    bodyParser = require('body-parser');
-
-var db = require('./model/db'),
+    bodyParser = require('body-parser'),
+    multer = require('multer');
+  
+  var db = require('./model/db'),
     blob = require('./model/blobs');
-
-var routes = require('./routes/index'),
+  
+  var routes = require('./routes/index'),
     blobs = require('./routes/blobs');
+  
+  var app = express();
+  
+  app.use(function(req, res, next) { //allow cross origin requests
+    res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
+    res.header("Access-Control-Allow-Origin", "https://cruid2-romangrb.c9users.io/upload");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
+  
+  // view engine setup
+  app.set('views', path.join(__dirname, 'views'));
+  app.set('view engine', 'jade');
+  
+  app.use(logger('dev'));
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(cookieParser());
+  app.use(express.static(path.join(__dirname, 'public')));
+  
+  app.use('/', routes);
+  app.use('/blobs', blobs);
+  // Serving from the same express Server no CORS required
+  //app.use(express.static('./public/'));
+  // multers disk storage settings
+  var upload = multer({
+    storage: storage
+  }).single('file');
+  
+  var storage = multer.diskStorage({ 
+    destination: function (req, file, cb) {
+        console.log(cb, req);
+        cb(null, './');
+    },
+    filename: function (req, file, cb) {
+        var datetimestamp = Date.now();
+        cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1]);
+    }
+  });
 
-//var users = require('./routes/users');
-
-var app = express();
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
-// uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', routes);
-app.use('/blobs', blobs);
-//app.use('/users', users);
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-    var err = new Error('Not Found');
-    err.status = 404;
-    next(err);
-});
-
-// error handlers
-
-// development error handler
-// will print stacktrace
-if (app.get('env') === 'development') {
-    app.use(function(err, req, res, next) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: err
-        });
+  /** API path that will upload the files */
+  app.post('/upload', function(req, res, next){
+    
+    upload(req, res, function(err){
+      if(err){
+        res.json({error_code:1, err_desc:err});
+        return;
+      }
+      res.json({error_code:0,err_desc:null});
     });
-}
-
-// production error handler
-// no stacktraces leaked to user
-app.use(function(err, req, res, next) {
+    
+  });
+  
+  // error handlers
+  
+  // development error handler
+  // will print stacktrace
+  if (app.get('env') === 'development') {
+      app.use(function(err, req, res, next) {
+          res.status(err.status || 500);
+          res.render('error', {
+              message: err.message,
+              error: err
+          });
+      });
+  }
+  
+  // production error handler
+  // no stacktraces leaked to user
+  app.use(function(err, req, res, next) {
     res.status(err.status || 500);
     res.render('error', {
-        message: err.message,
-        error: {}
+      message: err.message,
+      error: {}
     });
-});
-
-
-module.exports = app;
+  });
+  
+  module.exports = app;
