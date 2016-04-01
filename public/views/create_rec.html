@@ -1,4 +1,4 @@
-<form name="createItems">
+<form name="up.createItems">
 	<nav>
 	  <div class="nav-wrapper">
 	   <ul class="right">
@@ -11,7 +11,7 @@
 	  </div>
 	</nav>
 
-	<div class="container">
+<!--	<div class="container">
 
 	<div class="row">
     	<div class="col s12">
@@ -41,30 +41,36 @@
             
             <label for="icon_src">src</label>
           </div>
-      
-        
-     <!--   
-          <div class="input-field col s12">
-          <i class="material-icons prefix">mode_edit</i>
-          <textarea id="icon_prefix2" class="materialize-textarea"
-	           
-		      	ng-model="item.description"
-		      	name="description"
-          >
-          	
-          	
-          </textarea>
-          <label for="icon_prefix2">description</label>
-        </div>-->
       </div>
     </div>
     {{item}}
-  </div>
+  </div>-->
+ <input 
+    type="file" 
+    ngf-select 
+    ng-model="up.file" 
+    name="file" 
+    ngf-pattern="'image/*'"
+    accept="image/*" 
+    ngf-max-size="20MB" 
+  />
   
-<a class="waves-effect waves-light btn" ng-click="createRec(item)">
+  Image thumbnail: <img style="width:100px;" ng-show="!!up.file" ngf-thumbnail="up.file"/>
+  <i ng-show="up.upload_form.file.$error.required">*required</i><br>
+  <i ng-show="up.upload_form.file.$error.maxSize">File too large 
+  {{up.file.size / 1000000|number:1}}MB: max 20M</i>
+ <!--  Multiple files
+  <div class="button" ngf-select ng-model="up.files" ngf-multiple="true">Select</div>
+  Drop files: <div ngf-drop ng-model="up.files" class="drop-box">Drop</div> -->
+  <button type="submit" ng-click="up.submit()">submit</button>
+  <p>{{up.progress}}</p>
+
+  
+    
+<!--<a class="waves-effect waves-light btn" ng-click="createRec(item)">
 	<i class="material-icons left">play_for_work</i>upload
 </a>
-
+-->
     <!--<div class="file-field input-field">
       <div class="btn">
         <span>File</span>

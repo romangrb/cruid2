@@ -2,7 +2,7 @@
   
   "use strict";
   
-  var galleryApp = angular.module("galleryApp", ['ngRoute', 'ngAnimate']);
+  var galleryApp = angular.module("galleryApp", ['ngRoute', 'ngAnimate', 'ngFileUpload']);
   
     galleryApp.config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
       $routeProvider.
