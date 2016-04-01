@@ -8,18 +8,16 @@
         
       $scope.tagline = 'This is Create controler !';
       
-      var RestServ = new RestService();
+      //var RestServ = new RestService();
       
       
-      $scope.createRec = function(obj){
+   
+     /* $scope.createRec = function(obj){
         
         
         console.log(obj,1);
         
-      }
-     
-      
-      
+      };*/
      
       
     }]);
