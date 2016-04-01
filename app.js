@@ -33,22 +33,23 @@
   app.use('/', routes);
   app.use('/blobs', blobs);
   // Serving from the same express Server no CORS required
-  //app.use(express.static('./public/'));
+  app.use(express.static('./'));
   // multers disk storage settings
-  var upload = multer({
-    storage: storage
-  }).single('file');
   
   var storage = multer.diskStorage({ 
     destination: function (req, file, cb) {
-        console.log(cb, req);
-        cb(null, './');
+        cb(null, './uploads');
     },
     filename: function (req, file, cb) {
         var datetimestamp = Date.now();
-        cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1]);
+        cb(null, file.fieldname + '-' + datetimestamp + '.' + 
+        file.originalname.split('.')[file.originalname.split('.').length -1]);
     }
   });
+  
+  var upload = multer({
+    storage: storage
+  }).single('file');
 
   /** API path that will upload the files */
   app.post('/upload', function(req, res, next){

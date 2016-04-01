@@ -13,7 +13,7 @@
   <img style="width:100px;" ng-show="!!file" ngf-thumbnail="file"/>
   <i ng-show="upload_form.file.$error.required">*required</i><br>
   <i ng-show="upload_form.file.$error.maxSize">File too large 
-  {{up.file.size / 1000000|number:1}}MB: max 20M</i>
+  {{file.size / 1000000|number:1}}MB: max 20M</i>
   <button type="submit" ng-click="submit()">submit</button>
   <p>{{progress}}</p>
 

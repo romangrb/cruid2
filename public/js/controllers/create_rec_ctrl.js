@@ -21,7 +21,7 @@
           data:{file:file} //pass file as data throw ng-model
         }).then(function (resp) {
           if(resp.data.error_code === 0){ //validate success
-            console.info('Success ' + resp.config.data.file.name + 'uploaded. Response: ');
+            console.info('Success response  : ' + resp.config.data.file.name);
           } else {
             console.error('an error occured');
           }
