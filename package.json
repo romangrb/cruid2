@@ -1,6 +1,6 @@
 {
-  "name": "express-node-mongo-skeleton",
-  "version": "0.0.0",
+  "name": "MEAN-galleryApp",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
