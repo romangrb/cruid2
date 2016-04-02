@@ -26,7 +26,7 @@
     <li class="collection-item" 
       ng-repeat="(key, value) in file_collection track by $index"
     >
-    {{value.name}} 
+    {{value.name | toShortNameImg}} 
     </li>
   </ul>
 
