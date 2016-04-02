@@ -4,7 +4,7 @@
   
   angular
     .module('galleryApp')
-      .controller('createRecCtrl', ['$scope', 'RestService', 'Upload', function ($scope, RestService, Upload) {
+      .controller('createRecCtrl', ['$scope', 'RestService', 'Upload', 'constant', function ($scope, RestService, Upload, constant) {
       
       $scope.tagline = 'This is Create controler !';
 
@@ -17,7 +17,7 @@
       
       $scope.upload = function (file) {
         Upload.upload({
-          url: 'https://cruid2-romangrb.c9users.io/upload', //webAPI exposed to upload the file
+          url: constant.UPLOAD_URL, //webAPI exposed to upload the file
           data:{file:file} //pass file as data throw ng-model
         }).then(function (resp) {
           if(resp.data.error_code === 0){ //validate success
