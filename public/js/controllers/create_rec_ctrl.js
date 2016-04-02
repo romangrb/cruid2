@@ -5,8 +5,6 @@
   angular
     .module('galleryApp')
       .controller('createRecCtrl', ['$scope', 'RestService', 'Upload', 'constant', function ($scope, RestService, Upload, constant) {
-      
-      $scope.tagline = 'This is Create controler !';
 
       $scope.submit = function(){
         //check if from is valid
@@ -15,8 +13,27 @@
         }
       };
       
+      $scope.showFiles = function(data){
+        $scope.file_collection = createImgCollection(data);
+      };
+      
+      function createImgCollection(data){
+        
+      if (!angular.isArray(data)||data.length<1) return;
+      
+        var dataHash = {};
+        angular.forEach(data, function(value, key) {
+          console.log(key, value.name);
+          this[key] = value;
+        }, dataHash);
+        return dataHash;
+      }
+      
+      
+      
       $scope.upload = function (file) {
-        Upload.upload({
+        console.info(file);
+       /* Upload.upload({
           url: constant.UPLOAD_URL, //webAPI exposed to upload the file
           data:{file:file} //pass file as data throw ng-model
         }).then(function (resp) {
@@ -32,7 +49,7 @@
           var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
           console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
           $scope.progress = 'progress: ' + progressPercentage + '% '; // capture upload progress
-        });
+        });*/
       };
      
     }]);

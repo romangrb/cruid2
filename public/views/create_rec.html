@@ -1,14 +1,48 @@
 <form name="upload_form">
-	{{tagline}}
- <input 
-    type="file" 
-    ngf-select 
-    ng-model="file" 
-    name="file" 
-    ngf-pattern="'image/*'"
-    accept="image/*" 
-    ngf-max-size="20MB" 
-  />
+    <div class="file-field input-field">
+      <div class="btn">
+        <span>files</span>
+        <input
+          type="file" 
+          ngf-select 
+          ng-model="files" 
+          name="file" 
+          ngf-pattern="'image/*'"
+          accept="image/*" 
+          ngf-max-size="20MB" 
+          multiple
+          ng-change="showFiles(this.files)"
+        >
+      </div>
+      <div class="file-path-wrapper">
+        <input class="file-path validate"
+          type="text" 
+          placeholder="Upload one or more files"
+        >
+      </div>
+    </div>
+  </form>
+  <ul class="collection">
+    <li class="collection-item" 
+      ng-repeat="(key, value) in file_collection track by $index"
+    >
+    {{value.name}} 
+    </li>
+  </ul>
+
+
+
+<!--<form name="upload_form">
+  <div class="file-field input-field">
+   <input 
+      type="file" 
+      ngf-select 
+      ng-model="file" 
+      name="file" 
+      ngf-pattern="'image/*'"
+      accept="image/*" 
+      ngf-max-size="20MB" 
+    />
   
   <img style="width:100px;" ng-show="!!file" ngf-thumbnail="file"/>
   <i ng-show="upload_form.file.$error.required">*required</i><br>
@@ -17,4 +51,4 @@
   <button type="submit" ng-click="submit()">submit</button>
   <p>{{progress}}</p>
 
-</form>
+</form>-->
