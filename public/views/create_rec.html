@@ -26,7 +26,9 @@
     <li class="collection-item" 
       ng-repeat="(key, value) in file_collection track by $index"
     >
-    {{value.name | toShortNameImg}} 
+    {{value.name | toShortNameImg}}</br>
+    <a ng-click='close(this.key, this.value)' ng-if="file_collection.key==null"  class="waves-effect waves-light red btn"><i class="material-icons left">close</i>close</a>
+    <a ng-click='upload(this.value)' class="waves-effect waves-light btn"><i class="material-icons left">start</i>start</a>
     </li>
   </ul>
 

@@ -29,11 +29,18 @@
         return dataHash;
       }
       
+      $scope.close = function(id, data){
+       // $scope.isClosed = true;
+        console.info(id, data ,'close');
+      };
       
+      $scope.upload = function(data){
+        //console.info(data, 'upload');
+      };
       
-      $scope.upload = function (file) {
+      /*$scope.upload = function (file) {
         console.info(file);
-       /* Upload.upload({
+        Upload.upload({
           url: constant.UPLOAD_URL, //webAPI exposed to upload the file
           data:{file:file} //pass file as data throw ng-model
         }).then(function (resp) {
@@ -49,8 +56,8 @@
           var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
           console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
           $scope.progress = 'progress: ' + progressPercentage + '% '; // capture upload progress
-        });*/
-      };
+        });
+      };*/
      
     }]);
 
