@@ -1,10 +1,9 @@
-<form name="upload_form">
+<!--<form name="upload_form">
     <div class="file-field input-field">
       <div class="btn">
         <span>files</span>
         <input
           type="file" 
-          ngf-select 
           ng-model="files" 
           name="file" 
           ngf-pattern="'image/*'"
@@ -12,6 +11,7 @@
           ngf-max-size="20MB" 
           multiple
           ng-change="showFiles(this.files)"
+          ngf-select
         >
       </div>
       <div class="file-path-wrapper">
@@ -27,30 +27,30 @@
       ng-repeat="(key, value) in file_collection track by $index"
     >
     {{value.name | toShortNameImg}}</br>
-    <a ng-click='close(this.key, this.value)' ng-if="file_collection.key==null"  class="waves-effect waves-light red btn"><i class="material-icons left">close</i>close</a>
+    <a ng-click='close(this.key, this.value)' ng-if=""  class="waves-effect waves-light red btn"><i class="material-icons left">close</i>close</a>
     <a ng-click='upload(this.value)' class="waves-effect waves-light btn"><i class="material-icons left">start</i>start</a>
     </li>
-  </ul>
+  </ul>-->
 
 
 
-<!--<form name="upload_form">
-  <div class="file-field input-field">
-   <input 
-      type="file" 
-      ngf-select 
-      ng-model="file" 
-      name="file" 
-      ngf-pattern="'image/*'"
-      accept="image/*" 
-      ngf-max-size="20MB" 
-    />
-  
-  <img style="width:100px;" ng-show="!!file" ngf-thumbnail="file"/>
-  <i ng-show="upload_form.file.$error.required">*required</i><br>
-  <i ng-show="upload_form.file.$error.maxSize">File too large 
+<form name="upload_form">
+  <input 
+        type="file" 
+        ngf-select 
+        ng-model="file" 
+        name="file" 
+        ngf-pattern="'image/*'"
+        accept="image/*" 
+        ngf-max-size="20MB" 
+        />
+    <img style="width:100px;" ng-show="!!file" ngf-thumbnail="file"/>
+    <i ng-show="upload_form.file.$error.required">*required</i><br>
+    <i ng-show="upload_form.file.$error.maxSize">File too large 
+  {{up.file.size / 1000000|number:1}}MB: max 20M</i>
   {{file.size / 1000000|number:1}}MB: max 20M</i>
-  <button type="submit" ng-click="submit()">submit</button>
-  <p>{{progress}}</p>
+    <button type="submit" ng-click="submit()">submit</button>
+    <p>{{progress}}</p>
 
-</form>-->
+</form>
+

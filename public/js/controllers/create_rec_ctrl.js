@@ -12,7 +12,7 @@
             $scope.upload($scope.file);
         }
       };
-      
+      /*
       $scope.showFiles = function(data){
         $scope.file_collection = createImgCollection(data);
       };
@@ -36,9 +36,9 @@
       
       $scope.upload = function(data){
         //console.info(data, 'upload');
-      };
+      };*/
       
-      /*$scope.upload = function (file) {
+      $scope.upload = function (file) {
         console.info(file);
         Upload.upload({
           url: constant.UPLOAD_URL, //webAPI exposed to upload the file
@@ -57,7 +57,7 @@
           console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
           $scope.progress = 'progress: ' + progressPercentage + '% '; // capture upload progress
         });
-      };*/
+      };
      
     }]);
 
