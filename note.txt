@@ -9,3 +9,7 @@ hadouke:~/workspace (main_page) $
 
 git reflog
 git reset --hard
+
+
+resunable info
+https://github.com/23/resumable.js/tree/master/samples/Node.js

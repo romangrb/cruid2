@@ -7,10 +7,15 @@ var router = express.Router();
 
 // frontend routes =========================================================
 // route to handle all angular requests
-/* GET home page. */
+// GET home page.
 router.get('/', function(req, res, next) {
-  /*res.render('index', { title: 'Express' });*/
+  //res.render('index', { title: 'Express' });
   res.sendfile('./public/index.html');
+});
+
+// GET New Blob page.
+router.get('/new', function(req, res) {
+    res.render('blobs/new', { title: 'Add New Blob' });
 });
 
 module.exports = router;

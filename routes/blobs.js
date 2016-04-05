@@ -75,21 +75,7 @@ router.route('/')
         }
       });
     });
-/* GET New Blob page. */
-router.get('/new', function(req, res) {
-    res.render('blobs/new', { title: 'Add New Blob' });
-});
-/* TEST */
-router.get('/index', function(req, res) {
-    res.render('./public/index.html', { title: 'INDEX PAGE' });
-});
 
-/*MyModel.find( { createdOn: { $lte: request.createdOnBefore } } )
-.limit( 10 )
-.sort( '-createdOn' )
-MyModel.find(query, fields, { skip: 10, limit: 5 }, function(err, results) { ... });
-
-*/
 // https://cruid2-romangrb-1.c9users.io/blobs/docs?skip=1&lim=0
 function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
