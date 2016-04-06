@@ -1,5 +1,19 @@
 <form name="upload_form">
-    <div class="file-field input-field">
+  <div class="file-field input-field">
+    Drop File:
+    <div 
+      ngf-drop ngf-select ng-model="files" 
+      class="drop-box" 
+      ngf-drag-over-class="'dragover'" 
+      ngf-multiple="true" ngf-allow-dir="true"
+      accept="image/*,application/pdf"
+      ng-change="showFiles(this.files)"
+      ngf-pattern="'image/*'">images here or click to upload
+    </div>
+    
+    <div ngf-no-file-drop>File Drag/Drop is not supported for this browser</div>
+    
+      <!--
       <div class="btn">
         <span>files</span>
         <input
@@ -14,21 +28,23 @@
           ngf-select
         >
       </div>
-      <div class="file-path-wrapper">
+      
+        <div class="file-path-wrapper">
         <input class="file-path validate"
           type="text" 
           placeholder="Upload one or more files"
         >
       </div>
-    </div>
-    <div class="btn" ng-click="uploadAll(this.files)">upload All</div>
+      -->
+  </div>
+    <div ng-if="this.files" class="btn" ng-click="uploadAll(this.files)">upload All</div>
   </form>
   <ul class="collection">
     <li class="collection-item" 
       ng-repeat="(key, value) in file_collection track by $index"
     >
     {{value.name | toShortNameImg}}</br>
-    <a ng-click='close(this.key, this.value)' ng-if=""  class="waves-effect waves-light red btn">
+    <a ng-click='close(this.key, this.value)' class="waves-effect waves-light red btn">
       <i class="material-icons left">close</i>close
     </a>
     <a ng-click='upload(this.key, this.value)' class="waves-effect waves-light btn">upload</a>

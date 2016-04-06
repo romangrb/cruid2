@@ -84,6 +84,5 @@
 // https://pixabay.com/
 // http://jsfiddle.net/3t50b3fw/  drag&drop example
 // https://cnpmjs.org/package/angular-file-upload-shim
-
 // https://github.com/danialfarid/ng-file-upload
  
