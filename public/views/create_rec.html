@@ -12,6 +12,7 @@
     </div>
     <div ngf-no-file-drop ng-if='isDroppable=false'></div>
     
+    <div ng-if="this.files" class="btn" ng-click="uploadAll(this.files)">upload All</div>
   </div>  
   
   <div ng-if='!isDroppable'>
@@ -32,7 +33,6 @@
    <div ng-if="this.files" class="btn" ng-click="uploadAll(this.files)">upload All</div>
    
 </div>
-  
 
 </form>
 
