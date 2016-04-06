@@ -56,9 +56,6 @@
     
     req.on('end', function() {
       console.log("end");
-      // empty 200 OK response for now
-      //res.writeHead(200, "OK", {'Content-Type': 'text/html'});
-      //res.end();
     });
     
     upload(req, res, function(err){
