@@ -30,8 +30,8 @@
     <a ng-click='close(this.key, this.value)' ng-if=""  class="waves-effect waves-light red btn"><i class="material-icons left">close</i>close</a>
     <a ng-click='upload(this.value)' class="waves-effect waves-light btn"><i class="material-icons left">start</i>start</a>
     </li>
-  </ul>-->
-
+  </ul>
+-->
 
 
 <form name="upload_form">
@@ -51,6 +51,6 @@
   {{file.size / 1000000|number:1}}MB: max 20M</i>
   <button type="submit" ng-click="submit()">submit</button>
   <p>{{progress}}</p>
-  <button type="button" ng-click="cancel()">CANCEL</button>
+  <button type="button" ng-click="abort()">CANCEL</button>
 
 </form>

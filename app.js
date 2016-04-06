@@ -54,11 +54,6 @@
   /** API path that will upload the files */
   app.post('/upload', function(req, res, next){
     
-    req.on('data', function(chunk) {
-      console.log("Received body data:",chunk.length);
-      //console.log(chunk.toString());
-    });
-    
     req.on('end', function() {
       console.log("end");
       // empty 200 OK response for now
