@@ -10,7 +10,7 @@
       var upload; 
       
       $scope.upload = function(key, data){
-        
+
         if (data == null) return;
            
         upload = Upload.upload({
@@ -76,6 +76,8 @@
         return dataHash;
       }
       
+      // for directive eather drag is supported or not
+      $scope.isDroppable = true;
      
     }]);
 

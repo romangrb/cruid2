@@ -29,7 +29,7 @@
   padding:0;
   border:none
 }
-
+/* FOR CREATE PAGE*/
 .button {
   -moz-appearance: button;
   /* Firefox */
@@ -50,4 +50,11 @@
 }
 .dragover {
   border: 5px dashed blue;
+}
+.thumb {
+    width: 24px;
+    height: 24px;
+    float: none;
+    position: relative;
+    top: 7px;
 }
