@@ -1,27 +1,26 @@
-  var express = require('express'),
-    router = express.Router(),
-    path = require('path'),
-    logger = require('morgan'),
-    cookieParser = require('cookie-parser'),
-    bodyParser = require('body-parser'),
-    multer = require('multer');
-  
-  router.use(function(req, res, next) { //allow cross origin requests
-    res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
-    res.header("Access-Control-Allow-Origin", "https://cruid2-romangrb.c9users.io/upload");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  });
-  
-  router.use(logger('dev'));
-  router.use(bodyParser.json());
-  router.use(bodyParser.urlencoded({ extended: false }));
-  router.use(cookieParser());
-  router.use(express.static(path.join(__dirname, 'public')));
-  
-  // Serving from the same express Server no CORS required
+var express = require('express');
+var path = require('path');
+var logger = require('morgan');
+var cookieParser = require('cooie-parser');
+var bodyParser = require('body-parser');
+var multer = require('multer');
+
+var router = express();
+
+router.use(function(req, res, next) { //allow cross origin requests
+  res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
+  res.header("Access-Control-Allow-Origin", "https://cruid2-romangrb.c9users.io/upload");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+router.use(logger('dev'));
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({ extended: false }));
+router.use(cookieParser());
+router.use(express.static(path.join(__dirname, 'public')));
+
   router.use(express.static('./'));
-  // multers disk storage settings
   
   var storage = multer.diskStorage({ 
     destination: function (req, file, cb) {
@@ -29,9 +28,10 @@
     },
     filename: function (req, file, cb) {
         var datetimestamp = Date.now();
-        cb(null, file.fieldname + '-' + datetimestamp + '.' + 
-        file.originalname.split('.')[file.originalname.split('.').length -1]);
+        
+        cb(null, datetimestamp);
     }
+    
   });
   
   var upload = multer({
@@ -40,6 +40,10 @@
 
   /** API path that will upload the files */
   router.post('/upload', function(req, res, next){
+    
+    req.on('err', function() {
+      console.log("end");
+    });
     
     upload(req, res, function(err){
       if(err){
@@ -51,5 +55,3 @@
     
   });
 
-
-module.exports = router;
