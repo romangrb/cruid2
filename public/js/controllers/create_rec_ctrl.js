@@ -32,8 +32,8 @@
           console.info('Success response  : ' + resp.config.data.file.name):
           console.error('an error occured');
         }, function (resp) {
-          console.warn('Error status: ' + resp.status);
           console.error('Error status: ' + resp.status);
+          
         }, function (evt) { 
           var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
           
