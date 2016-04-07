@@ -1,11 +1,10 @@
 var express = require('express');
 var path = require('path');
 var logger = require('morgan');
-var cookieParser = require('cooie-parser');
+var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var multer = require('multer');
-
-var router = express();
+var router = express.Router();
 
 router.use(function(req, res, next) { //allow cross origin requests
   res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
@@ -14,13 +13,14 @@ router.use(function(req, res, next) { //allow cross origin requests
   next();
 });
 
-router.use(logger('dev'));
+
+/*router.use(logger('dev'));
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: false }));
-router.use(cookieParser());
-router.use(express.static(path.join(__dirname, 'public')));
+router.use(cookieParser());*/
+//router.use(express.static(path.join(__dirname, 'public')));
 
-  router.use(express.static('./'));
+router.use(express.static('./'));
   
   var storage = multer.diskStorage({ 
     destination: function (req, file, cb) {
@@ -28,7 +28,6 @@ router.use(express.static(path.join(__dirname, 'public')));
     },
     filename: function (req, file, cb) {
         var datetimestamp = Date.now();
-        
         cb(null, datetimestamp);
     }
     
@@ -38,13 +37,9 @@ router.use(express.static(path.join(__dirname, 'public')));
     storage: storage
   }).single('file');
 
-  /** API path that will upload the files */
-  router.post('/upload', function(req, res, next){
-    
-    req.on('err', function() {
-      console.log("end");
-    });
-    
+  //  API path that will upload the files 
+  router.post('/', function(req, res, next){
+   
     upload(req, res, function(err){
       if(err){
         res.json({error_code:1, err_desc:err});
@@ -54,4 +49,20 @@ router.use(express.static(path.join(__dirname, 'public')));
     });
     
   });
+
+
+router.route('/')
+  
+  .get(function(req, res, next) {
+    res.send("SX");
+   
+  });
+
+module.exports = router;
+console.log("MODULE");
+
+
+
+
+
 
