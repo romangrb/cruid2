@@ -1,4 +1,4 @@
-(function(){
+(function(angular){
   
   "use strict";
   
@@ -51,7 +51,7 @@
      
     }]);
 
-})();
+})(angular);
 
 // https://pixabay.com/
 // http://jsfiddle.net/3t50b3fw/  drag&drop example

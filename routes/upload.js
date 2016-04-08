@@ -3,7 +3,9 @@
   var router = express.Router();
   var fs = require('fs');
   var multiparty = require('multiparty');
-
+  var form = new multiparty.Form();
+  var up_config = require('../model/upload_mode_constant');
+  
   // enable CORS
   router.use(function(req, res, next) { //allow cross origin requests
     res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
@@ -16,21 +18,15 @@
   
   router.post('/', function(req, res, next) {
     
-    if (req.url!='/') next();
-    
-    var form = new multiparty.Form();
+    if (req.url!=='/') next();
     
     var uploadFile = {uploadPath: '', type: '', size: 0};
-    
-    var maxSize = 30 * 1024 * 1024; // MB
-    
-    var supportMimeTypes = ['image/jpg', 'image/jpeg', 'image/png'];
     
     var errors = [];
 
     form.on('error', function(){
      
-      if(fs.existsSync(uploadFile.path)) {
+      if (fs.existsSync(uploadFile.path)) {
           fs.unlinkSync(uploadFile.path);
       }
       
@@ -38,11 +34,11 @@
     
     form.on('close', function() {
         
-      if(errors.length == 0) {
-        res.send({status: 201, text: 'created'});
+      if (errors.length == up_config.NO_ERR_LN) {
+        res.send(up_config.CREATE_MSG);
       } else {
         
-        if(fs.existsSync(uploadFile.path)) {
+        if (fs.existsSync(uploadFile.path)) {
            fs.unlinkSync(uploadFile.path);
         }
         
@@ -55,22 +51,22 @@
     form.on('part', function(part) {
         
       part.on('error', function(){
-        res.send(400, 'Error of reciving');
+        res.send(406 , up_config.NOT_ACCEPTABLE_MSG);
       });
       
       uploadFile.size = part.byteCount;
       uploadFile.type = part.headers['content-type'];
       uploadFile.path = './uploads/' + new Date().getTime() + part.filename;
       
-      if(uploadFile.size > maxSize) {
-          errors.push('File size is ' + uploadFile.size + '. Limit is' + (maxSize / 1024 / 1024) + 'MB.');
+      if (uploadFile.size > up_config.MAX_SIZE) {
+          errors.push(up_config.LIM_SIZE_ERR);
       }
       
-      if(supportMimeTypes.indexOf(uploadFile.type) == -1) {
-          errors.push('Unsupported mimetype ' + uploadFile.type);
+      if (up_config.SUPPORT_MIME_TYPES.indexOf(uploadFile.type) == -1) {
+          errors.push(up_config.MIME_TYPE_ERR + uploadFile.type);
       }
 
-      if(errors.length == 0) {
+      if (errors.length == up_config.NO_ERR_LN) {
         
         var out = fs.createWriteStream(uploadFile.path);
           part.pipe(out);
@@ -88,7 +84,7 @@
   });
  
   router.use(function(req, res){
-    res.send(404, 'Page not found');
+    res.send(404, up_config.PAGE_NOT_FOUND_MSG);
   });
   
   module.exports = router;
