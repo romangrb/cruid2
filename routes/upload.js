@@ -22,72 +22,64 @@
     
     var uploadFile = {uploadPath: '', type: '', size: 0};
     
-    var maxSize = 2 * 1024 * 1024; // MB
+    var maxSize = 30 * 1024 * 1024; // MB
     
     var supportMimeTypes = ['image/jpg', 'image/jpeg', 'image/png'];
     
     var errors = [];
 
-    form.on('error', function(err){
+    form.on('error', function(){
+     
+      if(fs.existsSync(uploadFile.path)) {
+          fs.unlinkSync(uploadFile.path);
+      }
       
-        if(fs.existsSync(uploadFile.path)) {
-            fs.unlinkSync(uploadFile.path);
-            console.log('error in form');
-        }
-        
-    });
-    
-    form.on('aborted', function() {
-      console.log('abort error');
     });
     
     form.on('close', function() {
         
-        if(errors.length == 0) {
-            res.send({status: 'ok', text: 'Success'});
-        } else {
-          
-          if(fs.existsSync(uploadFile.path)) {
-              fs.unlinkSync(uploadFile.path);
-          }
-          
-        res.send({status: 'bad', errors: errors});
+      if(errors.length == 0) {
+        res.send({status: 201, text: 'created'});
+      } else {
         
+        if(fs.existsSync(uploadFile.path)) {
+           fs.unlinkSync(uploadFile.path);
         }
+        
+      res.send({status: '5XX', text: errors});
+      
+      }
+      
     });
     
     form.on('part', function(part) {
         
-        part.on('end', function() {
-          
-        // res.send(201, 'Created');
-         console.log("file :", part.filename ,"uploaded");
-        });
-        
-        part.on('error', function(){
-          res.send(400, 'Error of reciving');
-        });
-        
-        uploadFile.size = part.byteCount;
-        uploadFile.type = part.headers['content-type'];
-        uploadFile.path = './uploads/' + new Date().getTime() + part.filename;
-        
-        if(uploadFile.size > maxSize) {
-            errors.push('File size is ' + uploadFile.size + '. Limit is' + (maxSize / 1024 / 1024) + 'MB.');
-        }
-        
-        if(supportMimeTypes.indexOf(uploadFile.type) == -1) {
-            errors.push('Unsupported mimetype ' + uploadFile.type);
-        }
+      part.on('error', function(){
+        res.send(400, 'Error of reciving');
+      });
+      
+      uploadFile.size = part.byteCount;
+      uploadFile.type = part.headers['content-type'];
+      uploadFile.path = './uploads/' + new Date().getTime() + part.filename;
+      
+      if(uploadFile.size > maxSize) {
+          errors.push('File size is ' + uploadFile.size + '. Limit is' + (maxSize / 1024 / 1024) + 'MB.');
+      }
+      
+      if(supportMimeTypes.indexOf(uploadFile.type) == -1) {
+          errors.push('Unsupported mimetype ' + uploadFile.type);
+      }
 
-        if(errors.length == 0) {
-            var out = fs.createWriteStream(uploadFile.path);
-            part.pipe(out);
-        } else {
+      if(errors.length == 0) {
+        
+        var out = fs.createWriteStream(uploadFile.path);
+          part.pipe(out);
           
-            part.resume();
-            
-        }
+      } else {
+        
+          part.resume();
+          
+      }
         
     });
     

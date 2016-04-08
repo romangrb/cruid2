@@ -28,17 +28,23 @@
       $scope.upload = function () {
         
         upload.then(function (resp) {
-          (resp.data.error_code === 0)?
-          console.info('Success response  : ' + resp.config.data.file.name):
-          console.error('an error occured');
+          if(resp.data.error_code === 0){
+            console.info('upload response  : ' + resp.config.data.file.name);
+          } else if (resp.data.status>=200&&resp.data.status<300){
+            console.info('file : ', resp.config.data.file.name, 'is uploaded'); 
+            } else {
+              console.error('Error : ', resp.data);
+            }
         }, function (resp) {
-          console.error('Error status: ' + resp.status);
+           console.info('file : ', resp.config.data.file.name, 
+           'aborted', '\n'+ 'status code', resp.status);
           
         }, function (evt) { 
-          var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
           
-          console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
-          $scope.progress = 'progress: ' + progressPercentage + '% '; // capture upload progress
+          var progress = parseInt(100.0 * evt.loaded / evt.total);
+          
+          console.log(progress + '% ' + evt.config.data.file.name);
+          $scope.progress = 'progress: ' + progress + '% ';
         });
       
       };

@@ -280,3 +280,5 @@ router.route('/:id/edit')
 	});
 
 module.exports = router;
+
+console.log("MONGOOSE MODULE IS LOADED");
