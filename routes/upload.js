@@ -7,7 +7,7 @@
   var up_config = require('../model/upload_mode_constant');
   
   // enable CORS
-  router.use(function(req, res, next) { //allow cross origin requests
+  router.use(function(req, res, next) {
     res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
     res.header("Access-Control-Allow-Origin", "https://cruid2-romangrb.c9users.io/upload");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
