@@ -20,12 +20,14 @@
     
     if (req.url!=='/') next();
     
+    form.multiples = true;
+    
     var uploadFile = {uploadPath: '', type: '', size: 0};
     
     var errors = [];
 
     form.on('error', function(){
-     
+
       if (fs.existsSync(uploadFile.path)) {
           fs.unlinkSync(uploadFile.path);
       }
@@ -33,11 +35,11 @@
     });
     
     form.on('close', function() {
-        
+    
       if (errors.length == up_config.NO_ERR_LN) {
         res.send(up_config.CREATE_MSG);
       } else {
-        
+       
         if (fs.existsSync(uploadFile.path)) {
            fs.unlinkSync(uploadFile.path);
         }
@@ -49,7 +51,7 @@
     });
     
     form.on('part', function(part) {
-        
+      
       part.on('error', function(){
         res.send(406 , up_config.NOT_ACCEPTABLE_MSG);
       });
@@ -67,12 +69,12 @@
       }
 
       if (errors.length == up_config.NO_ERR_LN) {
-        
+
         var out = fs.createWriteStream(uploadFile.path);
           part.pipe(out);
           
       } else {
-        
+     
           part.resume();
           
       }
