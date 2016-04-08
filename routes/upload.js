@@ -42,25 +42,30 @@ router.post('/', function(req, res, next) {
         if(errors.length == 0) {
             //сообщаем что все хорошо
             res.send({status: 'ok', text: 'Success'});
+        } else {
+        if(fs.existsSync(uploadFile.path)) {
+            //если загружаемый файл существует удаляем его
+            fs.unlinkSync(uploadFile.path);
         }
-        else {
-            if(fs.existsSync(uploadFile.path)) {
-                //если загружаемый файл существует удаляем его
-                fs.unlinkSync(uploadFile.path);
-            }
-            //сообщаем что все плохо и какие произошли ошибки
-            res.send({status: 'bad', errors: errors});
+        //сообщаем что все плохо и какие произошли ошибки
+        res.send({status: 'bad', errors: errors});
         }
     });
 
+    
     // при поступление файла
     form.on('part', function(part) {
-        //читаем его размер в байтах
+      
+        part.on('error', function(){
+          
+          res.on('error', function(){});
+          res.send(400, 'Error of reciving');
+          
+        });
+        
         uploadFile.size = part.byteCount;
-        //читаем его тип
         uploadFile.type = part.headers['content-type'];
-        //путь для сохранения файла
-        uploadFile.path = './uploads/' + part.filename;
+        uploadFile.path = './uploads/' + new Date().getTime() + part.filename;
         
         if(uploadFile.size > maxSize) {
             errors.push('File size is ' + uploadFile.size + '. Limit is' + (maxSize / 1024 / 1024) + 'MB.');
@@ -69,16 +74,19 @@ router.post('/', function(req, res, next) {
         if(supportMimeTypes.indexOf(uploadFile.type) == -1) {
             errors.push('Unsupported mimetype ' + uploadFile.type);
         }
-
+        
+        
+        
         if(errors.length == 0) {
             var out = fs.createWriteStream(uploadFile.path);
             part.pipe(out);
-        }
-        else {
+        } else {
             //пропускаем
-            //вообще здесь нужно как-то остановить загрузку и перейти к onclose
+            //вообще здесь нужно как-то остановить загрузку и перейти к onclose !!!!
             part.resume();
+            
         }
+        
     });
 
     // парсим форму
