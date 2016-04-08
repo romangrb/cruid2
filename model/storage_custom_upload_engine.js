@@ -4,11 +4,11 @@ function getDestination (req, file, cb) {
   cb(null, './uploads');
 }
 
-function StorageCustomUpload (opts) {
+function myCustomStorage (opts) {
   opts.getDestination = (opts.destination || getDestination);
 }
 
-StorageCustomUpload.prototype._handleFile = function _handleFile (req, file, cb) {
+myCustomStorage.prototype._handleFile = function _handleFile (req, file, cb) {
   
   this.getDestination(req, file, function (err, path) {
     if (err) return cb(err);
@@ -26,12 +26,12 @@ StorageCustomUpload.prototype._handleFile = function _handleFile (req, file, cb)
   });
 };
 
-StorageCustomUpload.prototype._removeFile = function _removeFile (req, file, cb) {
+myCustomStorage.prototype._removeFile = function _removeFile (req, file, cb) {
   
   fs.unlink(file.path, cb);
 };
 
 module.exports = function (opts) {
   
-  return new StorageCustomUpload(opts);
+  return new myCustomStorage(opts);
 };

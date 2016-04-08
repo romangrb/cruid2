@@ -3,7 +3,7 @@
   var multer = require('multer');
   var crypto = require('crypto');
   var path = require("path");
-  //var storageCustomUpload = require('../model/storage_custom_upload_engine')('./uploads');
+  var myCustomStorage = require('../model/storage_custom_upload_engine');
   var router = express.Router();
   var fs = require('fs');
   
@@ -17,7 +17,7 @@
 
   router.use(bodyParser.json());  
   
-  var storage = multer.diskStorage({
+  /*var storage = multer.diskStorage({
     
     destination: function (req, file, cb) {
       
@@ -30,7 +30,7 @@
       
       if (err) return cb(err);
 
-      cb(null, raw.toString('hex') + path.extname(file.originalname));
+        cb(null, raw.toString('hex') + path.extname(file.originalname));
       
       });
       
@@ -38,22 +38,37 @@
     
   });
   
-  var upload = multer({storage:storage}).array('file' ,4);
+  var upload = multer({storage:storage}).array('file' ,4);*/
  
-  router.post('/', function(req,res){
-    
-    upload(req, res, function(err) {
-      
+  var storage = myCustomStorage({
+    destination: function (req, file, cb) {
+      cb(null, '../uploads');
+    }
+  });
+  
+  var upload = multer({storage:storage}).array('file', 4);
+  
+  router.post('/',  function(req, res, next){
+   
+  if (req.url!='/') next();
+  
+  
+    /*upload(req, res, function(err) {
+      console.log(req);
       if(err) {
         res.json({error_code:1, err_desc:err});
         return;
       }
       res.json({error_code:0, err_desc:null});
       
-      });
+      });*/
       
   });
 
+  router.use(function(req, res){
+    res.send(404, 'Page not found');
+  });
+  
   module.exports = router;
   
   console.log("UPLOAD MODULE IS LOADED");
