@@ -3,9 +3,7 @@
   var multer = require('multer');
   var crypto = require('crypto');
   var path = require("path");
-  var myCustomStorage = require('../model/storage_custom_upload_engine');
   var router = express.Router();
-  var fs = require('fs');
   
   // enable CORS
   router.use(function(req, res, next) { //allow cross origin requests
@@ -17,7 +15,7 @@
 
   router.use(bodyParser.json());  
   
-  /*var storage = multer.diskStorage({
+  var storage = multer.diskStorage({
     
     destination: function (req, file, cb) {
       
@@ -38,33 +36,24 @@
     
   });
   
-  var upload = multer({storage:storage}).array('file' ,4);*/
+  var upload = multer({storage:storage}).array('file' ,4);
  
-  var storage = myCustomStorage({
-    destination: function (req, file, cb) {
-      cb(null, '../uploads');
-    }
-  });
-  
-  var upload = multer({storage:storage}).array('file', 4);
-  
-  router.post('/',  function(req, res, next){
+  router.post('/', function(req, res, next){
    
-  if (req.url!='/') next();
-  
-  
-    /*upload(req, res, function(err) {
-      console.log(req);
+   if (req.url!='/') next();
+   
+    upload(req, res, function(err) {
+      
       if(err) {
         res.json({error_code:1, err_desc:err});
         return;
       }
       res.json({error_code:0, err_desc:null});
       
-      });*/
+      });
       
   });
-
+ 
   router.use(function(req, res){
     res.send(404, 'Page not found');
   });
