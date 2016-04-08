@@ -14,8 +14,7 @@
 
   router.use(bodyParser.json());  
   
-//здесь происходит сама загрузка
-router.post('/', function(req, res, next) {
+  router.post('/', function(req, res, next) {
     
     if (req.url!='/') next();
     
@@ -23,44 +22,46 @@ router.post('/', function(req, res, next) {
     
     var uploadFile = {uploadPath: '', type: '', size: 0};
     
-    var maxSize = 20 * 1024 * 1024; //2MB
+    var maxSize = 2 * 1024 * 1024; // MB
     
     var supportMimeTypes = ['image/jpg', 'image/jpeg', 'image/png'];
     
     var errors = [];
 
     form.on('error', function(err){
+      
         if(fs.existsSync(uploadFile.path)) {
-            //если загружаемый файл существует удаляем его
             fs.unlinkSync(uploadFile.path);
-            console.log('error');
+            console.log('error in form');
         }
+        
     });
-
+    
+    form.on('aborted', function() {
+      console.log('abort error');
+    });
+    
     form.on('close', function() {
-        //если нет ошибок и все хорошо
+        
         if(errors.length == 0) {
-            //сообщаем что все хорошо
             res.send({status: 'ok', text: 'Success'});
         } else {
-        if(fs.existsSync(uploadFile.path)) {
-            //если загружаемый файл существует удаляем его
-            fs.unlinkSync(uploadFile.path);
-        }
-        //сообщаем что все плохо и какие произошли ошибки
+          
+          if(fs.existsSync(uploadFile.path)) {
+              fs.unlinkSync(uploadFile.path);
+          }
+          
         res.send({status: 'bad', errors: errors});
+        
         }
     });
-
     
-    // при поступление файла
     form.on('part', function(part) {
-      
+        
         part.on('error', function(){
           
-          res.on('error', function(){});
           res.send(400, 'Error of reciving');
-          
+         
         });
         
         uploadFile.size = part.byteCount;
@@ -70,27 +71,28 @@ router.post('/', function(req, res, next) {
         if(uploadFile.size > maxSize) {
             errors.push('File size is ' + uploadFile.size + '. Limit is' + (maxSize / 1024 / 1024) + 'MB.');
         }
-
+        
         if(supportMimeTypes.indexOf(uploadFile.type) == -1) {
             errors.push('Unsupported mimetype ' + uploadFile.type);
         }
-        
-        
-        
+
         if(errors.length == 0) {
             var out = fs.createWriteStream(uploadFile.path);
             part.pipe(out);
         } else {
-            //пропускаем
-            //вообще здесь нужно как-то остановить загрузку и перейти к onclose !!!!
+          
             part.resume();
             
         }
         
     });
-
-    // парсим форму
+    
+    form.on('end', function() {
+      console.log('done');
+    });
+    
     form.parse(req);
+    
 });
  
   router.use(function(req, res){
