@@ -1,4 +1,4 @@
-<form name="upload_form">
+<!--<form name="upload_form">
   <input 
       type="file" 
       ngf-select 
@@ -17,4 +17,54 @@
   <p>{{progress}}</p>
   <button type="button" ng-click="abort()">CANCEL</button>
 
+</form>-->
+
+<form name="upload_form">
+  <div class="file-field input-field" ng-if='isDroppable'>
+    Drop File:
+    <div
+      ngf-drop ngf-select ng-model="files" 
+      class="drop-box" 
+      ngf-drag-over-class="'dragover'" 
+      ngf-multiple="true" ngf-allow-dir="true"
+      accept="image/*"
+      ng-change="showFiles(this.files)"
+      ngf-pattern="'image/*'">images here or click to upload
+    </div>
+    <div ngf-no-file-drop ng-if='isDroppable=false'></div>
+    
+    <div ng-if="this.files" class="btn" ng-click="uploadAll(this.files)">upload All</div>
+  </div>  
+  
+  <div ng-if='!isDroppable'>
+    <div class="btn">
+      <span>files</span>
+      <input
+        type="file" 
+        ng-model="files" 
+        name="file" 
+        ngf-pattern="'image/*'"
+        accept="image/*" 
+        ngf-max-size="20MB" 
+        multiple
+        ng-change="showFiles(this.files)"
+        ngf-select
+      >
+    </div>
+   <div ng-if="this.files" class="btn" ng-click="uploadAll(this.files)">upload All</div>
+   
+</div>
+
 </form>
+
+<ul class="collection">
+  <li class="collection-item" 
+    ng-repeat="(key, value) in file_collection track by $index"
+  >
+  {{value.name | toShortNameImg}}</br>
+ 
+  <img ngf-thumbnail="value" class="thumb"> 
+      
+  <a ng-click='upload(this.key, this.value)' class="waves-effect waves-light btn">upload</a>
+  </li>
+</ul>

@@ -7,7 +7,9 @@
       .controller('createRecCtrl', ['$scope', 'RestService', 'Upload', 'constant', function ($scope, RestService, Upload, constant) {
       
       // init upload service
-      var upload; 
+      var upload;
+      
+      $scope.isDroppable = true;
       
       $scope.submit = function(){
         if (!$scope.upload_form.file.$valid && !$scope.file) return;
