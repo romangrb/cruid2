@@ -58,10 +58,14 @@
     
     form.on('part', function(part) {
         
-        part.on('error', function(){
+        part.on('end', function() {
           
+        // res.send(201, 'Created');
+         console.log("file :", part.filename ,"uploaded");
+        });
+        
+        part.on('error', function(){
           res.send(400, 'Error of reciving');
-         
         });
         
         uploadFile.size = part.byteCount;
@@ -87,13 +91,9 @@
         
     });
     
-    form.on('end', function() {
-      console.log('done');
-    });
-    
     form.parse(req);
     
-});
+  });
  
   router.use(function(req, res){
     res.send(404, 'Page not found');
