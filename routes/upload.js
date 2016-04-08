@@ -1,10 +1,9 @@
   var express = require('express');
   var bodyParser = require('body-parser');
-  var multer = require('multer');
-  var crypto = require('crypto');
-  var path = require("path");
   var router = express.Router();
-  
+  var fs = require('fs');
+  var multiparty = require('multiparty');
+
   // enable CORS
   router.use(function(req, res, next) { //allow cross origin requests
     res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
@@ -15,44 +14,76 @@
 
   router.use(bodyParser.json());  
   
-  var storage = multer.diskStorage({
+//здесь происходит сама загрузка
+router.post('/', function(req, res, next) {
     
-    destination: function (req, file, cb) {
-      
-      cb(null, './uploads');
-    },
+    if (req.url!='/') next();
     
-    filename: function (req, file, cb) {
-      
-      crypto.pseudoRandomBytes(16, function (err, raw) {
-      
-      if (err) return cb(err);
+    var form = new multiparty.Form();
+    
+    var uploadFile = {uploadPath: '', type: '', size: 0};
+    
+    var maxSize = 20 * 1024 * 1024; //2MB
+    
+    var supportMimeTypes = ['image/jpg', 'image/jpeg', 'image/png'];
+    
+    var errors = [];
 
-        cb(null, raw.toString('hex') + path.extname(file.originalname));
-      
-      });
-      
-    }
-    
-  });
-  
-  var upload = multer({storage:storage}).array('file' ,4);
- 
-  router.post('/', function(req, res, next){
-   
-   if (req.url!='/') next();
-   
-    upload(req, res, function(err) {
-      
-      if(err) {
-        res.json({error_code:1, err_desc:err});
-        return;
-      }
-      res.json({error_code:0, err_desc:null});
-      
-      });
-      
-  });
+    form.on('error', function(err){
+        if(fs.existsSync(uploadFile.path)) {
+            //если загружаемый файл существует удаляем его
+            fs.unlinkSync(uploadFile.path);
+            console.log('error');
+        }
+    });
+
+    form.on('close', function() {
+        //если нет ошибок и все хорошо
+        if(errors.length == 0) {
+            //сообщаем что все хорошо
+            res.send({status: 'ok', text: 'Success'});
+        }
+        else {
+            if(fs.existsSync(uploadFile.path)) {
+                //если загружаемый файл существует удаляем его
+                fs.unlinkSync(uploadFile.path);
+            }
+            //сообщаем что все плохо и какие произошли ошибки
+            res.send({status: 'bad', errors: errors});
+        }
+    });
+
+    // при поступление файла
+    form.on('part', function(part) {
+        //читаем его размер в байтах
+        uploadFile.size = part.byteCount;
+        //читаем его тип
+        uploadFile.type = part.headers['content-type'];
+        //путь для сохранения файла
+        uploadFile.path = './uploads/' + part.filename;
+        
+        if(uploadFile.size > maxSize) {
+            errors.push('File size is ' + uploadFile.size + '. Limit is' + (maxSize / 1024 / 1024) + 'MB.');
+        }
+
+        if(supportMimeTypes.indexOf(uploadFile.type) == -1) {
+            errors.push('Unsupported mimetype ' + uploadFile.type);
+        }
+
+        if(errors.length == 0) {
+            var out = fs.createWriteStream(uploadFile.path);
+            part.pipe(out);
+        }
+        else {
+            //пропускаем
+            //вообще здесь нужно как-то остановить загрузку и перейти к onclose
+            part.resume();
+        }
+    });
+
+    // парсим форму
+    form.parse(req);
+});
  
   router.use(function(req, res){
     res.send(404, 'Page not found');
@@ -61,5 +92,4 @@
   module.exports = router;
   
   console.log("UPLOAD MODULE IS LOADED");
-  // http://stackoverflow.com/questions/32045027/multer-callbacks-not-working
-  // https://www.npmjs.com/package/multer#multer-opts
+  
