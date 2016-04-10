@@ -24,8 +24,8 @@
     
     var errors = [];
 
-    form.on('error', function(){
-
+    form.on('error', function(err){
+      console.log(err, 28);
       if (fs.existsSync(uploadFile.path)) {
           fs.unlinkSync(uploadFile.path);
       }
@@ -76,7 +76,7 @@
           part.resume();
           
       }
-      res.end();  
+      //res.end();  
     });
     
     form.parse(req);
