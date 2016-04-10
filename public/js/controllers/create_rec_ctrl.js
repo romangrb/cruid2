@@ -38,10 +38,12 @@
       
       $scope.cancel = function () {
         if (upload == null) return;
-            upload.abort();
+          upload.abort();
       };
 
       $scope.getRequest = function () {
+        
+        if (upload == null) return;
         
         upload.then(function (resp) {
           
