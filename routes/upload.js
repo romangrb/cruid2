@@ -76,7 +76,7 @@
           part.resume();
           
       }
-        
+      res.end();  
     });
     
     form.parse(req);
