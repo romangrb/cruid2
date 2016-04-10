@@ -19,7 +19,6 @@
         });
         $scope.getRequest();
         
-        
       };
       
       $scope.uploadAll = function(files){

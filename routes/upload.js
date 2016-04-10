@@ -20,8 +20,6 @@
     
     if (req.url!=='/') next();
     
-    form.multiples = true;
-    
     var uploadFile = {uploadPath: '', type: '', size: 0};
     
     var errors = [];
