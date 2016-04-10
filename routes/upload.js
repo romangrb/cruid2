@@ -3,7 +3,6 @@
   var router = express.Router();
   var fs = require('fs');
   var multiparty = require('multiparty');
-  var form = new multiparty.Form();
   var up_config = require('../model/upload_mode_constant');
   
   // enable CORS
@@ -20,12 +19,14 @@
     
     if (req.url!=='/') next();
     
+    var form = new multiparty.Form();
+    
     var uploadFile = {uploadPath: '', type: '', size: 0};
     
     var errors = [];
 
     form.on('error', function(err){
-      console.log(err, 28);
+      // write log err
       if (fs.existsSync(uploadFile.path)) {
           fs.unlinkSync(uploadFile.path);
       }
@@ -47,7 +48,7 @@
       }
       
     });
-    
+
     form.on('part', function(part) {
       
       part.on('error', function(){

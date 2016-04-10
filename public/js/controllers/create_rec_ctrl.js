@@ -36,7 +36,7 @@
         
       };
       
-      $scope.abort = function () {
+      $scope.cancel = function () {
         if (upload == null) return;
             upload.abort();
       };
