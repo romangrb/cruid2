@@ -55,8 +55,10 @@
         }
         
         privAndProtMtd.prototype = CloneObject;
-       
-        return privAndProtMtd;
+        
+          var Clone = new privAndProtMtd();
+        
+        return Clone;
         
       });
       

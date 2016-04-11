@@ -8,8 +8,10 @@
   
       // initiate upload service
       var upload;
+      var o = {'o' : 1};
       
-      console.log(clonDataService);
+      clonDataService.setClone(o);
+      console.log(clonDataService.getAllClon());
       
       
        function clone(obj) {
