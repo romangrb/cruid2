@@ -56,7 +56,7 @@
         
         privAndProtMtd.prototype = CloneObject;
        
-       
+        return privAndProtMtd;
         
       });
       
