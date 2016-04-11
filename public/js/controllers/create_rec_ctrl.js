@@ -4,10 +4,34 @@
   
   angular
     .module('galleryApp')
-      .controller('createRecCtrl', ['$scope', 'RestService', 'Upload', 'constant', function ($scope, RestService, Upload, constant) {
+      .controller('createRecCtrl', ['$scope', 'RestService', 'Upload', 'Clone', 'constant', function ($scope, RestService, Upload, Clone, constant) {
   
       // initiate upload service
-      var upload; 
+      var upload;
+      
+      console.log(Clone);
+      
+      
+       function clone(obj) {
+      if (obj === null || typeof(obj) !== 'object' || 'isActiveClone' in obj)
+        return obj;
+
+      if (obj instanceof Date)
+        var temp = new obj.constructor(); //or new Date(obj);
+      else
+        var temp = obj.constructor();
+
+      for (var key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+          obj['isActiveClone'] = null;
+          temp[key] = clone(obj[key]);
+          delete obj['isActiveClone'];
+        }
+      }
+
+      return temp;
+    }
+      
       
       $scope.upload = function(key, file_data){
 
@@ -17,6 +41,7 @@
           url: constant.UPLOAD_URL,
           data:{file:file_data}
         });
+        
         $scope.getRequest();
         
       };
@@ -36,9 +61,12 @@
         
       };
       
-      $scope.cancel = function () {
-        if (upload == null) return;
-          upload.abort();
+      $scope.cancel = function (key, file_data) {
+        
+        if (file_data == null) return;
+        
+        upload.abort();
+          console.log('\n', upload.abort());
       };
 
       $scope.getRequest = function () {
