@@ -9,7 +9,7 @@
       // initiate upload service
       var upload;
       // e.x upload
-      Clon.setClone(Upload, 'upload');
+      Clon.setClone(Upload.upload, 'upload');
       
       upload = Clon.getClonByName('upload');
 
