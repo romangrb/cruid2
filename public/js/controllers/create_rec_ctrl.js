@@ -4,14 +4,14 @@
   
   angular
     .module('galleryApp')
-      .controller('createRecCtrl', ['$scope', 'RestService', 'Upload', 'clonDataService', 'constant', function ($scope, RestService, Upload, clonDataService, constant) {
+      .controller('createRecCtrl', ['$scope', 'RestService', 'Upload', 'clonDataService', 'constant', function ($scope, RestService, Upload, Clon, constant) {
   
       // initiate upload service
       var upload;
       var o = {'o' : 1};
       
-      clonDataService.setClone(o);
-      console.log(clonDataService.getAllClon());
+      Clon.setClone(o);
+      console.log(Clon.getAllClon());
       
       
        function clone(obj) {

@@ -14,7 +14,7 @@
             
             var tmpName = name || 'name',
               tmpObj = this._getClone(obj);
-            
+                
              this._clonedColl[tmpName] = tmpObj;
           },
           
