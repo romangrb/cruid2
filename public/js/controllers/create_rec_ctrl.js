@@ -8,35 +8,13 @@
   
       // initiate upload service
       var upload;
-      var o = {'o' : 1};
+      // e.x upload
+      Clon.setClone(Upload, 'upload');
       
-      Clon.setClone(o);
-      console.log(Clon.getAllClon());
-      
-      
-       function clone(obj) {
-      if (obj === null || typeof(obj) !== 'object' || 'isActiveClone' in obj)
-        return obj;
+      upload = Clon.getClonByName('upload');
 
-      if (obj instanceof Date)
-        var temp = new obj.constructor(); //or new Date(obj);
-      else
-        var temp = obj.constructor();
-
-      for (var key in obj) {
-        if (Object.prototype.hasOwnProperty.call(obj, key)) {
-          obj['isActiveClone'] = null;
-          temp[key] = clone(obj[key]);
-          delete obj['isActiveClone'];
-        }
-      }
-
-      return temp;
-    }
-      
-      
       $scope.upload = function(key, file_data){
-
+        
         if (file_data == null) return;
         
         upload = Upload.upload({
