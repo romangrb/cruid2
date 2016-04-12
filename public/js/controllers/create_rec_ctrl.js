@@ -13,7 +13,7 @@
         $scope.upload = function(key, file_data){
         
           if (file_data == null || key == null) return;
-        
+            
             upload[key] = Upload.upload({
               url: constant.UPLOAD_URL,
               data:{files:file_data}
@@ -26,6 +26,8 @@
         $scope.uploadAll = function(files){
       
           if (files == null) return;
+          
+          upload = {};
           
           angular.forEach(files, function(value, key) {
             
@@ -42,7 +44,7 @@
         
         $scope.cancel = function (key) {
           
-          if (key == null) return;
+          if (key == null || upload[key]==null) return;
           
           upload[key].abort();
           
@@ -55,7 +57,7 @@
           angular.forEach(upload, function(upload_value) {
             upload_value.abort();
           });
-          
+
         };
         
         $scope.getRequest = function(key){
@@ -65,14 +67,16 @@
             if(resp.data.error_code === 0){
               console.info('upload response  : ' + resp.config.data.files.name);
             } else if (resp.data.status>=200&&resp.data.status<300){
-              console.info('file : ', resp.config.data.files.name, 'is uploaded'); 
+              console.info('file : ', resp.config.data.files.name, 'is uploaded');
+                if (upload[key]) delete upload[key];
               } else {
                 console.error('Error : ', resp.data);
+                if (upload[key]) delete upload[key];
               }
           }, function (resp) {
              console.info('file : ', resp.config.data.files.name, 
              'aborted', '\n'+ 'status code', resp.status);
-            
+              if (upload[key]) delete upload[key];
           }, function (evt) { 
             
             var progress = parseInt(100.0 * evt.loaded / evt.total);
