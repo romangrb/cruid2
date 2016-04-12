@@ -8,5 +8,6 @@ module.exports = Object.freeze({
   NO_ERR_LN : 0 ,
   PAGE_NOT_FOUND_MSG : ' Page not found ',
   NOT_ACCEPTABLE_MSG : ' Not Acceptable ',
+  DB_ATTR_REC_MSG : 'name or src attr are not provided',
   
 });

@@ -3,6 +3,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var bodyParser = require('body-parser'); //parses information from POST
 var methodOverride = require('method-override'); //used to manipulate POST
+var DbCrud = require('../services/crud_mongose_db');
 var crud_config = require('../model/crud_model_constant');
   //Any requests to this controller must pass through this 'use' function
   //Copy and pasted from method-override
@@ -19,17 +20,21 @@ router.use(methodOverride(function(req, res){
 //build the REST operations at the db for model
 router.route('/')
   .get(function(req, res, next) {
-    mongoose.model(crud_config.COLLECTION_NAME).find({}, function (err, data) {
-      if (err) {
-        return console.error(err);
-      } else {
-        res.format({
-          json: function(){
-            res.json(data);
-          }
-        });
-      }     
-    });
+    
+    try {
+      var data = DbCrud.read();
+      console.log(data);
+      if (data==null) throw new Error (crud_config.DB_CREATE_ERR_MSG);
+      
+      res.format({json: function(){
+                          res.json(data);
+                        }
+                  });
+      
+    } catch (err){
+      res.send(err.msg);
+    }
+      
   })
   .post(function(req, res) {
     // Get values from POST request. These can be done through forms or REST calls. These rely on the "name" attributes for forms

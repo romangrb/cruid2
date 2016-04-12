@@ -3,24 +3,44 @@ var crud_config = require('../model/crud_model_constant');
 
 var DbCrud = {
   
-  create : function (name, src){
+  create : function (name, src) {
      
     mongoose.model(crud_config.COLLECTION_NAME).create({
-        name : name,
-        src : src,
-        is_deleted : false
+      name : name,
+      src : src,
+      is_deleted : false
   }, function (err, data) {
       if (err) {
-        console.log("There was a problem adding the information to the database.");
+        console.log(crud_config.DB_CREATE_ERR_MSG);
       } else {
-        console.log('POST creating new collection: ' + data);
+        console.log(crud_config.DB_CREATE_SUCCESS_MSG + data);
       }
     });
     
+  },
+  
+  read : function () {
+    
+    var collection;
+    
+    mongoose.model(crud_config.COLLECTION_NAME).find({
+      
+    }, function (err, data) {
+      if (err) {
+        console.log(crud_config.DB_CREATE_ERR_MSG);
+      } else {
+        //console.log(crud_config.DB_CREATE_SUCCESS_MSG + data);
+        collection = data;
+        return collection;
+      }
+    });
   }
+  
 };
 
 function DbCrudPrivProtMethProp(){
+  
+  var those = this;
   
 }
 
