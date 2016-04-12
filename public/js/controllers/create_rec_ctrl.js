@@ -4,54 +4,64 @@
   
   angular
     .module('galleryApp')
-      .controller('createRecCtrl', ['$scope', 'RestService', 'Upload', 'clonDataService', 'constant', function ($scope, RestService, Upload, Clon, constant) {
+      .controller('createRecCtrl', ['$scope', 'RestService', 'Upload', 'constant', function ($scope, RestService, Upload, constant) {
   
       // initiate upload service
       
-       var upload = {};
+      var upload = {};
         
         $scope.upload = function(key, file_data){
-          
-          if (file_data == null) return;
-          
-          Clon.setClone(Upload.upload, key);
-          
-          $scope.getRequest(key, file_data);
+        
+          if (file_data == null || key == null) return;
+        
+            upload[key] = Upload.upload({
+              url: constant.UPLOAD_URL,
+              data:{files:file_data}
+            });
+            
+          $scope.getRequest(key);
           
         };
         
-        /*$scope.uploadAll = function(files){
+        $scope.uploadAll = function(files){
       
+          if (files == null) return;
+          
           angular.forEach(files, function(value, key) {
             
-            upload = Upload.upload({
+            upload[key] = Upload.upload({
               url: constant.UPLOAD_URL,
               data:{files:value}
             });
           
-          $scope.getRequest();
+          $scope.getRequest(key);
   
           });
           
-        };*/
-        
-        $scope.cancel = function (key, file_data) {
-          
-          if (file_data == null) return;
-          
-          upload[key].abort();
         };
-  
-        $scope.getRequest = function (key, file_data) {
+        
+        $scope.cancel = function (key) {
+          
           if (key == null) return;
           
-          upload[key] = Clon.getClonByName(key)({
-            url: constant.UPLOAD_URL,
-            data:{files:file_data}
+          upload[key].abort();
+          
+        };
+        
+        $scope.cancelAll = function () {
+          
+          if (Object.keys(upload).length===0) return;
+          
+          angular.forEach(upload, function(upload_value) {
+            upload_value.abort();
           });
           
+        };
+        
+        $scope.getRequest = function(key){
+         
           upload[key].then(function (resp) {
-            console.log(resp);
+
             if(resp.data.error_code === 0){
               console.info('upload response  : ' + resp.config.data.files.name);
             } else if (resp.data.status>=200&&resp.data.status<300){

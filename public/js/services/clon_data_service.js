@@ -25,9 +25,7 @@
           getAllClon : function(){
             return this._clonedColl;
           },
-          
-          
-          
+   
         };
         
         function privAndProtMtd (){
