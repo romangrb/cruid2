@@ -27,8 +27,6 @@
       
           if (files == null) return;
           
-          upload = {};
-          
           angular.forEach(files, function(value, key) {
             
             upload[key] = Upload.upload({
@@ -88,7 +86,11 @@
         };
         
         $scope.showFiles = function(data){
+          
+          upload = {};
+          
           $scope.file_collection = createImgCollection(data);
+          
         };
         
         function createImgCollection(data){
