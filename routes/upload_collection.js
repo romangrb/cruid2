@@ -6,8 +6,6 @@
   var DbCrud = require('../services/crud_mongose_db');
   var up_config = require('../model/upload_model_constant');
   
-  DbCrud.create();
-  
   // enable CORS
   router.use(function(req, res, next) {
     res.setHeader("Access-Control-Allow-Methods", "POST, PUT, OPTIONS, DELETE, GET");
@@ -24,7 +22,7 @@
     
     var form = new multiparty.Form();
     
-    var uploadFile = {uploadPath: '', type: '', size: 0};
+    var uploadFile = {uploadPath: '', type: '', size: 0, name: ''};
     
     var errors = [];
 
@@ -37,16 +35,36 @@
     });
     
     form.on('close', function() {
-    
+      
       if (errors.length == up_config.NO_ERR_LN) {
-        res.send(up_config.CREATE_MSG);
+        
+        var name = uploadFile.name,
+          src = uploadFile.path;
+        
+         try {
+
+           if (name == null || src == null) throw new Error(up_config.DB_ATTR_REC_MSG);
+            
+          DbCrud.create(name, src);
+          res.send(up_config.CREATE_MSG);
+          
+          } catch (err) {
+            
+            if (fs.existsSync(uploadFile.path)) {
+               fs.unlinkSync(uploadFile.path);
+            }
+        
+            res.send({status: '5XX', text: errors});
+                console.log(err.message);
+            }
+        
       } else {
        
         if (fs.existsSync(uploadFile.path)) {
            fs.unlinkSync(uploadFile.path);
         }
         
-      res.send({status: '5XX', text: errors});
+        res.send({status: '5XX', text: errors});
       
       }
       
@@ -60,7 +78,8 @@
       
       uploadFile.size = part.byteCount;
       uploadFile.type = part.headers['content-type'];
-      uploadFile.path = './uploads/' + new Date().getTime() + part.filename;
+      uploadFile.name = new Date().getTime() + part.filename;
+      uploadFile.path = './uploads/' + uploadFile.name;
       
       if (uploadFile.size > up_config.MAX_SIZE) {
           errors.push(up_config.LIM_SIZE_ERR);
