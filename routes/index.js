@@ -12,8 +12,4 @@ router.get('/', function(req, res, next) {
   res.sendfile('./public/index.html');
 });
 
-router.get('/new', function(req, res) {
-    res.render('blobs/new', { title: 'Add New Blob' });
-});
-
 module.exports = router;

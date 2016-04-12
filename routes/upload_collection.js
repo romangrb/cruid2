@@ -3,7 +3,7 @@
   var router = express.Router();
   var fs = require('fs');
   var multiparty = require('multiparty');
-  var up_config = require('../model/upload_mode_constant');
+  var up_config = require('../model/upload_model_constant');
   
   // enable CORS
   router.use(function(req, res, next) {

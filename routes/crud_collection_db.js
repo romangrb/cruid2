@@ -3,42 +3,32 @@ var router = express.Router();
 var mongoose = require('mongoose'); //mongo connection
 var bodyParser = require('body-parser'); //parses information from POST
 var methodOverride = require('method-override'); //used to manipulate POST
+var crud_config = require('../model/crud_model_constant');
   //Any requests to this controller must pass through this 'use' function
   //Copy and pasted from method-override
 router.use(bodyParser.urlencoded({ extended: true }));
   
-  router.use(methodOverride(function(req, res){
-    if (req.body && typeof req.body === 'object' && '_method' in req.body) {
-      // look in urlencoded POST bodies and delete it
-      var method = req.body._method;
-      delete req.body._method;
-      return method;
-    }
-    
-  }));
+router.use(methodOverride(function(req, res){
+  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+    // look in urlencoded POST bodies and delete it
+    var method = req.body._method;
+    delete req.body._method;
+    return method;
+  }
+  
+}));
 
-//build the REST operations at the base for blobs
-//this will be accessible from http://127.0.0.1:3000/blobs if the default route for / is left unchanged
+//build the REST operations at the db for model
+
 router.route('/')
-  //GET all blobs
   .get(function(req, res, next) {
-    //retrieve all blobs from Monogo
-    mongoose.model('Blob').find({}, function (err, blobs) {
+    mongoose.model(crud_config.COLLECTION_NAME).find({}, function (err, data) {
       if (err) {
         return console.error(err);
       } else {
-        //respond to both HTML and JSON. JSON responses require 'Accept: application/json;' in the Request Header
         res.format({
-          //HTML response will render the index.jade file in the views/blobs folder. We are also setting "blobs" to be an accessible variable in our jade view
-          html: function(){
-            res.render('blobs/index', {
-              title: 'All my Blobs',
-              "blobs" : blobs
-            });
-          },
-          //JSON response will show all blobs in JSON format
           json: function(){
-            res.json(blobs);
+            res.json(data);
           }
         });
       }     
@@ -51,27 +41,18 @@ router.route('/')
       var src = req.body.src;
       var is_deleted = req.body.is_deleted;
       //call the create function for our database
-      mongoose.model('Blob').create({
+      mongoose.model(crud_config.COLLECTION_NAME).create({
           name : name,
           src : src,
           is_deleted : is_deleted
-      }, function (err, blob) {
+      }, function (err, data) {
         if (err) {
           res.send("There was a problem adding the information to the database.");
         } else {
-          //Blob has been created
-          console.log('POST creating new blob: ' + blob);
+          console.log('POST creating new collection: ' + data);
           res.format({
-              //HTML response will set the location and redirect back to the home page. You could also create a 'success' page if that's your thing
-            html: function(){
-              // If it worked, set the header so the address bar doesn't still say /adduser
-              res.location("blobs");
-              // And forward to success page
-              res.redirect("/blobs");
-            },
-            //JSON response will show the newly created blob
             json: function(){
-              res.json(blob);
+              res.json(data);
             }
           });
         }
@@ -92,33 +73,24 @@ router.get('/docs*', function(req, res) {
     q.limNum = ((qReq.lim)&&isNumeric(qReq.lim))?parseInt(qReq.lim, 10):limNum;
   }
   
-  mongoose.model('Blob')
-    .find({}, {}, q, function (err, blobs) {
+  mongoose.model(crud_config.COLLECTION_NAME)
+    .find({}, {}, q, function (err, data) {
       if (err) {
         return console.error(err);
       } else {
       res.format({
-        html: function(){
-          res.render('blobs/index', {
-            title: 'All my Blobs',
-            "blobs" : blobs
-          });
-        },
-        //JSON response will show all doc in JSON format
         json: function(){
-          res.json(blobs);
+          res.json(data);
         }
       });
     }    
   });
 });
 
-
 // route middleware to validate :id
 router.param('id', function(req, res, next, id) {
-  //console.log('validating ' + id + ' exists');
-  //find the ID in the Database
-  mongoose.model('Blob').findById(id, function (err, blob) {
+  //find the ID in the db
+  mongoose.model(crud_config.COLLECTION_NAME).findById(id, function (err, blob) {
     //if it isn't found, we are going to repond with 404
     if (err) {
       console.log(id + ' was not found');
@@ -126,17 +98,12 @@ router.param('id', function(req, res, next, id) {
       var err = new Error('Not Found');
       err.status = 404;
       res.format({
-          html: function(){
-              next(err);
-           },
           json: function(){
                  res.json({message : err.status  + ' ' + err});
            }
       });
-    //if it is found we continue on
     } else {
       //uncomment this next line if you want to see every JSON document response for every GET/PUT/DELETE call
-      //console.log(blob);
       // once validation is done save the new item in the req
       req.id = id;
       // go to the next thing
@@ -147,19 +114,14 @@ router.param('id', function(req, res, next, id) {
 
 router.route('/:id')
   .get(function(req, res) {
-    mongoose.model('Blob').findById(req.id, function (err, blob) {
+    mongoose.model(crud_config.COLLECTION_NAME).findById(req.id, function (err, data) {
       if (err) {
         console.log('GET Error: There was a problem retrieving: ' + err);
       } else {
-        console.log('GET Retrieving ID: ' + blob._id);
+        console.log('GET Retrieving ID: ' + data._id);
         res.format({
-          html: function(){
-              res.render('blobs/show', {
-                "blob" : blob
-              });
-          },
           json: function(){
-              res.json(blob);
+              res.json(data);
           }
         });
       }
@@ -169,19 +131,14 @@ router.route('/:id')
 
 router.route('/next')
   .get(function(req, res) {
-    mongoose.model('Blob').findById(req.id, function (err, blob) {
+    mongoose.model(crud_config.COLLECTION_NAME).findById(req.id, function (err, data) {
       if (err) {
         console.log('GET Error: There was a problem retrieving: ' + err);
       } else {
-        console.log('GET Retrieving ID: ' + blob._id);
+        console.log('GET Retrieving ID: ' + data._id);
         res.format({
-          html: function(){
-              res.render('blobs/show', {
-                "blob" : blob
-              });
-          },
           json: function(){
-              res.json(blob);
+              res.json(data);
           }
         });
       }
@@ -192,23 +149,16 @@ router.route('/:id/edit')
 	//GET the individual blob by Mongo ID
 	.get(function(req, res) {
     //search for the blob within Mongo
-    mongoose.model('Blob').findById(req.id, function (err, blob) {
+    mongoose.model(crud_config.COLLECTION_NAME).findById(req.id, function (err, data) {
       if (err) {
         console.log('GET Error: There was a problem retrieving: ' + err);
       } else {
         //Return the blob
-        console.log('GET Retrieving ID: ' + blob._id);
+        console.log('GET Retrieving ID: ' + data._id);
         res.format({
-          //HTML response will render the 'edit.jade' template
-          html: function(){
-            res.render('blobs/edit', {
-              title: 'Blob' + blob._id,
-              "blob" : blob
-            });
-           },
            //JSON response will return the JSON output
           json: function(){
-            res.json(blob);
+            res.json(data);
            }
         });
       }
@@ -222,9 +172,9 @@ router.route('/:id/edit')
       var is_deleted = req.body.is_deleted;
       
       //find the document by ID
-      mongoose.model('Blob').findById(req.id, function (err, blob) {
+      mongoose.model(crud_config.COLLECTION_NAME).findById(req.id, function (err, data) {
         //update it
-        blob.update({
+        data.update({
           name : name,
           src : src,
           is_deleted : is_deleted
@@ -235,41 +185,34 @@ router.route('/:id/edit')
           else {
             //HTML responds by going back to the page or you can be fancy and create a new view that shows a success page.
             res.format({
-              html: function(){
-                res.redirect("/blobs/" + blob._id);
-               },
                //JSON responds showing the updated values
               json: function(){
-                res.json(blob);
+                res.json(data);
                }
             });
            }
 	        });
 	    });
 	})
-	//DELETE a Blob by ID
+	//DELETE a collection by ID
 	.delete(function (req, res){
-    //find blob by ID
-    mongoose.model('Blob').findById(req.id, function (err, blob) {
+    //find collection by ID
+    mongoose.model(crud_config.COLLECTION_NAME).findById(req.id, function (err, data) {
       if (err) {
         return console.error(err);
       } else {
         //remove it from Mongo
-        blob.remove(function (err, blob) {
+        data.remove(function (err, data) {
           if (err) {
             return console.error(err);
           } else {
             //Returning success messages saying it was deleted
-            console.log('DELETE removing ID: ' + blob._id);
+            console.log('DELETE removing ID: ' + data._id);
             res.format({
-                //HTML returns us back to the main page, or you can create a success page
-                  html: function(){
-                    res.redirect("/blobs");
-                 },
                  //JSON returns the item with the message that is has been deleted
                 json: function(){
                   res.json({message : 'deleted',
-                    item : blob
+                    item : data
                   });
                  }
               });
