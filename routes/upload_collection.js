@@ -3,7 +3,10 @@
   var router = express.Router();
   var fs = require('fs');
   var multiparty = require('multiparty');
+  var DbCrud = require('../services/crud_mongose_db');
   var up_config = require('../model/upload_model_constant');
+  
+  DbCrud.create();
   
   // enable CORS
   router.use(function(req, res, next) {

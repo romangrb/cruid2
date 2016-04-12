@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var mongoose = require('mongoose'); //mongo connection
+var mongoose = require('mongoose');
 var bodyParser = require('body-parser'); //parses information from POST
 var methodOverride = require('method-override'); //used to manipulate POST
 var crud_config = require('../model/crud_model_constant');
@@ -16,7 +16,6 @@ router.use(methodOverride(function(req, res){
     return method;
   }
 }));
-
 //build the REST operations at the db for model
 router.route('/')
   .get(function(req, res, next) {
@@ -67,7 +66,7 @@ router.param('id', function(req, res, next, id) {
       err.status = 404;
       res.format({
           json: function(){
-                 res.json({message : err.status  + ' ' + err});
+             res.json({message : err.status  + ' ' + err});
            }
       });
     } else {
@@ -147,8 +146,7 @@ router.route('/:id/edit')
         }, function (err, dataID) {
           if (err) {
             res.send("There was a problem updating the information to the database: " + err);
-          } 
-          else {
+          } else {
             //HTML responds by going back to the page or you can be fancy and create a new view that shows a success page.
             res.format({
                //JSON responds showing the updated values
