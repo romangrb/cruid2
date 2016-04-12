@@ -24,7 +24,9 @@
           
           getAllClon : function(){
             return this._clonedColl;
-          }
+          },
+          
+          
           
         };
         

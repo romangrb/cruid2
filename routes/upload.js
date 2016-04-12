@@ -48,7 +48,11 @@
       }
       
     });
-
+    
+    /*form.on('progress', function (bytesReceived, bytesExpected){
+      console.log(bytesReceived, bytesExpected);
+    });*/
+    
     form.on('part', function(part) {
       
       part.on('error', function(){
