@@ -15,11 +15,9 @@ router.use(methodOverride(function(req, res){
     delete req.body._method;
     return method;
   }
-  
 }));
 
 //build the REST operations at the db for model
-
 router.route('/')
   .get(function(req, res, next) {
     mongoose.model(crud_config.COLLECTION_NAME).find({}, function (err, data) {
@@ -34,63 +32,33 @@ router.route('/')
       }     
     });
   })
-    //POST a new blob
-    .post(function(req, res) {
-      // Get values from POST request. These can be done through forms or REST calls. These rely on the "name" attributes for forms
-      var name = req.body.name;
-      var src = req.body.src;
-      var is_deleted = req.body.is_deleted;
-      //call the create function for our database
-      mongoose.model(crud_config.COLLECTION_NAME).create({
-          name : name,
-          src : src,
-          is_deleted : is_deleted
-      }, function (err, data) {
-        if (err) {
-          res.send("There was a problem adding the information to the database.");
-        } else {
-          console.log('POST creating new collection: ' + data);
-          res.format({
-            json: function(){
-              res.json(data);
-            }
-          });
-        }
-      });
-    });
-
-// https://cruid2-romangrb-1.c9users.io/blobs/docs?skip=1&lim=0
-function isNumeric(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
-}
-
-router.get('/docs*', function(req, res) {
-  
-  var q = {}, qReq = req.query, skipNum=0, limNum=5;
-  
-  if (Object.keys(req.query).length){
-    q.skip = ((qReq.skip)&&isNumeric(qReq.skip))?parseInt(qReq.skip, 10):skipNum;
-    q.limNum = ((qReq.lim)&&isNumeric(qReq.lim))?parseInt(qReq.lim, 10):limNum;
-  }
-  
-  mongoose.model(crud_config.COLLECTION_NAME)
-    .find({}, {}, q, function (err, data) {
+  .post(function(req, res) {
+    // Get values from POST request. These can be done through forms or REST calls. These rely on the "name" attributes for forms
+    var name = req.body.name;
+    var src = req.body.src;
+    var is_deleted = req.body.is_deleted;
+    //call the create function for our database
+    mongoose.model(crud_config.COLLECTION_NAME).create({
+        name : name,
+        src : src,
+        is_deleted : is_deleted
+    }, function (err, data) {
       if (err) {
-        return console.error(err);
+        res.send("There was a problem adding the information to the database.");
       } else {
-      res.format({
-        json: function(){
-          res.json(data);
-        }
-      });
-    }    
+        console.log('POST creating new collection: ' + data);
+        res.format({
+          json: function(){
+            res.json(data);
+          }
+        });
+      }
+    });
   });
-});
-
 // route middleware to validate :id
 router.param('id', function(req, res, next, id) {
   //find the ID in the db
-  mongoose.model(crud_config.COLLECTION_NAME).findById(id, function (err, blob) {
+  mongoose.model(crud_config.COLLECTION_NAME).findById(id, function (err, data) {
     //if it isn't found, we are going to repond with 404
     if (err) {
       console.log(id + ' was not found');
@@ -128,7 +96,6 @@ router.route('/:id')
     });
   });
 
-
 router.route('/next')
   .get(function(req, res) {
     mongoose.model(crud_config.COLLECTION_NAME).findById(req.id, function (err, data) {
@@ -146,14 +113,14 @@ router.route('/next')
   });
 
 router.route('/:id/edit')
-	//GET the individual blob by Mongo ID
+	//GET the individual 'collection' by Mongo ID
 	.get(function(req, res) {
-    //search for the blob within Mongo
+    //search for the 'collection' within Mongo
     mongoose.model(crud_config.COLLECTION_NAME).findById(req.id, function (err, data) {
       if (err) {
         console.log('GET Error: There was a problem retrieving: ' + err);
       } else {
-        //Return the blob
+        //Return the 'collection'
         console.log('GET Retrieving ID: ' + data._id);
         res.format({
            //JSON response will return the JSON output
@@ -164,13 +131,12 @@ router.route('/:id/edit')
       }
     });
 	})
-	//PUT to update a blob by ID
+	//PUT to update a 'collection' by ID
 	.put(function(req, res) {
     // Get our REST or form values. These rely on the "name" attributes
       var name = req.body.name;
       var src = req.body.src;
       var is_deleted = req.body.is_deleted;
-      
       //find the document by ID
       mongoose.model(crud_config.COLLECTION_NAME).findById(req.id, function (err, data) {
         //update it
@@ -178,7 +144,7 @@ router.route('/:id/edit')
           name : name,
           src : src,
           is_deleted : is_deleted
-        }, function (err, blobID) {
+        }, function (err, dataID) {
           if (err) {
             res.send("There was a problem updating the information to the database: " + err);
           } 
@@ -221,6 +187,36 @@ router.route('/:id/edit')
         }
 	    });
 	});
+	
+// https://cruid2-romangrb-1.c9users.io/img/docs?skip=1&lim=0
+
+router.get('/docs*', function(req, res) {
+  
+  var q = {}, qReq = req.query, skipNum=0, limNum=5;
+  
+  if (Object.keys(req.query).length){
+    q.skip = ((qReq.skip)&&isNumeric(qReq.skip))?parseInt(qReq.skip, 10):skipNum;
+    q.limNum = ((qReq.lim)&&isNumeric(qReq.lim))?parseInt(qReq.lim, 10):limNum;
+  }
+  
+  mongoose.model(crud_config.COLLECTION_NAME)
+    .find({}, {}, q, function (err, data) {
+      if (err) {
+        return console.error(err);
+      } else {
+      res.format({
+        json: function(){
+          res.json(data);
+        }
+      });
+    }    
+  });
+});
+
+function isNumeric(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
+
 
 module.exports = router;
 
