@@ -3,7 +3,6 @@
   var router = express.Router();
   var fs = require('fs');
   var multiparty = require('multiparty');
-  var mongoose = require('mongoose');
   var DbCrud = require('../services/crud_mongose_db');
   var up_config = require('../model/upload_model_constant');
   
@@ -28,40 +27,37 @@
     var errors = [];
 
     form.on('error', function(err){
-      // write log err
-      if (fs.existsSync(uploadFile.path)) {
-          fs.unlinkSync(uploadFile.path);
-      }
-      
+      if (fs.existsSync(uploadFile.path)) fs.unlinkSync(uploadFile.path);
+      errors.push(err);
     });
     
     form.on('close', function() {
 
       try {
-        
+          
         if (errors.length !== up_config.NO_ERR_LN) throw new Error(errors);
-        
-         var name = uploadFile.name,
+          
+        var name = uploadFile.name,
           src = uploadFile.path;
-
+            
         if (name == null || src == null) throw new Error(up_config.DB_ATTR_REC_MSG);
-          
+
         DbCrud.create(name, src).save(function (err, cb) {
-          
+            
           if (err) throw new Error(up_config.DB_CREATE_ERR_MSG);
-          
+            
           res.send({status: 201, text: cb});  console.log('create', cb);
-    
+            
         });
           
       } catch (err) {
           
-        if (fs.existsSync(uploadFile.path)) fs.unlinkSync(uploadFile.path);
-    
-        res.send({status: '5XX', text: errors});
+        //if (fs.existsSync(uploadFile.path)) fs.unlinkSync(uploadFile.path);
+          
+        res.send({status: '405', text: errors});
         console.log(err.message);
       }
-
+        
     });
     
     form.on('part', function(part) {
@@ -72,8 +68,8 @@
       
       uploadFile.size = part.byteCount;
       uploadFile.type = part.headers['content-type'];
-      uploadFile.name = new Date().getTime() + part.filename;
-      uploadFile.path = './uploads/' + uploadFile.name;
+      uploadFile.name = part.filename;
+      uploadFile.path = up_config.UPLOAD_PATH + uploadFile.name;
       
       if (uploadFile.size > up_config.MAX_SIZE) {
           errors.push(up_config.LIM_SIZE_ERR);
