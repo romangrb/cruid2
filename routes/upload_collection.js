@@ -36,46 +36,36 @@
     });
     
     form.on('close', function() {
-      
-      if (errors.length == up_config.NO_ERR_LN) {
-        
-        var name = uploadFile.name,
-          src = uploadFile.path;
-        
-        try {
 
-          if (name == null || src == null) throw new Error(up_config.DB_ATTR_REC_MSG);
-            
-          DbCrud.create(name, src).save(function (err, cb) {
-            
-            if (err) throw new Error(up_config.DB_CREATE_ERR_MSG);
-            
-            res.send({status: 201, text: cb}); // fix client catch cb
-            
-            console.log('create', cb);
-            
-          });
-            
-        } catch (err) {
-            
-          if (fs.existsSync(uploadFile.path)) {
-             fs.unlinkSync(uploadFile.path);
-          }
-      
-          res.send({status: '5XX', text: errors});
-          console.log(err.message);
-        }
+      try {
         
-      } else {
-       
+        if (errors.length !== up_config.NO_ERR_LN) throw new Error(errors);
+        
+         var name = uploadFile.name,
+          src = uploadFile.path;
+
+        if (name == null || src == null) throw new Error(up_config.DB_ATTR_REC_MSG);
+          
+        DbCrud.create(name, src).save(function (err, cb) {
+          
+          if (err) throw new Error(up_config.DB_CREATE_ERR_MSG);
+          
+          res.send({status: 201, text: cb}); // fix client catch cb
+          
+          console.log('create', cb);
+          
+        });
+          
+      } catch (err) {
+          
         if (fs.existsSync(uploadFile.path)) {
            fs.unlinkSync(uploadFile.path);
         }
-        
+    
         res.send({status: '5XX', text: errors});
-      
+        console.log(err.message);
       }
-      
+
     });
     
     form.on('part', function(part) {

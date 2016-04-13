@@ -3,17 +3,18 @@ var crud_config = require('../model/crud_model_constant');
 
 var DbCrud = {
   
-  create : function (name, src) {
-     
+  create : function (name, src, is_deleted) {
+    is_deleted = is_deleted||false;
     var RecCollection = mongoose.model(crud_config.COLLECTION_NAME);
-    return new RecCollection({name : name, src : src, is_deleted : false});
-    
+    return new RecCollection({name : name, src : src, is_deleted : is_deleted});
   },
   
-  read : function () {
-    
+  findAll : function () {
     return  mongoose.model(crud_config.COLLECTION_NAME).find({});
-    
+  },
+  
+  findById : function (id) {
+    return mongoose.model(crud_config.COLLECTION_NAME).findById(id);
   }
   
 };

@@ -20,41 +20,46 @@ router.use(methodOverride(function(req, res){
 //build the REST operations at the db for model
 router.route('/')
   .get(function(req, res, next) {
-     
-      DbCrud.read().exec(function(err, cb) {
+    
+      DbCrud.findAll().exec(function(err, cb) {
+        
         if (err) return console.log(crud_config.DB_CREATE_ERR_MSG);
         
         res.format({json: function(){
                       res.json(cb);
                     }
         });
-      
+        
       });
     
   })
   .post(function(req, res) {
-    // Get values from POST request. These can be done through forms or REST calls. These rely on the "name" attributes for forms
-    var name = req.body.name;
-    var src = req.body.src;
-    var is_deleted = req.body.is_deleted;
-    //call the create function for our database
-    mongoose.model(crud_config.COLLECTION_NAME).create({
-        name : name,
-        src : src,
-        is_deleted : is_deleted
-    }, function (err, data) {
-      if (err) {
-        res.send("There was a problem adding the information to the database.");
-      } else {
-        console.log('POST creating new collection: ' + data);
-        res.format({
-          json: function(){
-            res.json(data);
-          }
-        });
-      }
-    });
+      
+      var name = req.body.name,
+       src = req.body.src,
+       is_deleted = req.body.is_deleted;
+    
+       try {
+        
+        if (name == null || src == null) throw new Error(crud_config.DB_ATTR_REC_MSG);
+       
+            DbCrud.create(name, src, is_deleted).save(function (err, cb) {
+                  
+              if (err) throw new Error(crud_config.DB_CREATE_ERR_MSG);
+            
+              res.format({json: function(){
+                            res.json(cb);
+                          }
+              });
+              
+            });
+        
+        } catch (err) {
+          console.log(err.message);
+        }
+      
   });
+
 // route middleware to validate :id
 router.param('id', function(req, res, next, id) {
   //find the ID in the db

@@ -10,4 +10,5 @@ module.exports = Object.freeze({
   NOT_ACCEPTABLE_MSG : ' Not Acceptable ',
   DB_ATTR_REC_MSG : 'name or src attr are not provided',
   DB_CREATE_ERR_MSG : 'There was a problem adding the information to the database.',
+  DB_CREATE_SUCCESS_MSG : 'creating new collection : ',
 });
