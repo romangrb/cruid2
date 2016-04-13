@@ -39,29 +39,60 @@ router.route('/')
        src = req.body.src,
        is_deleted = req.body.is_deleted;
     
-       try {
+      try {
         
         if (name == null || src == null) throw new Error(crud_config.DB_ATTR_REC_MSG);
        
-            DbCrud.create(name, src, is_deleted).save(function (err, cb) {
-                  
-              if (err) throw new Error(crud_config.DB_CREATE_ERR_MSG);
-            
-              res.format({json: function(){
-                            res.json(cb);
-                          }
-              });
-              
+          DbCrud.create(name, src, is_deleted).save(function (err, cb) {
+                
+            if (err) throw new Error(crud_config.DB_CREATE_ERR_MSG);
+          
+            res.format({json: function(){
+                          res.json(cb);
+                        }
             });
+            
+          });
         
         } catch (err) {
+          
+          res.format({
+              json: function(){
+                 res.json({message : 503  + ' ' + err});
+               }
+          });
           console.log(err.message);
         }
       
   });
 
-// route middleware to validate :id
 router.param('id', function(req, res, next, id) {
+  //find by ID in the db
+  console.log(res, id);
+      try {
+        
+        if (id == null) throw new Error(crud_config.DB_ATTR_REC_MSG);
+        
+          DbCrud.findById(id).exec(function(err, cb) {
+          
+            if (err) throw new Error(crud_config.DB_FIND_BY_ID_ERR_MSG);
+            
+            res.format({json: function(){
+                          res.json(cb);
+                        }
+            });
+            console.log(cb);
+          });
+        
+        } catch (err) {
+          console.log(err.message);
+          req.id = id;
+          next(); // go to the next fn
+        }
+});
+  
+// route middleware to validate :id
+/*router.param('id', function(req, res, next, id) {
   //find the ID in the db
   mongoose.model(crud_config.COLLECTION_NAME).findById(id, function (err, data) {
     //if it isn't found, we are going to repond with 404
@@ -83,7 +114,7 @@ router.param('id', function(req, res, next, id) {
       next(); 
     } 
   });
-});
+});*/
 
 router.route('/:id')
   .get(function(req, res) {
