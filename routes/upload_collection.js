@@ -50,17 +50,13 @@
           
           if (err) throw new Error(up_config.DB_CREATE_ERR_MSG);
           
-          res.send({status: 201, text: cb}); // fix client catch cb
-          
-          console.log('create', cb);
-          
+          res.send({status: 201, text: cb});  console.log('create', cb);
+    
         });
           
       } catch (err) {
           
-        if (fs.existsSync(uploadFile.path)) {
-           fs.unlinkSync(uploadFile.path);
-        }
+        if (fs.existsSync(uploadFile.path)) fs.unlinkSync(uploadFile.path);
     
         res.send({status: '5XX', text: errors});
         console.log(err.message);
