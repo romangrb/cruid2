@@ -20,21 +20,17 @@ router.use(methodOverride(function(req, res){
 //build the REST operations at the db for model
 router.route('/')
   .get(function(req, res, next) {
+     
+      DbCrud.read().exec(function(err, cb) {
+        if (err) return console.log(crud_config.DB_CREATE_ERR_MSG);
+        
+        res.format({json: function(){
+                      res.json(cb);
+                    }
+        });
+      
+      });
     
-    try {
-      var data = DbCrud.read();
-      console.log(data);
-      if (data==null) throw new Error (crud_config.DB_CREATE_ERR_MSG);
-      
-      res.format({json: function(){
-                          res.json(data);
-                        }
-                  });
-      
-    } catch (err){
-      res.send(err.msg);
-    }
-      
   })
   .post(function(req, res) {
     // Get values from POST request. These can be done through forms or REST calls. These rely on the "name" attributes for forms

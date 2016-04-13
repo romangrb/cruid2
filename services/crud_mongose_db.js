@@ -5,35 +5,15 @@ var DbCrud = {
   
   create : function (name, src) {
      
-    mongoose.model(crud_config.COLLECTION_NAME).create({
-      name : name,
-      src : src,
-      is_deleted : false
-  }, function (err, data) {
-      if (err) {
-        console.log(crud_config.DB_CREATE_ERR_MSG);
-      } else {
-        console.log(crud_config.DB_CREATE_SUCCESS_MSG + data);
-      }
-    });
+    var RecCollection = mongoose.model(crud_config.COLLECTION_NAME);
+    return new RecCollection({name : name, src : src, is_deleted : false});
     
   },
   
   read : function () {
     
-    var collection;
+    return  mongoose.model(crud_config.COLLECTION_NAME).find({});
     
-    mongoose.model(crud_config.COLLECTION_NAME).find({
-      
-    }, function (err, data) {
-      if (err) {
-        console.log(crud_config.DB_CREATE_ERR_MSG);
-      } else {
-        //console.log(crud_config.DB_CREATE_SUCCESS_MSG + data);
-        collection = data;
-        return collection;
-      }
-    });
   }
   
 };

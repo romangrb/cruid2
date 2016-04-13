@@ -6,4 +6,5 @@ module.exports = Object.freeze({
   
   DB_CREATE_ERR_MSG : 'There was a problem adding the information to the database.',
   DB_CREATE_SUCCESS_MSG : 'POST creating new collection : ',
+  
 });

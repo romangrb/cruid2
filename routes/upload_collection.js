@@ -3,6 +3,7 @@
   var router = express.Router();
   var fs = require('fs');
   var multiparty = require('multiparty');
+  var mongoose = require('mongoose');
   var DbCrud = require('../services/crud_mongose_db');
   var up_config = require('../model/upload_model_constant');
   
@@ -41,22 +42,29 @@
         var name = uploadFile.name,
           src = uploadFile.path;
         
-         try {
+        try {
 
-           if (name == null || src == null) throw new Error(up_config.DB_ATTR_REC_MSG);
+          if (name == null || src == null) throw new Error(up_config.DB_ATTR_REC_MSG);
             
-          DbCrud.create(name, src);
-          res.send(up_config.CREATE_MSG);
-          
-          } catch (err) {
+          DbCrud.create(name, src).save(function (err, cb) {
             
-            if (fs.existsSync(uploadFile.path)) {
-               fs.unlinkSync(uploadFile.path);
-            }
-        
-            res.send({status: '5XX', text: errors});
-                console.log(err.message);
-            }
+            if (err) throw new Error(up_config.DB_CREATE_ERR_MSG);
+            
+            res.send({status: 201, text: cb}); // fix client catch cb
+            
+            console.log('create', cb);
+            
+          });
+            
+        } catch (err) {
+            
+          if (fs.existsSync(uploadFile.path)) {
+             fs.unlinkSync(uploadFile.path);
+          }
+      
+          res.send({status: '5XX', text: errors});
+          console.log(err.message);
+        }
         
       } else {
        

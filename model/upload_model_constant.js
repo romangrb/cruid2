@@ -9,5 +9,5 @@ module.exports = Object.freeze({
   PAGE_NOT_FOUND_MSG : ' Page not found ',
   NOT_ACCEPTABLE_MSG : ' Not Acceptable ',
   DB_ATTR_REC_MSG : 'name or src attr are not provided',
-  
+  DB_CREATE_ERR_MSG : 'There was a problem adding the information to the database.',
 });
