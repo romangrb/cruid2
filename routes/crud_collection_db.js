@@ -19,76 +19,51 @@ router.use(methodOverride(function(req, res){
 //build the REST operations at the db for model
 router.route('/')
   .get(function(req, res, next) {
-    
+
       DbCrud.findAll().exec(function(err, cb) {
         
-        if (err) return console.log(crud_config.DB_CREATE_ERR_MSG);
+        if (err) return next(crud_config.DB_CREATE_ERR_MSG);
         
         res.format(toJSON(res, cb));
       });
   })
-  .post(function(req, res) {
+  .post(function(req, res, next) {
     
       var name = req.body.name,
-       src = req.body.src,
-       is_deleted = req.body.is_deleted;
+        src = req.body.src,
+        is_deleted = req.body.is_deleted;
        
-      try {
-        if (name == null || src == null) throw new Error(crud_config.DB_ATTR_REC_MSG);
-          
-          DbCrud.create(name, src, is_deleted).save(function (err, cb) {
-            
-            if (err) throw new Error(crud_config.DB_CREATE_ERR_MSG);
-            
-            res.format(toJSON(res, cb));
-          });
-          
-        } catch (err) {
-          
-          res.format(res.format(toJSON(res, err)));
-          
-          console.log(err.message);
-        }
+        if (name == null || src == null) return next(crud_config.DB_ATTR_REC_MSG);
       
+        DbCrud.create(name, src, is_deleted).save(function (err, cb) {
+          
+          if (err) return next(crud_config.DB_CREATE_ERR_MSG);
+          
+          res.format(toJSON(res, cb));
+        });
   });
 
-router.param('id', function(req, res, next, id) {
-      try {
+router
+  .param('id', function(req, res, next, id) {
         
-        if (id == null) throw new Error(crud_config.DB_ATTR_REC_MSG);
-        
-          DbCrud.findById(id).exec(function(err, cb) {
-            
-            if (err) throw new Error(crud_config.DB_FIND_BY_ID_ERR_MSG);
-            
-            res.format(toJSON(res, cb));
-          });
-          
-        } catch (err) { 
-          
-          console.log(err.message);
-          req.id = id;
-          next(); // go to the next fn
-        }
+      if (id == null) return next(crud_config.DB_ATTR_REC_MSG);
+      
+      req.id = id;
+      
+      next();
 });
   
 router.route('/:id')
-  .get(function(req, res) {
-    try {
+  .get(function(req, res, next) {
       
-        if (req.id == null) throw new Error(crud_config.DB_ATTR_REC_MSG);
+      DbCrud.findById(req.id).exec(function(err, cb) {
         
-            DbCrud.findById(req.id).exec(function(err, cb) {
-              
-            if (err) throw new Error(crud_config.DB_FIND_BY_ID_ERR_MSG);
-            
-            res.format(toJSON(res, cb));
-          });
-          
-        } catch (err) { 
-          console.log(err.message);
-        }
-  });
+      if (err) return next(crud_config.DB_FIND_BY_ID_ERR_MSG);
+      
+      res.format(toJSON(res, cb));
+      
+      });
+});
 
 
 module.exports = router;
