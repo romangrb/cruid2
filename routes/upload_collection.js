@@ -24,104 +24,87 @@
             
       if (err) return console.log(up_config.DB_CREATE_ERR_MSG);
         
-        var form = new multiparty.Form();
+      var form = new multiparty.Form();
+      
+      var uploadFile = {uploadPath: '', type: '', size: 0, name: '', id: ''},
+        errors = [],
+        this_newCollectionDb = cb;
         
-        var uploadFile = {uploadPath: '', type: '', size: 0, name: '', id: ''};   
+        uploadFile.id = this_newCollectionDb._id;
         
-        uploadFile.id = cb._id;
+      form.on('error', function(err){
+        errors.push(err);
+      });
+      
+      form.on('close', function() {
         
-        var errors = [];
-          
-        form.on('error', function(err){
-          if (fs.existsSync(uploadFile.path)) fs.unlinkSync(uploadFile.path);
-          errors.push(err);
-        });
-        
-        form.on('close', function() {
-          
-          try {
-              
-            var name = uploadFile.name,
-              src = uploadFile.path,
-              upData;
+        try {
             
-            if (name == null || src == null) throw new Error(up_config.DB_ATTR_REC_MSG); 
-              
-            upData = { name: name, src: src, is_deleted: false };
+          var name = uploadFile.name,
+            src = uploadFile.path,
+            upData;
             
-            DbCrud.updateImgById(uploadFile.id, upData).exec(function(err, cb) {
-        
-              if (err) return next(up_config.DB_CREATE_ERR_MSG);
-              
-              //console.log(cb, 123);
-            });
-              
-            /*if (name == null || src == null) throw new Error(up_config.DB_ATTR_REC_MSG);
+          if (errors.length !== up_config.NO_ERR_LN) throw new Error(errors);
+          
+          if (name == null || src == null) throw new Error(up_config.DB_ATTR_REC_MSG); 
             
-            upData = {name:name, src:src, is_deleted:false};
+          upData = { name: name, src: src, is_deleted: false };
+          
+          DbCrud.updateImgById(this_newCollectionDb._id, upData).exec(function(err, cb) {
             
-            DbCrud.update({ _id: req.body.id }, upData, { multi: false } ,function (err, cb) {
-                  
-              if (err) throw new Error(up_config.DB_CREATE_ERR_MSG);
-                console.log(cb);
-                
-            });*/
-          
-          } catch (err) {
-              console.log(79, err, 'err');
-              
-            // DELETE REC FROM DB AND END
-          }
-    
-          /*try {
-              
-            if (errors.length !== up_config.NO_ERR_LN) throw new Error(errors);
-              
-          } catch (err) {
-              
-            if (fs.existsSync(uploadFile.path)) fs.unlinkSync(uploadFile.path);
-              
-            res.send({status: '405', text: errors});
-            console.log(err.message);
-          }
-          
-          res.send({status: 201 , text: 'created'});*/
-          
-        });
-         
-        form.on('part', function(part) {
-          
-          part.on('error', function(){
-            res.send(406 , up_config.NOT_ACCEPTABLE_MSG);
+            if (err) return next(up_config.DB_CREATE_ERR_MSG);
+            
           });
+            
+          res.send({status: 201 , text: 'created'});
+            
+            
+        } catch (err) {
           
-          uploadFile.size = part.byteCount;
-          uploadFile.type = part.headers['content-type'];
-          uploadFile.name = part.filename;
-          uploadFile.path = up_config.UPLOAD_PATH + uploadFile.id;
+          if (fs.existsSync(uploadFile.path)) fs.unlinkSync(uploadFile.path);
           
-          if (uploadFile.size > up_config.MAX_SIZE) {
-              errors.push(up_config.LIM_SIZE_ERR);
-          }
+          cb.remove(this_newCollectionDb);
           
-          if (up_config.SUPPORT_MIME_TYPES.indexOf(uploadFile.type) == -1) {
-              errors.push(up_config.MIME_TYPE_ERR + uploadFile.type);
-          }
-    
-          if (errors.length == up_config.NO_ERR_LN) {
-    
-            var out = fs.createWriteStream(uploadFile.path);
-              part.pipe(out);
-              
-          } else {
-         
-              part.resume();
-              
-          }
-    
+          res.send({status: '405', text: errors}); console.log(err.message , errors);
+          
+          // DELETE REC FROM DB AND END
+        }
+        
+      });
+       
+      form.on('part', function(part) {
+        
+        part.on('error', function(){
+          res.send(406 , up_config.NOT_ACCEPTABLE_MSG);
         });
         
-        form.parse(req);
+        uploadFile.size = part.byteCount;
+        uploadFile.type = part.headers['content-type'];
+        uploadFile.name = part.filename;
+        uploadFile.path = up_config.UPLOAD_PATH + uploadFile.id;
+        
+        if (uploadFile.size > up_config.MAX_SIZE) {
+            errors.push(up_config.LIM_SIZE_ERR);
+        }
+        
+        if (up_config.SUPPORT_MIME_TYPES.indexOf(uploadFile.type) == -1) {
+            errors.push(up_config.MIME_TYPE_ERR + uploadFile.type);
+        }
+  
+        if (errors.length == up_config.NO_ERR_LN) {
+  
+          var out = fs.createWriteStream(uploadFile.path);
+            part.pipe(out);
+            
+        } else {
+       
+            part.resume();
+            
+        }
+  
+      });
+      
+      form.parse(req);
     
     });
     
