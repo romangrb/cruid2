@@ -22,79 +22,91 @@
     
     var form = new multiparty.Form();
     
-    var uploadFile = {uploadPath: '', type: '', size: 0, name: ''};
+    var uploadFile = {uploadPath: '', type: '', size: 0, name: '', id: ''};
     
-    var errors = [];
-
-    form.on('error', function(err){
-      //if (fs.existsSync(uploadFile.path)) fs.unlinkSync(uploadFile.path);
-      errors.push(err);
+    
+    DbCrud.createNewIdImg({}).save(function (err, cb) {
+              
+      if (err) return console.log(up_config.DB_CREATE_ERR_MSG);
+        
+        uploadFile.id = cb._id;
+        
+        var errors = [];
+    
+        form.on('error', function(err){
+          if (fs.existsSync(uploadFile.path)) fs.unlinkSync(uploadFile.path);
+          errors.push(err);
+        });
+        
+        form.on('close', function() {
+    
+          try {
+              
+            if (errors.length !== up_config.NO_ERR_LN) throw new Error(errors);
+              
+          } catch (err) {
+              
+            if (fs.existsSync(uploadFile.path)) fs.unlinkSync(uploadFile.path);
+              
+            res.send({status: '405', text: errors});
+            console.log(err.message);
+          }
+          
+          res.send({status: 201 , text: 'created'});
+          
+        });
+        
+        form.on('part', function(part) {
+          
+          part.on('error', function(){
+            res.send(406 , up_config.NOT_ACCEPTABLE_MSG);
+          });
+          
+          uploadFile.size = part.byteCount;
+          uploadFile.type = part.headers['content-type'];
+          uploadFile.name = part.filename;
+          uploadFile.path = up_config.UPLOAD_PATH + uploadFile.id;
+      
+          try {
+              
+            console.log(DbCrud.update(), uploadFile.path,123) ;
+            /*DbCrud.createNewImg(name, path).save(function (err, cb) {
+                  
+              if (err) throw new Error(up_config.DB_CREATE_ERR_MSG);
+                uploadFile.path = cb.src;
+                console.log(typeof uploadFile.path, uploadFile.path );
+                //console.log(uploadFile.path,1);
+            });*/
+          
+          } catch (err) {
+              console.log(79, err, 'err');
+          }
+          
+          if (uploadFile.size > up_config.MAX_SIZE) {
+              errors.push(up_config.LIM_SIZE_ERR);
+          }
+          
+          if (up_config.SUPPORT_MIME_TYPES.indexOf(uploadFile.type) == -1) {
+              errors.push(up_config.MIME_TYPE_ERR + uploadFile.type);
+          }
+    
+          if (errors.length == up_config.NO_ERR_LN) {
+    
+            var out = fs.createWriteStream(uploadFile.path);
+              part.pipe(out);
+              
+          } else {
+         
+              part.resume();
+              
+          }
+    
+        });
+        
+        form.parse(req);
+    
     });
     
-    form.on('close', function() {
-
-      try {
-          
-        if (errors.length !== up_config.NO_ERR_LN) throw new Error(errors);
-          
-      } catch (err) {
-          
-        if (fs.existsSync(uploadFile.path)) fs.unlinkSync(uploadFile.path);
-          
-        res.send({status: '405', text: errors});
-        console.log(err.message);
-      }
-      
-      res.send({status: 201 , text: 'created'});
-      
-    });
-    
-    form.on('part', function(part) {
-      
-      part.on('error', function(){
-        res.send(406 , up_config.NOT_ACCEPTABLE_MSG);
-      });
-      
-      uploadFile.size = part.byteCount;
-      uploadFile.type = part.headers['content-type'];
-      uploadFile.name = part.filename;
-      uploadFile.path = up_config.UPLOAD_PATH + uploadFile.name;
-      
-      var name = uploadFile.name,
-          path = up_config.UPLOAD_PATH;
-            
-      if (name == null || path == null) throw new Error(up_config.DB_ATTR_REC_MSG);
-      
-      DbCrud.createNewImg(name, path).save(function (err, cb) {
-            
-        if (err) throw new Error(up_config.DB_CREATE_ERR_MSG);
-          
-        console.log('create', cb);
-            
-      });
-      
-      if (uploadFile.size > up_config.MAX_SIZE) {
-          errors.push(up_config.LIM_SIZE_ERR);
-      }
-      
-      if (up_config.SUPPORT_MIME_TYPES.indexOf(uploadFile.type) == -1) {
-          errors.push(up_config.MIME_TYPE_ERR + uploadFile.type);
-      }
-
-      if (errors.length == up_config.NO_ERR_LN) {
-
-        var out = fs.createWriteStream(uploadFile.path);
-          part.pipe(out);
-          
-      } else {
-     
-          part.resume();
-          
-      }
-
-    });
-    
-    form.parse(req);
     
   });
  

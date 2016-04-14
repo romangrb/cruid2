@@ -17,6 +17,12 @@ var DbCrud = {
     return collection;
   },
   
+  createNewIdImg : function (obj) {
+    var RecCollection = mongoose.model(crud_config.COLLECTION_NAME),
+      collection = new RecCollection(obj);
+    return collection;
+  },
+  
   update : function () {
     return  mongoose.model(crud_config.COLLECTION_NAME).update;
   },
