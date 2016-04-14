@@ -20,14 +20,13 @@
     
     if (req.url!=='/') next();
     
-    var form = new multiparty.Form();
-    
-    var uploadFile = {uploadPath: '', type: '', size: 0, name: '', id: ''};
-    
-    
     DbCrud.createNewIdImg({}).save(function (err, cb) {
-              
+            
       if (err) return console.log(up_config.DB_CREATE_ERR_MSG);
+        
+        var form = new multiparty.Form();
+  
+        var uploadFile = {uploadPath: '', type: '', size: 0, name: '', id: ''};   
         
         uploadFile.id = cb._id;
         
