@@ -3,6 +3,7 @@
   var router = express.Router();
   var fs = require('fs');
   var multiparty = require('multiparty');
+  var getTypeFormat = require('../services/convert_type');
   var DbCrud = require('../services/crud_mongose_db');
   var up_config = require('../model/upload_model_constant');
   
@@ -22,7 +23,7 @@
     
     DbCrud.create({}).save(function (err, cb) {
             
-      if (err) return console.log(up_config.DB_CREATE_ERR_MSG);
+      if (err) return console.log(up_config.DB_CREATE_ERR_MSG); // provide log!!
         
       var form = new multiparty.Form();
       
@@ -30,7 +31,7 @@
         errors = [],
         this_newCollectionDb = cb;
         
-        uploadFile.id = this_newCollectionDb._id;
+      uploadFile.id = this_newCollectionDb._id;
         
       form.on('error', function(err){
         errors.push(err);
@@ -40,14 +41,14 @@
         
         try {
             
+          if (errors.length !== up_config.NO_ERR_LN) throw new Error(errors);
+          
           var name = uploadFile.name,
             src = uploadFile.path,
             upData;
-            
-          if (errors.length !== up_config.NO_ERR_LN) throw new Error(errors);
           
-          if (name == null || src == null) throw new Error(up_config.DB_ATTR_REC_MSG); 
-            
+          if (name == null) throw new Error(up_config.DB_ATTR_REC_MSG); 
+          
           upData = { name: name, src: src, is_deleted: false };
           
           DbCrud.updateById(this_newCollectionDb._id, upData).exec(function(err, cb) {
@@ -65,9 +66,8 @@
           
           cb.remove(this_newCollectionDb);
           
-          res.send({status: '405', text: errors}); console.log(err.message , errors);
+          res.send({status: '405', text: errors});
           
-          // DELETE REC FROM DB AND END
         }
         
       });
@@ -81,7 +81,7 @@
         uploadFile.size = part.byteCount;
         uploadFile.type = part.headers['content-type'];
         uploadFile.name = part.filename;
-        uploadFile.path = up_config.UPLOAD_PATH + uploadFile.id;
+        uploadFile.path = up_config.UPLOAD_PATH + uploadFile.id + getTypeFormat(part.filename);
         
         if (uploadFile.size > up_config.MAX_SIZE) {
             errors.push(up_config.LIM_SIZE_ERR);
