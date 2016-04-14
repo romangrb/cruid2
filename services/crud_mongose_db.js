@@ -27,6 +27,11 @@ var DbCrud = {
     return  mongoose.model(crud_config.COLLECTION_NAME).update;
   },
   
+  updateImgById : function (id, data) {
+    return  mongoose.model(crud_config.COLLECTION_NAME).
+      findByIdAndUpdate(id, data, {upsert: false});
+  },
+  
   findAll : function () {
     return  mongoose.model(crud_config.COLLECTION_NAME).find({});
   },

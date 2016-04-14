@@ -25,21 +25,55 @@
       if (err) return console.log(up_config.DB_CREATE_ERR_MSG);
         
         var form = new multiparty.Form();
-  
+        
         var uploadFile = {uploadPath: '', type: '', size: 0, name: '', id: ''};   
         
         uploadFile.id = cb._id;
         
         var errors = [];
-    
+          
         form.on('error', function(err){
           if (fs.existsSync(uploadFile.path)) fs.unlinkSync(uploadFile.path);
           errors.push(err);
         });
         
         form.on('close', function() {
-    
+          
           try {
+              
+            var name = uploadFile.name,
+              src = uploadFile.path,
+              upData;
+            
+            if (name == null || src == null) throw new Error(up_config.DB_ATTR_REC_MSG); 
+              
+            upData = { name: name, src: src, is_deleted: false };
+            
+            DbCrud.updateImgById(uploadFile.id, upData).exec(function(err, cb) {
+        
+              if (err) return next(up_config.DB_CREATE_ERR_MSG);
+              
+              //console.log(cb, 123);
+            });
+              
+            /*if (name == null || src == null) throw new Error(up_config.DB_ATTR_REC_MSG);
+            
+            upData = {name:name, src:src, is_deleted:false};
+            
+            DbCrud.update({ _id: req.body.id }, upData, { multi: false } ,function (err, cb) {
+                  
+              if (err) throw new Error(up_config.DB_CREATE_ERR_MSG);
+                console.log(cb);
+                
+            });*/
+          
+          } catch (err) {
+              console.log(79, err, 'err');
+              
+            // DELETE REC FROM DB AND END
+          }
+    
+          /*try {
               
             if (errors.length !== up_config.NO_ERR_LN) throw new Error(errors);
               
@@ -51,10 +85,10 @@
             console.log(err.message);
           }
           
-          res.send({status: 201 , text: 'created'});
+          res.send({status: 201 , text: 'created'});*/
           
         });
-        
+         
         form.on('part', function(part) {
           
           part.on('error', function(){
@@ -65,21 +99,6 @@
           uploadFile.type = part.headers['content-type'];
           uploadFile.name = part.filename;
           uploadFile.path = up_config.UPLOAD_PATH + uploadFile.id;
-      
-          try {
-              
-            console.log(DbCrud.update(), uploadFile.path,123) ;
-            /*DbCrud.createNewImg(name, path).save(function (err, cb) {
-                  
-              if (err) throw new Error(up_config.DB_CREATE_ERR_MSG);
-                uploadFile.path = cb.src;
-                console.log(typeof uploadFile.path, uploadFile.path );
-                //console.log(uploadFile.path,1);
-            });*/
-          
-          } catch (err) {
-              console.log(79, err, 'err');
-          }
           
           if (uploadFile.size > up_config.MAX_SIZE) {
               errors.push(up_config.LIM_SIZE_ERR);
