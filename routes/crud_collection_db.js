@@ -35,7 +35,7 @@ router.route('/')
        
         if (name == null || src == null) return next(crud_config.DB_ATTR_REC_MSG);
       
-        DbCrud.create(name, src, is_deleted).save(function (err, cb) {
+        DbCrud.create({ name:name, src:src, is_deleted:false }).save(function (err, cb) {
           
           if (err) return next(crud_config.DB_CREATE_ERR_MSG);
           

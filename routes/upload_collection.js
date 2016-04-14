@@ -20,7 +20,7 @@
     
     if (req.url!=='/') next();
     
-    DbCrud.createNewIdImg({}).save(function (err, cb) {
+    DbCrud.create({}).save(function (err, cb) {
             
       if (err) return console.log(up_config.DB_CREATE_ERR_MSG);
         
@@ -50,7 +50,7 @@
             
           upData = { name: name, src: src, is_deleted: false };
           
-          DbCrud.updateImgById(this_newCollectionDb._id, upData).exec(function(err, cb) {
+          DbCrud.updateById(this_newCollectionDb._id, upData).exec(function(err, cb) {
             
             if (err) return next(up_config.DB_CREATE_ERR_MSG);
             

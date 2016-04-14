@@ -3,31 +3,17 @@ var crud_config = require('../model/crud_model_constant');
 
 var DbCrud = {
   
-  create : function (name, src, is_deleted) {
-    is_deleted = is_deleted||false;
+  create : function (obj) {
+    obj['is_deleted'] = obj['is_deleted']||false;
     var RecCollection = mongoose.model(crud_config.COLLECTION_NAME);
-    return new RecCollection({name : name, src : src, is_deleted : is_deleted});
-  },
-  
-  createNewImg : function (name, path) {
-    var RecCollection = mongoose.model(crud_config.COLLECTION_NAME),
-      collection = new RecCollection({name:name});
-      collection['is_deleted'] = false;
-      collection['src'] = path+collection._id;
-    return collection;
-  },
-  
-  createNewIdImg : function (obj) {
-    var RecCollection = mongoose.model(crud_config.COLLECTION_NAME),
-      collection = new RecCollection(obj);
-    return collection;
+    return new RecCollection(obj);
   },
   
   update : function () {
     return  mongoose.model(crud_config.COLLECTION_NAME).update;
   },
   
-  updateImgById : function (id, data) {
+  updateById : function (id, data) {
     return  mongoose.model(crud_config.COLLECTION_NAME).
       findByIdAndUpdate(id, data, {upsert: false});
   },
