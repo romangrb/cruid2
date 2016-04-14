@@ -9,6 +9,18 @@ var DbCrud = {
     return new RecCollection({name : name, src : src, is_deleted : is_deleted});
   },
   
+  createNewImg : function (name, path) {
+    var RecCollection = mongoose.model(crud_config.COLLECTION_NAME),
+      collection = new RecCollection({name:name});
+      collection['is_deleted'] = false;
+      collection['src'] = path+collection._id;
+    return collection;
+  },
+  
+  update : function () {
+    return  mongoose.model(crud_config.COLLECTION_NAME).update;
+  },
+  
   findAll : function () {
     return  mongoose.model(crud_config.COLLECTION_NAME).find({});
   },
