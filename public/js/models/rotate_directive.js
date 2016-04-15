@@ -4,13 +4,13 @@
 
   angular
     .module('galleryApp')
-      .directive('rotate', ['$scope', function($scope) { 
+      .directive('rotate', function() { 
        
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
                 scope.$watch(attrs.degrees, function (rotateDegrees) {
-                    console.log(rotateDegrees);
+                  
                     var r = 'rotate(' + rotateDegrees + 'deg)';
                     element.css({
                         '-moz-transform': r,
@@ -22,6 +22,6 @@
             }
         };
         
-      }]);
+      });
       
 })(angular);  

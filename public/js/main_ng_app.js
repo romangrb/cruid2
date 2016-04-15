@@ -1,4 +1,4 @@
-(function(){
+(function(angular){
   
   "use strict";
   
@@ -42,5 +42,5 @@
     
   return galleryApp;
   
-})();  
+})(angular);  
 

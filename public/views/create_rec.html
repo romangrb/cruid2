@@ -44,9 +44,10 @@
   >
   {{value.name | toShortNameImg}}</br>
  
-  <img ngf-thumbnail="value" class="thumb"> 
+  <img ngf-thumbnail="value" rotate class="thumb" degrees='angle'> 
       
   <a ng-click='upload(this.key, this.value)' class="waves-effect waves-light btn">upload</a>
   <a ng-click='cancel(this.key, this.value)' class="waves-effect waves-light btn">cancel</a>
+  <a ng-click='rotate()' class="waves-effect waves-light btn">rotate</a>
   </li>
 </ul>

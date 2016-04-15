@@ -11,16 +11,18 @@
       var upload = {};
        // rotate function for directive
        // https://jsfiddle.net/romangrb/nz4jdwuf/7/
-       // current angle for route  
+       // current angle for route 
+       
+       
       var crntAngle = 0;
        
         $scope.rotate = function (angle) {
             
           crntAngle += 90;
              
-          crntAngle = (crntAngle > 360)? 0 : crntAngle;
+          crntAngle = (crntAngle > 360)? 90 : crntAngle;
             
-          $scope.angle = crntAngle;
+          $scope.angle = crntAngle;  console.log('rotate', crntAngle);
            
         };
             
