@@ -37,14 +37,14 @@
 </div>
 
 </form>
-
-<img degrees='angle'  class='rotateDirct' src='http://gravatar.com/avatar/9c5eac829bc1ce7488b497a7e70d198b?s=35&d=mm'/>
-    <a ng-click="rotate()" >rotate 1</a>
-</p>
- {{exempl}}
 <p>
-    <img degrees='angle'  class='rotateDirct' src='http://gravatar.com/avatar/9c5eac829bc1ce7488b497a7e70d198b?s=35&d=mm'/>
-    <a ng-click="rotate(name)">rotate 2</a>
+<img degrees='rrr'  class='rotateDirct' src='http://gravatar.com/avatar/9c5eac829bc1ce7488b497a7e70d198b?s=35&d=mm'/>
+<a ng-click="rotate()"> rotate 1 </a>
+</p>
+
+<p>
+  <img degrees='45'  class='rotateDirct' src='http://gravatar.com/avatar/9c5eac829bc1ce7488b497a7e70d198b?s=35&d=mm'/>
+  <a ng-click="rotate()"> rotate 2 </a>
 </p>
 
 
@@ -54,10 +54,10 @@
   >
   {{value.name | toShortNameImg}}</br>
  
-  <img ngf-thumbnail="value" rotate class="thumb" degrees='angle' degrees> 
+  <img ngf-thumbnail="value" degrees="{{this.key+'id'}}"  class="thumb rotateDirct"> 
       
   <a ng-click='upload(this.key, this.value)' class="waves-effect waves-light btn">upload</a>
   <a ng-click='cancel(this.key, this.value)' class="waves-effect waves-light btn">cancel</a>
-  <a ng-click='rotate()' class="waves-effect waves-light btn">rotate</a>
+  <a ng-click="rotate(this.key+'id')" class="waves-effect waves-light btn">rotate</a>
   </li>
 </ul>
