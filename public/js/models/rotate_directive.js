@@ -4,7 +4,7 @@
 
   angular
     .module('galleryApp')
-      .directive('rotate', ['$scope', 'vDataService', function($scope, vDataService) { 
+      .directive('rotate', ['$scope', function($scope) { 
        
         return {
             restrict: 'A',
