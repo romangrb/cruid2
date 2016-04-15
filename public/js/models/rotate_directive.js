@@ -4,25 +4,23 @@
 
   angular
     .module('galleryApp')
-      .directive('rotateFlip', ['$scope', 'vDataService', function($scope, vDataService) { 
-        var first = true;
-        
-  			return {
-  				restrict: "A",
-  				scope: {
-  					flag: "=rotateFlip"
-  				},
-  				link: function(scope, element) {
-  					scope.$watch("flag", function() {
-  						_toggle(scope, element, !first);
-  						first = false;
-  					});
-  
-  					function _toggle(scope, element) {
-  						element.toggleClass("rotated", scope.flag);
-  					}
-  				}
-  			};
+      .directive('rotate', ['$scope', 'vDataService', function($scope, vDataService) { 
+       
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                scope.$watch(attrs.degrees, function (rotateDegrees) {
+                    console.log(rotateDegrees);
+                    var r = 'rotate(' + rotateDegrees + 'deg)';
+                    element.css({
+                        '-moz-transform': r,
+                        '-webkit-transform': r,
+                        '-o-transform': r,
+                        '-ms-transform': r
+                    });
+                });
+            }
+        };
         
       }]);
       
