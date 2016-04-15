@@ -38,13 +38,23 @@
 
 </form>
 
+<img degrees='angle'  class='rotateDirct' src='http://gravatar.com/avatar/9c5eac829bc1ce7488b497a7e70d198b?s=35&d=mm'/>
+    <a ng-click="rotate()" >rotate 1</a>
+</p>
+ {{exempl}}
+<p>
+    <img degrees='angle'  class='rotateDirct' src='http://gravatar.com/avatar/9c5eac829bc1ce7488b497a7e70d198b?s=35&d=mm'/>
+    <a ng-click="rotate(name)">rotate 2</a>
+</p>
+
+
 <ul class="collection">
   <li class="collection-item" 
     ng-repeat="(key, value) in file_collection track by $index"
   >
   {{value.name | toShortNameImg}}</br>
  
-  <img ngf-thumbnail="value" rotate class="thumb" degrees='angle'> 
+  <img ngf-thumbnail="value" rotate class="thumb" degrees='angle' degrees> 
       
   <a ng-click='upload(this.key, this.value)' class="waves-effect waves-light btn">upload</a>
   <a ng-click='cancel(this.key, this.value)' class="waves-effect waves-light btn">cancel</a>
