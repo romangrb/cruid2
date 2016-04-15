@@ -16,28 +16,29 @@
        
       var crntAngle = 0;
        
-        $scope.rotate = function (id) {
-    console.log(id);
+        $scope.rotate = function (data) {
+          var angle = data.tmpId;
+          console.log(angle);
           crntAngle += 90;
              
           crntAngle = (crntAngle > 360)? 90 : crntAngle;
-          $scope.rrr = crntAngle;
-          $scope.angle = crntAngle;  console.log('rotate', crntAngle);
+          $scope.angle = crntAngle;
+          //$scope.angle = crntAngle;  console.log('rotate', crntAngle);
            
         };
             
             
-        $scope.upload = function(key, file_data, additionallData){
+        $scope.upload = function(key, file_data){
             
           if (file_data == null || key == null) return;
             // add additionall data
             console.log(file_data, 1);
-            /*upload[key] = Upload.upload({
+          /*  upload[key] = Upload.upload({
               url: constant.UPLOAD_URL,
               data:{files:file_data}
-            });*/
+            });
             
-        // $scope.getRequest(key);
+          $scope.getRequest(key);*/
           
         };
         
@@ -46,13 +47,12 @@
           if (files == null) return;
           
           angular.forEach(files, function(value, key) {
-            
-            upload[key] = Upload.upload({
+            /*upload[key] = Upload.upload({
               url: constant.UPLOAD_URL,
               data:{files:value}
             });
           
-          $scope.getRequest(key);
+          $scope.getRequest(key);*/
   
           });
           
