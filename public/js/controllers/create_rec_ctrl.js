@@ -9,9 +9,15 @@
       // initiate upload service
       
       var upload = {};
+      
+        $scope.rotated = false;
         
+        $scope.rotate = function() {
+          $scope.rotated = !$scope.rotated;
+        };
+         
         $scope.upload = function(key, file_data){
-        
+            
           if (file_data == null || key == null) return;
             
             upload[key] = Upload.upload({

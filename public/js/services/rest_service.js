@@ -1,4 +1,4 @@
-(function(){
+(function(angular){
 
   'use strict';
 
@@ -41,7 +41,7 @@
         
       }]);
       
-})();        
+})(angular);        
         
        
        /* obj.createData = function (dataObj, restQuery) {
