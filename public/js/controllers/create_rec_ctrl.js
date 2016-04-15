@@ -117,9 +117,10 @@
         var dataHash = {};
         
           angular.forEach(data, function(value, key) {
+            value['tmpId'] = random.makeId();
             this[key] = value;
           }, dataHash);
-          console.log(dataHash,123);
+          
           return dataHash;
         }
         
