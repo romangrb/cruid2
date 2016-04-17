@@ -13,6 +13,9 @@
       DFLT_IMG_STR_TYPE_ERR_MSG : 'the name is not a string type',
       MAX_ANG : 360,
       DFLT_STEP_ANG : 90,
+      TMP_ID_NAME : 'tmpId',
+      DATA_NAME : 'data'
+      
       
     });
     
