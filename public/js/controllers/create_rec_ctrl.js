@@ -22,7 +22,6 @@
           crntAngle += 90;
              
           crntAngle = (crntAngle > 360)? 90 : crntAngle;
-          $scope.angle = crntAngle;
           //$scope.angle = crntAngle;  console.log('rotate', crntAngle);
            
         };
