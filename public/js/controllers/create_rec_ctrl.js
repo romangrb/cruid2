@@ -20,8 +20,8 @@
           	
         	if (!id) return;
           	
-          crntAngle += 90;
-          crntAngle = (crntAngle>360)? 90 :  crntAngle;
+          crntAngle += constant.DFLT_STEP_ANG;
+          crntAngle = (crntAngle>constant.MAX_ANG)? constant.DFLT_STEP_ANG :  crntAngle;
           
               $scope.angle = crntAngle;
               $scope.tmpId = id; 

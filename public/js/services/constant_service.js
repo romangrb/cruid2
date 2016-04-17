@@ -11,6 +11,8 @@
       DFLT_IMG_NAME_START_LN : 17,
       DFLT_IMG_NAME_DEV :  '...',
       DFLT_IMG_STR_TYPE_ERR_MSG : 'the name is not a string type',
+      MAX_ANG : 360,
+      DFLT_STEP_ANG : 90,
       
     });
     
