@@ -16,15 +16,17 @@
        
       	$scope.tmpId = null;
       	
-        $scope.rotate = function (id) {
+        $scope.rotate = function (id, upTarget) {
           	
         	if (!id) return;
           	
           crntAngle += constant.DFLT_STEP_ANG;
           crntAngle = (crntAngle>constant.MAX_ANG)? constant.DFLT_STEP_ANG :  crntAngle;
           
-              $scope.angle = crntAngle;
-              $scope.tmpId = id; 
+            $scope.angle = crntAngle;
+            $scope.tmpId = id;
+            upTarget.data.angle = crntAngle;
+            
           };
             
         $scope.upload = function(key, file_data){
@@ -116,7 +118,8 @@
         var dataHash = {};
         
           angular.forEach(data, function(value, key) {
-            value['tmpId'] = random.makeId();
+            value[constant.TMP_ID_NAME] = random.makeId();
+            value[constant.DATA_NAME] = {},
             this[key] = value;
           }, dataHash);
           
