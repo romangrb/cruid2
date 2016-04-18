@@ -14,9 +14,10 @@
       ngf-pattern="'image/*'">images here or click to upload
     </div>
     <div ngf-no-file-drop ng-if='isDroppable=false'></div>
-    
+    <!--
     <div ng-if="this.files" class="btn" ng-click="uploadAll(this.files)">upload All</div>
     <div ng-if="this.files" class="btn" ng-click="cancelAll()">cancel All</div>
+    -->
   </div>  
   
   <div ng-if='!isDroppable'>
@@ -50,10 +51,10 @@
 <!--  {{value.name | toShortNameImg}}</br>-->
 
 <!-- Modal Trigger -->
-<button ng-click='openModule(value)' data-target="modal1" class="btn modal-trigger" >Modal</button>
+<button ng-click='openModule($index, value)' data-target="{{$index}}" class="btn modal-trigger" >Modal</button>
 
 <!-- Modal Structure -->
-<div id="modal1" class="modal">
+<div id="{{$index}}" class="modal">
   <div class="modal-content">
     <h4>Croup edit</h4>
     <p>In squere content you seeing the view of trumbnail</p>
@@ -74,7 +75,7 @@
   </div>
   <div class="modal-footer">
     <!-- Modal Trigger -->
-    <button ng-click='closeModule()' data-target="modal1" class="btn modal-trigger" >Close</button>
+    <button ng-click='closeModule($index)' data-target="{{$index}}" class="btn modal-trigger" >Close</button>
     
   </div>
 </div>

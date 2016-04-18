@@ -119,6 +119,7 @@
           upload = {};
           
           $scope.file_collection = createImgCollection(data);
+          
         };
         
         function createImgCollection(data){
@@ -140,21 +141,22 @@
         $scope.isDroppable = true;
         
         
-        
         $scope.trumbImg = '';
         $scope.trumbCroppedImg = '';
         
-        
-        $scope.closeModule = function(){
+        $scope.closeModule = function(key){
+          var id = '#'+key;
           
-          console.log($scope.trumbCroppedImg);
-          $('#modal1').closeModal();
+          $scope.trumbImg = '';
+          $scope.trumbCroppedImg = '';
+          
+          $(id).closeModal();
           
         };
       
-        $scope.openModule = function(data){
-          
-          $('#modal1').openModal();
+        $scope.openModule = function(key, data){
+          var id = '#'+key;
+          $(id).openModal();
        
           var getThumbnaiView = function(fdata){
           
