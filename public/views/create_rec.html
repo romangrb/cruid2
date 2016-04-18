@@ -49,21 +49,36 @@
           <label for="this.value.tmpId">Name</label>
 <!--  {{value.name | toShortNameImg}}</br>-->
 
-
 <!-- Modal Trigger -->
-<a class="modal-trigger waves-effect waves-light btn" href="#modal1">Modal</a>
+<button ng-click='openModule(value)' data-target="modal1" class="btn modal-trigger" >Modal</button>
 
 <!-- Modal Structure -->
-<div id="modal-trigger" class="modal modal-fixed-footer">
+<div id="modal1" class="modal">
   <div class="modal-content">
-    <h4>Modal Header</h4>
-    <p>A bunch of text</p>
+    <h4>Croup edit</h4>
+    <p>In squere content you seeing the view of trumbnail</p>
+    
+    <div class="cropArea">
+      <img-crop 
+        image="trumbImg" 
+        result-image="trumbCroppedImg"
+        area-type="square"
+        area-min-size="128"
+        on-load-begin="loadBegin()"
+        on-load-done="loadDone()"
+        on-load-error="loadError()"
+      >
+      </img-crop>
+    </div>
+    
   </div>
   <div class="modal-footer">
-    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
+    <!-- Modal Trigger -->
+    <button ng-click='closeModule()' data-target="modal1" class="btn modal-trigger" >Close</button>
+    
   </div>
 </div>
-          
+
 
 </br>
   <img ngf-thumbnail="value" rotate-dirct degrees='angle' tmpid='{{this.value.tmpId}}' class="thumb"> 
