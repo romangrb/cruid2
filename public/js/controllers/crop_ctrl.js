@@ -27,7 +27,7 @@
         };
         
         angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
-          
+        
      
     }]);
 
