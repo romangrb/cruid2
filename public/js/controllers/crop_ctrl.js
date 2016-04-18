@@ -9,8 +9,19 @@
         $scope.trumbImg = '';
         $scope.trumbCroppedImg = '';
        		
-        $scope.getThumbnailData = function (){
-        	console.log($scope.trumbCroppedImg); 
+        $scope.setChange = function (){
+          
+          vDataService.setVdata(data);
+          $location.path('/create_rec');
+          
+          //console.log($scope.trumbCroppedImg); 
+        };
+        
+        $scope.cancel = function (){
+          
+          $location.path('/create_rec');
+          
+          //console.log($scope.trumbCroppedImg); 
         };
         
         var data = vDataService.getVdata();
