@@ -140,38 +140,59 @@
         // for directive eather drag is supported or not
         $scope.isDroppable = true;
         
+        var trumbCroppedImgDataObj = null,
+          targetObj = null;
         
-        $scope.trumbImg = '';
-        $scope.trumbCroppedImg = '';
+        $scope.trumbImg = null;
+        $scope.trumbCroppedImg = null;
+        
+        $scope.getBit = function (){
+        	console.log($scope.myCroppedImage); 
+        };
+        
         
         $scope.closeModule = function(key){
+          console.log(149, $scope.trumbCroppedImg);
           var id = '#'+key;
-          
-          $scope.trumbImg = '';
-          $scope.trumbCroppedImg = '';
-          
-          $(id).closeModal();
+            
+          if ($scope.trumbCroppedImg) targetObj[constant.DATA_NAME]['cropData'] = $scope.trumbCroppedImg;
+            console.log(targetObj, $scope.trumbCroppedImg);
+            $scope.trumbImg = null;
+            $scope.trumbCroppedImg = null;
+            
+            $(id).closeModal();
           
         };
       
         $scope.openModule = function(key, data){
+          
           var id = '#'+key;
-          $(id).openModal();
-       
-          var getThumbnaiView = function(fdata){
-          
-          var file=fdata,
-           reader = new FileReader();
-          
-          reader.onload = function (evt) {
-            $scope.$apply(function($scope){
-              $scope.trumbImg=evt.target.result;
-            });
+           
+            targetObj = data;
+            
+            $(id).openModal();
+            
+            var getThumbnaiView = function(fdata){
+            
+            var file=fdata,
+             reader = new FileReader();
+             
+            reader.onload = function (evt) {
+              console.log(evt);
+              $scope.$apply(function($scope){
+                $scope.trumbImg=evt.target.result;
+              });
+            };
+            reader.readAsDataURL(file);
+            console.log(fdata);
           };
-          reader.readAsDataURL(file);
-        };
         
-          if (data && Object.keys(data).length!=0) getThumbnaiView(data);
+          if (data && Object.keys(data).length!=0) {
+            getThumbnaiView(data);
+            console.log(1);
+          }else{
+            console.log(2);
+          }
            
           angular.element(document.querySelector('#fileInput')).on('change',getThumbnaiView);
           

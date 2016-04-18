@@ -75,11 +75,10 @@
   </div>
   <div class="modal-footer">
     <!-- Modal Trigger -->
+    <button ng-click='getBit()' data-target="{{$index}}" class="btn modal-trigger" >DATA</button>
     <button ng-click='closeModule($index)' data-target="{{$index}}" class="btn modal-trigger" >Close</button>
-    
   </div>
 </div>
-
 
 </br>
   <img ngf-thumbnail="value" rotate-dirct degrees='angle' tmpid='{{this.value.tmpId}}' class="thumb"> 

@@ -14,8 +14,7 @@
       MAX_ANG : 360,
       DFLT_STEP_ANG : 90,
       TMP_ID_NAME : 'tmpId',
-      DATA_NAME : 'data'
-      
+      DATA_NAME : 'data',
       
     });
     
