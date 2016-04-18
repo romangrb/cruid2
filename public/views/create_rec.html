@@ -50,8 +50,22 @@
 <!--  {{value.name | toShortNameImg}}</br>-->
 
 
+<!-- Modal Trigger -->
+<a class="modal-trigger waves-effect waves-light btn" href="#modal1">Modal</a>
 
-  </br>
+<!-- Modal Structure -->
+<div id="modal-trigger" class="modal modal-fixed-footer">
+  <div class="modal-content">
+    <h4>Modal Header</h4>
+    <p>A bunch of text</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>
+  </div>
+</div>
+          
+
+</br>
   <img ngf-thumbnail="value" rotate-dirct degrees='angle' tmpid='{{this.value.tmpId}}' class="thumb"> 
       
   <a ng-click='upload(this.key, this.value)' class="waves-effect waves-light btn">upload</a>
