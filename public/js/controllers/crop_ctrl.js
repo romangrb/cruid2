@@ -6,34 +6,31 @@
     .module('galleryApp')
       .controller('cropCtrl', ['$scope', '$location', 'RestService', 'Upload', 'vDataService', 'constant', 'random', function ($scope, $location, RestService, Upload, vDataService, constant, random) {
         
-        $scope.myImage = '';
-        $scope.myCroppedImage = '';
+        $scope.trumbImg = '';
+        $scope.trumbCroppedImg = '';
        		
-        $scope.getBit = function (){
-        	console.log($scope.myCroppedImage); 
+        $scope.getThumbnailData = function (){
+        	console.log($scope.trumbCroppedImg); 
         };
         
-        console.log(vDataService.getVdata(), 123);
+        var data = vDataService.getVdata();
         
-        
-        $scope.path = "D:\\w\\brown-200873.jpg";
-        
-        $scope.img = "lala";
-        
-        var handleFileSelect=function(evt) {
+        var getThumbnaiView = function(fdata){
           
-          var file=evt.currentTarget.files[0];
-          var reader = new FileReader();
+          var file=fdata,
+           reader = new FileReader();
           
           reader.onload = function (evt) {
             $scope.$apply(function($scope){
-              $scope.myImage=evt.target.result;
+              $scope.trumbImg=evt.target.result;
             });
           };
           reader.readAsDataURL(file);
         };
         
-        angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
+        if (data && Object.keys(data).length!=0) getThumbnaiView(data);
+         
+        angular.element(document.querySelector('#fileInput')).on('change',getThumbnaiView);
         
         $scope.loadBegin = function(){
           console.info('Crop begin');   
@@ -44,7 +41,7 @@
         };
         
         $scope.loadError = function(){
-          console.info('Crop Err');   
+          console.warn('Crop Errror');   
         };
      
     }]);

@@ -1,13 +1,12 @@
-<div>Select an image file: 
 
-  <input type="file" id="fileInput" />
-  <button ng-click="getBit()">Click ME</button>
-</div>
+<button ng-click="getThumbnailData()">Get 64Bit</button>
 <a href="/create_rec" class="collection-item">back</a>
+
+
 <div class="cropArea">
   <img-crop 
-    image="myImage" 
-    result-image="myCroppedImage"
+    image="trumbImg" 
+    result-image="trumbCroppedImg"
     area-type="square"
     area-min-size="128"
     on-load-begin="loadBegin()"
@@ -16,5 +15,3 @@
   >
   </img-crop>
 </div>
-<div>Cropped Image:</div>
-<div><img ng-src="{{myCroppedImage}}" /></div>
