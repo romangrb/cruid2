@@ -1,4 +1,29 @@
 <form name="upload_form">
+  
+  <div>Select an image file: <input type="file" id="fileInput" /></div>
+  <div class="cropArea">
+    <img-crop image="myImage" result-image="myCroppedImage"></img-crop>
+  </div>
+  <div>Cropped Image:</div>
+  <div><img ng-src="{{myCroppedImage}}" /></div>
+  <button ng-click="getBit()">Click ME</button>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   <div class="file-field input-field" ng-if='isDroppable'>
     Drop File:
     <div
@@ -42,8 +67,11 @@
   <li class="collection-item" 
     ng-repeat="(key, value) in file_collection track by $index"
   >
-  {{value.name | toShortNameImg}}</br>
- 
+  <i class="material-icons prefix">account_circle</i>
+          <input id="this.value.tmpId" type="text" value="{{value.name}}" name="imgName" ng-click="changeName(value.name)" class="validate">
+          <label for="this.value.tmpId">Name</label>
+<!--  {{value.name | toShortNameImg}}</br>-->
+  </br>
   <img ngf-thumbnail="value" rotate-dirct degrees='angle' tmpid='{{this.value.tmpId}}' class="thumb"> 
       
   <a ng-click='upload(this.key, this.value)' class="waves-effect waves-light btn">upload</a>
