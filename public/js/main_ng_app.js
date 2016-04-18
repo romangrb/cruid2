@@ -11,8 +11,8 @@
     			controller: 'homeCtrl'
     		}).*/
     		when('/', {
-    			templateUrl: 'views/create_rec.html',
-    			controller: 'createRecCtrl'	
+    			templateUrl: 'views/crop.html',
+    			controller: 'cropCtrl'	
     		}).
     		when('/home', {
     			templateUrl: '/views/home.html',
@@ -33,6 +33,10 @@
     		when('/edit_rec', {
     			templateUrl: 'views/edit_rec.html',
     			controller: 'editRecCtrl'	
+    		}).
+    		when('/crop', {
+    			templateUrl: '/views/crop.html',
+    			controller: 'cropCtrl'
     		}).
     		otherwise({
           redirectTo: '/'
