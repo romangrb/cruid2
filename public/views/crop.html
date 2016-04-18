@@ -5,8 +5,16 @@
 </div>
 <a href="/create_rec" class="collection-item">back</a>
 <div class="cropArea">
-  <img-crop image="myImage" result-image="myCroppedImage"></img-crop>
+  <img-crop 
+    image="myImage" 
+    result-image="myCroppedImage"
+    area-type="square"
+    area-min-size="128"
+    on-load-begin="loadBegin()"
+    on-load-done="loadDone()"
+    on-load-error="loadError()"
+  >
+  </img-crop>
 </div>
-  <div>Cropped Image:</div>
-  <div><img ng-src="{{myCroppedImage}}" /></div>
-  
+<div>Cropped Image:</div>
+<div><img ng-src="{{myCroppedImage}}" /></div>

@@ -4,7 +4,7 @@
   
   angular
     .module('galleryApp')
-      .controller('cropCtrl', ['$scope', 'RestService', 'Upload', 'constant', 'random', function ($scope, RestService, Upload, constant, random) {
+      .controller('cropCtrl', ['$scope', '$location', 'RestService', 'Upload', 'vDataService', 'constant', 'random', function ($scope, $location, RestService, Upload, vDataService, constant, random) {
         
         $scope.myImage = '';
         $scope.myCroppedImage = '';
@@ -12,6 +12,13 @@
         $scope.getBit = function (){
         	console.log($scope.myCroppedImage); 
         };
+        
+        console.log(vDataService.getVdata(), 123);
+        
+        
+        $scope.path = "D:\\w\\brown-200873.jpg";
+        
+        $scope.img = "lala";
         
         var handleFileSelect=function(evt) {
           
@@ -28,6 +35,17 @@
         
         angular.element(document.querySelector('#fileInput')).on('change',handleFileSelect);
         
+        $scope.loadBegin = function(){
+          console.info('Crop begin');   
+        };
+        
+        $scope.loadDone = function(){
+          console.info('Crop done');   
+        };
+        
+        $scope.loadError = function(){
+          console.info('Crop Err');   
+        };
      
     }]);
 

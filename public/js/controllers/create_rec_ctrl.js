@@ -4,7 +4,7 @@
   
   angular
     .module('galleryApp')
-      .controller('createRecCtrl', ['$scope', 'RestService', 'Upload', 'constant', 'random', function ($scope, RestService, Upload, constant, random) {
+      .controller('createRecCtrl', ['$scope', '$location', 'RestService', 'Upload', 'vDataService', 'constant', 'random', function ($scope, $location, RestService, Upload, vDataService, constant, random) {
   
       // initiate upload service
       
@@ -28,6 +28,12 @@
             upTarget.data.angle = crntAngle;
             
           };
+          
+        $scope.crop = function(dataId, data){
+          if (!data) return;
+            vDataService.setVdata(data);
+            $location.path('/crop');
+        };
           
         $scope.changeName = function(file_data){
           console.log(file_data,33);
@@ -58,7 +64,7 @@
             });
           
           $scope.getRequest(key);*/
-  
+          
           });
           
         };
@@ -132,7 +138,6 @@
         
         // for directive eather drag is supported or not
         $scope.isDroppable = true;
-        
         
     }]);
 

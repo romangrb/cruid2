@@ -11,8 +11,8 @@
     			controller: 'homeCtrl'
     		}).*/
     		when('/', {
-    			templateUrl: 'views/crop.html',
-    			controller: 'cropCtrl'	
+    			templateUrl: 'views/create_rec.html',
+    			controller: 'createRecCtrl'	
     		}).
     		when('/home', {
     			templateUrl: '/views/home.html',

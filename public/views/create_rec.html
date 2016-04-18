@@ -7,7 +7,8 @@
       name="file" 
       class="drop-box" 
       ngf-drag-over-class="'dragover'" 
-      ngf-multiple="true" ngf-allow-dir="true"
+      ngf-multiple="true" 
+      ngf-allow-dir="true"
       accept="image/*"
       ng-change="showFiles(this.files)"
       ngf-pattern="'image/*'">images here or click to upload
@@ -33,9 +34,9 @@
         ngf-select
       >
     </div>
-   <div ng-if="this.files" class="btn" ng-click="uploadAll(this.files)">upload All</div>
+    <div ng-if="this.files" class="btn" ng-click="uploadAll(this.files)">upload All</div>
    
-</div>
+  </div>
 
 </form>
 
@@ -47,11 +48,15 @@
           <input id="this.value.tmpId" type="text" value="{{value.name}}" name="imgName" ng-click="changeName(value.name)" class="validate">
           <label for="this.value.tmpId">Name</label>
 <!--  {{value.name | toShortNameImg}}</br>-->
+
+
+
   </br>
   <img ngf-thumbnail="value" rotate-dirct degrees='angle' tmpid='{{this.value.tmpId}}' class="thumb"> 
       
   <a ng-click='upload(this.key, this.value)' class="waves-effect waves-light btn">upload</a>
   <a ng-click='cancel(this.key, this.value)' class="waves-effect waves-light btn">cancel</a>
   <a ng-click="rotate(this.value.tmpId, this.value)" class="waves-effect waves-light btn">rotate</a>
+  <a ng-click="crop(this.value.tmpId, this.value)" class="waves-effect waves-light btn">crop</a>
   </li>
 </ul>
