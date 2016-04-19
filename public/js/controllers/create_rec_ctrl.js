@@ -4,7 +4,7 @@
   
   angular
     .module('galleryApp')
-      .controller('createRecCtrl', ['$scope', '$location', 'RestService', 'Upload', 'vDataService', 'constant', 'random', function ($scope, $location, RestService, Upload, vDataService, constant, random) {
+      .controller('createRecCtrl', ['$scope', '$location', 'RestService', 'Upload',  'constant', 'random', function ($scope, $location, RestService, Upload,  constant, random) {
   
       // initiate upload service
       

@@ -16,12 +16,12 @@
                     	
                     var r = 'rotate(' + rotateDegrees + 'deg)';
                     
-                        element.css({
-                          '-moz-transform': r,
-                          '-webkit-transform': r,
-                          '-o-transform': r,
-                          '-ms-transform': r
-                        });
+                      element.css({
+                        '-moz-transform': r,
+                        '-webkit-transform': r,
+                        '-o-transform': r,
+                        '-ms-transform': r
+                      });
                       
                 });
             }
