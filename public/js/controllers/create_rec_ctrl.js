@@ -31,8 +31,7 @@
           
         $scope.crop = function(dataId, data){
           if (!data) return;
-            vDataService.setVdata(data);
-            $location.path('/crop');
+            console.log(data);
         };
           
         $scope.changeName = function(file_data){
@@ -140,31 +139,32 @@
         // for directive eather drag is supported or not
         $scope.isDroppable = true;
         
+        
+        
         var trumbCroppedImgDataObj = null,
           targetObj = null;
         
-        $scope.trumbImg = null;
-        $scope.trumbCroppedImg = null;
-        
-        $scope.getBit = function (){
-        	console.log($scope.myCroppedImage); 
+        $scope.image = {
+           trumbImg: '',
+           trumbCroppedImg: ''
         };
         
-        
         $scope.closeModule = function(key){
-          console.log(149, $scope.trumbCroppedImg);
+          console.log('CLOSE DONE');
           var id = '#'+key;
             
-          if ($scope.trumbCroppedImg) targetObj[constant.DATA_NAME]['cropData'] = $scope.trumbCroppedImg;
-            console.log(targetObj, $scope.trumbCroppedImg);
-            $scope.trumbImg = null;
-            $scope.trumbCroppedImg = null;
+          if ($scope.image.trumbCroppedImg) targetObj[constant.DATA_NAME]['cropData'] = $scope.image.trumbCroppedImg;
+            console.log(targetObj);
+            $scope.image.trumbImg = null;
+            $scope.image.trumbCroppedImg = null;
             
             $(id).closeModal();
-          
         };
       
         $scope.openModule = function(key, data){
+          
+          $scope.image.trumbImg = null;
+          $scope.image.trumbCroppedImg = null;
           
           var id = '#'+key;
            
@@ -178,30 +178,23 @@
              reader = new FileReader();
              
             reader.onload = function (evt) {
-              console.log(evt);
               $scope.$apply(function($scope){
-                $scope.trumbImg=evt.target.result;
+                $scope.image.trumbImg = evt.target.result;
               });
             };
             reader.readAsDataURL(file);
-            console.log(fdata);
           };
-        
+          
           if (data && Object.keys(data).length!=0) {
             getThumbnaiView(data);
-            console.log(1);
-          }else{
-            console.log(2);
           }
            
-          angular.element(document.querySelector('#fileInput')).on('change',getThumbnaiView);
-          
           $scope.loadBegin = function(){
-            console.info('Crop begin');   
+            console.info('Crop begin');
           };
           
           $scope.loadDone = function(){
-            console.info('Crop done');   
+            console.info('Crop END');
           };
           
           $scope.loadError = function(){

@@ -61,8 +61,8 @@
     
     <div class="cropArea">
       <img-crop 
-        image="trumbImg" 
-        result-image="trumbCroppedImg"
+        image="image.trumbImg" 
+        result-image="image.trumbCroppedImg"
         area-type="square"
         area-min-size="128"
         on-load-begin="loadBegin()"
@@ -75,7 +75,6 @@
   </div>
   <div class="modal-footer">
     <!-- Modal Trigger -->
-    <button ng-click='getBit()' data-target="{{$index}}" class="btn modal-trigger" >DATA</button>
     <button ng-click='closeModule($index)' data-target="{{$index}}" class="btn modal-trigger" >Close</button>
   </div>
 </div>
