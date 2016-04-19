@@ -10,9 +10,9 @@
             restrict: 'A',
             link: function (scope, element, attrs) {
                 	
-            	var thisElemId = element[0].attributes.tmpid;
-               console.log(thisElemId);
-                scope.$watch(attrs.degrees, function (rotateDegrees) {
+            	
+               console.log(attrs);
+                scope.$watch(attrs.trumbDegrees, function (rotateDegrees) {
                     	
                     var r = 'rotate(' + rotateDegrees + 'deg)';
                     

@@ -155,14 +155,15 @@
           var id = '#'+key;
             
           if ($scope.image.trumbCroppedImg) cropDataObj.data = $scope.image.trumbCroppedImg, targetObj[constant.DATA_NAME]['cropData'] = cropDataObj;
-            console.log(targetObj);
+            //console.log(targetObj);
             $scope.image.trumbImg = null;
             $scope.image.trumbCroppedImg = null;
-            
+            $scope.trumbAngle = 0;
+             
             $(id).closeModal();
             
         };
-      
+       
         $scope.openModule = function(key, data){
           
           $scope.image.trumbImg = null;
@@ -173,7 +174,7 @@
             targetObj = data;
             
             $(id).openModal();
-            
+
             var getThumbnaiView = function(fdata){
             
             var file=fdata,
@@ -199,25 +200,15 @@
         
         $scope.tmpId = null;
           	
-          $scope.rotateThumbnai = function (id) {
+          $scope.rotateThumbnail = function () {
             	
             crntCropAngle += constant.DFLT_STEP_ANG;
             crntCropAngle = (crntCropAngle>constant.MAX_ANG)? constant.DFLT_STEP_ANG :  crntCropAngle;
             
-              $scope.angle = crntCropAngle;
-              $scope.tmpId = id;
+              $scope.trumbAngle = crntCropAngle;
               cropDataObj.ang = crntCropAngle;
               targetObj.data['cropData'] = cropDataObj;
-              console.info(targetObj);
-            };
-          
-           
-          $scope.loadBegin = function(){
-            console.info('Crop begin');
-          };
-          
-          $scope.loadDone = function(){
-            console.info('Crop END');
+              //console.info(targetObj);
           };
           
           $scope.loadError = function(){

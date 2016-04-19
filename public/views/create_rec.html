@@ -66,7 +66,6 @@
         result-image="image.trumbCroppedImg"
         area-type="square"
         area-min-size="128"
-        on-load-begin="loadBegin()"
         on-load-done="loadDone()"
         on-load-error="loadError()"
       >
@@ -76,22 +75,23 @@
     
     <div>
       <img 
-        rotate-dirct 
-        degrees='angle' 
-        tmpid='cropRotateId' 
-        ng-src="{{image.trumbCroppedImg}}" 
+        rotate-trumb-dirct 
+        trumb-degrees='trumbAngle'
+        tmpid='cropRotateId'
+        ng-src="{{image.trumbCroppedImg}}"
       />
     </div>
     
   </div>
   <div class="modal-footer">
     <!-- Modal Trigger -->
-    <button ng-click='closeModule($index)'  data-target="{{$index}}" class="btn modal-trigger" >Close</button>
+    <button ng-click="closeModule($index)"  data-target="{{$index}}" class="btn modal-trigger" >Close</button>
     
-    <button ng-click="rotateThumbnai('cropRotateId')"  class="btn" > Rotate </button>
+    <button ng-click="rotateThumbnail()"  class="btn" > Rotate </button>
     
   </div>
 </div>
+
 
 </br>
   <img ngf-thumbnail="value" rotate-dirct degrees='angle' tmpid='{{this.value.tmpId}}' class="thumb"> 
