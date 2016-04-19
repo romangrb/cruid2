@@ -195,7 +195,7 @@
           // ROTATE TRUMBNAIL
           
           
-          var crntCropAngle = 0;
+        var crntCropAngle = 0;
         
         $scope.tmpId = null;
           	

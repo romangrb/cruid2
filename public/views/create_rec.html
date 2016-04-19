@@ -60,6 +60,7 @@
     <p>In squere content you seeing the view of trumbnail</p>
     
     <div class="cropArea">
+      
       <img-crop 
         image="image.trumbImg" 
         result-image="image.trumbCroppedImg"
@@ -70,14 +71,25 @@
         on-load-error="loadError()"
       >
       </img-crop>
+      
+    </div>
+    
+    <div>
+      <img 
+        rotate-dirct 
+        degrees='angle' 
+        tmpid='cropRotateId' 
+        ng-src="{{image.trumbCroppedImg}}" 
+      />
     </div>
     
   </div>
   <div class="modal-footer">
     <!-- Modal Trigger -->
-    <button ng-click='closeModule($index)' rotate-dirct degrees='angle' tmpid="{{$index}}" data-target='{{$index}}' class="btn modal-trigger" >Close</button>
+    <button ng-click='closeModule($index)'  data-target="{{$index}}" class="btn modal-trigger" >Close</button>
     
-    <button ng-click='rotateThumbnai($index)' class="btn" >Rotate</button>
+    <button ng-click="rotateThumbnai('cropRotateId')"  class="btn" > Rotate </button>
+    
   </div>
 </div>
 
