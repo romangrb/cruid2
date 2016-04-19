@@ -39,45 +39,16 @@
           console.log(file_data,33);
         };
             
-        
-        function getDecodeToStr (file_data) {
-          
-          var reader = new FileReader(),
-              cropD = {
-                'cropData':{
-                  data : null
-                }
-              },
-             cropData = null;
-             
-            reader.onload = function (evt) {
-               cropData = evt.target;
-            };
-            
-            reader.onloadend = function (evt) {
-              
-              cropD['cropData'].data = cropData;
-              console.log(2);
-              return cropD;
-              
-            };
-              
-            reader.readAsDataURL(file_data, reader);
-          
-        } 
-          
-            
         $scope.upload = function(key, file_data){
             
           if (file_data == null || key == null) return;
-            // add additionall data
-            if (!file_data.data['cropData']) {
-             // file_data.data = getDecodeToStr(file_data);
-         
-              console.log(1, getDecodeToStr(file_data));
-            }
-           
-            console.log(file_data,3);
+            // add additionall crop data
+          if (!file_data.data['cropData']) {
+            getDecodeToStr(file_data).done(function(cb) {
+              file_data.data = cb; 
+            }).fail(cropErrListener);
+          }
+            console.log(file_data);
           /*  upload[key] = Upload.upload({
               url: constant.UPLOAD_URL,
               data:{files:file_data}
@@ -92,13 +63,20 @@
           if (files == null) return;
           
           angular.forEach(files, function(value, key) {
+            
+            if (!value.data['cropData']) {
+              getDecodeToStr(value).done(function(cb) {
+                value.data = cb; 
+              }).fail(cropErrListener);
+            }
+            
             /*upload[key] = Upload.upload({
               url: constant.UPLOAD_URL,
               data:{files:value}
             });
           
           $scope.getRequest(key);*/
-          
+          console.log(72 ,value);
           });
           
         };
@@ -254,10 +232,33 @@
         
         };
         
+        function getDecodeToStr (file_data) {
+          
+           var reader = new FileReader(),
+            cropD = {
+              'cropData':{data : null}
+            },
+            cropData = null;
+             
+            reader.onload = function (evt) {
+              cropData = evt.target.result;
+            };
+            
+            reader.onloadend = function (evt) {
+              cropD['cropData'].data = cropData;
+              return cropD;
+            };
+              
+            reader.readAsDataURL(file_data, reader);
+          
+            return  $.when(reader.onloadend());
+            
+        }
         
         
-        
-        
+        function cropErrListener(textStatus, errorThrown ) {
+          console.error( 'Crop error: ' + errorThrown);
+        } 
         
         
         
