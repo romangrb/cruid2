@@ -4,8 +4,8 @@
   
   angular
     .module('galleryApp')
-      .controller('createRecCtrl', ['$scope', '$location', 'RestService', 'Upload',  'constant', 'random', function ($scope, $location, RestService, Upload,  constant, random) {
-  
+      .controller('createRecCtrl', ['$scope', 'RestService', 'Upload',  'constant', 'random', function ($scope, RestService, Upload,  constant, random) {
+      
       // initiate upload service
       
       var upload = {};
@@ -35,14 +35,45 @@
         };
           
         $scope.changeName = function(file_data){
+          
           console.log(file_data,33);
         };
+            
+        
+        function getDecodeToStr (file_data) {
+          
+          var reader = new FileReader(),
+             cropData = null;
+             
+            reader.onload = function (evt) {
+               cropData = evt.target;
+            };
+            
+            reader.onloadend = function (evt) {
+               return cropData;
+            };
+              
+            reader.readAsDataURL(file_data, reader);
+          
+        } 
+          
             
         $scope.upload = function(key, file_data){
             
           if (file_data == null || key == null) return;
             // add additionall data
-            console.log(file_data, 1);
+            if (!file_data.data['cropData']) {
+              var cropD = {
+                'cropData':{
+                  data : null
+                }
+              };
+              cropD['cropData'].data = getDecodeToStr(file_data);
+              //console.log(1, getDecodeToStr(file_data));
+              file_data.data = cropD; 
+            }
+           
+            console.log(file_data,2);
           /*  upload[key] = Upload.upload({
               url: constant.UPLOAD_URL,
               data:{files:file_data}
@@ -106,7 +137,7 @@
           }, function (evt) { 
             
             var progress = parseInt(100.0 * evt.loaded / evt.total);
-  
+            
             console.log(progress + '% ' + evt.config.data.files.name);
             $scope.progress = 'progress: ' + progress + '% ';
           });
@@ -174,9 +205,9 @@
             targetObj = data;
             
             $(id).openModal();
-
-            var getThumbnaiView = function(fdata){
             
+            var getThumbnaiView = function(fdata){
+           
             var file=fdata,
              reader = new FileReader();
              
@@ -192,18 +223,16 @@
             getThumbnaiView(data);
           }
           
-          
           // ROTATE TRUMBNAIL
-          
           
         var crntCropAngle = 0;
         
-        $scope.tmpId = null;
+          $scope.tmpId = null;
           	
           $scope.rotateThumbnail = function () {
             	
             crntCropAngle += constant.DFLT_STEP_ANG;
-            crntCropAngle = (crntCropAngle>constant.MAX_ANG)? constant.DFLT_STEP_ANG :  crntCropAngle;
+            crntCropAngle = (crntCropAngle > constant.MAX_ANG)? constant.DFLT_STEP_ANG :  crntCropAngle;
             
               $scope.trumbAngle = crntCropAngle;
               cropDataObj.ang = crntCropAngle;
@@ -213,6 +242,10 @@
           
           $scope.loadError = function(){
             console.warn('Crop Errror');   
+          };
+        
+          $scope.loadDone = function(){
+            console.error('Crop Done');   
           };
         
         };

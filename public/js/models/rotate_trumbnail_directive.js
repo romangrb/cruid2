@@ -10,8 +10,6 @@
             restrict: 'A',
             link: function (scope, element, attrs) {
                 	
-            	
-               console.log(attrs);
                 scope.$watch(attrs.trumbDegrees, function (rotateDegrees) {
                     	
                     var r = 'rotate(' + rotateDegrees + 'deg)';
