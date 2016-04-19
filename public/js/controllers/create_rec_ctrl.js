@@ -43,6 +43,11 @@
         function getDecodeToStr (file_data) {
           
           var reader = new FileReader(),
+              cropD = {
+                'cropData':{
+                  data : null
+                }
+              },
              cropData = null;
              
             reader.onload = function (evt) {
@@ -50,7 +55,11 @@
             };
             
             reader.onloadend = function (evt) {
-               return cropData;
+              
+              cropD['cropData'].data = cropData;
+              console.log(2);
+              return cropD;
+              
             };
               
             reader.readAsDataURL(file_data, reader);
@@ -63,17 +72,12 @@
           if (file_data == null || key == null) return;
             // add additionall data
             if (!file_data.data['cropData']) {
-              var cropD = {
-                'cropData':{
-                  data : null
-                }
-              };
-              cropD['cropData'].data = getDecodeToStr(file_data);
-              //console.log(1, getDecodeToStr(file_data));
-              file_data.data = cropD; 
+             // file_data.data = getDecodeToStr(file_data);
+         
+              console.log(1, getDecodeToStr(file_data));
             }
            
-            console.log(file_data,2);
+            console.log(file_data,3);
           /*  upload[key] = Upload.upload({
               url: constant.UPLOAD_URL,
               data:{files:file_data}
