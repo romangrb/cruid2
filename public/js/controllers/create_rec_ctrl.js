@@ -138,9 +138,7 @@
         
         // for directive eather drag is supported or not
         $scope.isDroppable = true;
-        
-        
-        
+      
         var trumbCroppedImgDataObj = null,
           targetObj = null;
         
