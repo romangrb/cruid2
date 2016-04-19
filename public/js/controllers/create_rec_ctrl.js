@@ -138,25 +138,29 @@
         
         // for directive eather drag is supported or not
         $scope.isDroppable = true;
-      
-        var trumbCroppedImgDataObj = null,
-          targetObj = null;
+        
+        var targetObj = null,
+          cropDataObj = {
+            ang  : null,
+            data : null
+          };
         
         $scope.image = {
-           trumbImg: '',
-           trumbCroppedImg: ''
+           trumbImg: null,
+           trumbCroppedImg: null
         };
         
         $scope.closeModule = function(key){
           console.log('CLOSE DONE');
           var id = '#'+key;
             
-          if ($scope.image.trumbCroppedImg) targetObj[constant.DATA_NAME]['cropData'] = $scope.image.trumbCroppedImg;
+          if ($scope.image.trumbCroppedImg) cropDataObj.data = $scope.image.trumbCroppedImg, targetObj[constant.DATA_NAME]['cropData'] = cropDataObj;
             console.log(targetObj);
             $scope.image.trumbImg = null;
             $scope.image.trumbCroppedImg = null;
             
             $(id).closeModal();
+            
         };
       
         $scope.openModule = function(key, data){
@@ -186,6 +190,27 @@
           if (data && Object.keys(data).length!=0) {
             getThumbnaiView(data);
           }
+          
+          
+          // ROTATE TRUMBNAIL
+          
+          
+          var crntCropAngle = 0;
+        
+        $scope.tmpId = null;
+          	
+          $scope.rotateThumbnai = function (id) {
+            	
+            crntCropAngle += constant.DFLT_STEP_ANG;
+            crntCropAngle = (crntCropAngle>constant.MAX_ANG)? constant.DFLT_STEP_ANG :  crntCropAngle;
+            
+              $scope.angle = crntCropAngle;
+              $scope.tmpId = id;
+              cropDataObj.ang = crntCropAngle;
+              targetObj.data['cropData'] = cropDataObj;
+              console.info(targetObj);
+            };
+          
            
           $scope.loadBegin = function(){
             console.info('Crop begin');
