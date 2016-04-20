@@ -188,6 +188,10 @@
             
             $(id).openModal();
             
+            $scope.showCrop = function(id){
+              if (key==id) return true;
+            };
+            
             var getThumbnaiView = function(fdata){
            
             var file=fdata,
