@@ -4,7 +4,7 @@
   
   angular
     .module('galleryApp')
-      .controller('createRecCtrl', ['$scope', 'RestService', 'Upload',  'constant', 'random', function ($scope, RestService, Upload,  constant, random) {
+      .controller('createRecCtrl', ['$scope', 'RestService', 'Upload',  'constant', 'RotateService', 'random', function ($scope, RestService, Upload, constant, RotateService,random) {
       
       // initiate upload service
       
@@ -27,7 +27,7 @@
             $scope.tmpId = id;
             upTarget.data.angle = crntAngle;
             
-          };
+        };
           
         $scope.crop = function(dataId, data){
           if (!data) return;
@@ -36,7 +36,7 @@
           
         $scope.changeName = function(file_data){
           
-          console.log(file_data,33);
+          console.log(file_data, 33);
         };
             
         $scope.upload = function(key, file_data){
@@ -59,7 +59,7 @@
         };
         
         $scope.uploadAll = function(files){
-      
+         
           if (files == null) return;
           
           angular.forEach(files, function(value, key) {
