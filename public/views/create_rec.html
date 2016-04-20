@@ -14,9 +14,9 @@
       ngf-pattern="'image/*'">images here or click to upload
     </div>
     <div ngf-no-file-drop ng-if='isDroppable=false'></div>
-    
+    <!--
     <div ng-if="this.files" class="btn" ng-click="uploadAll(this.files)">upload All</div>
-   <!-- <div ng-if="this.files" class="btn" ng-click="cancelAll()">cancel All</div>
+    <!-- <div ng-if="this.files" class="btn" ng-click="cancelAll()">cancel All</div>
     -->
   </div>  
   
@@ -59,15 +59,15 @@
     <h4>Croup edit</h4>
     <p>In squere content you seeing the view of trumbnail</p>
     
-    <div class="cropArea">
-      
+    <div class="cropArea" ng-if="showCrop[$index]" >
+     <!-- ng-if="getCrop($index, true)"-->
       <img-crop 
         image="image.trumbImg" 
         result-image="image.trumbCroppedImg"
         area-type="square"
         area-min-size="128"
+        
         on-load-done="loadDone()"
-        on-load-error="loadError()"
       >
       </img-crop>
       

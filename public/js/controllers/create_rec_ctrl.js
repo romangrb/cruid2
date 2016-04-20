@@ -160,8 +160,10 @@
         
         $scope.image = {
            trumbImg: null,
-           trumbCroppedImg: null
+           trumbCroppedImg: null,
         };
+        
+        $scope.showCrop = {};
         
         $scope.closeModule = function(key){
           console.log('CLOSE DONE');
@@ -172,7 +174,7 @@
             $scope.image.trumbImg = null;
             $scope.image.trumbCroppedImg = null;
             $scope.trumbAngle = 0;
-             
+            $scope.showCrop[key] = false;
             $(id).closeModal();
             
         };
@@ -185,12 +187,18 @@
           var id = '#'+key;
            
             targetObj = data;
-            
+            // open dialog
             $(id).openModal();
+            //show crope in dialog -  creates directory inside
+            $scope.showCrop[key] = true;
             
-            var getThumbnaiView = function(fdata){
+            /*$scope.getCrop = function(id, bool){
+              if (id===key) return bool;
+            };*/
+            
+          var getThumbnaiView = function(fdata){
            
-            var file=fdata,
+            var file = fdata,
              reader = new FileReader();
              
             reader.onload = function (evt) {
@@ -198,6 +206,7 @@
                 $scope.image.trumbImg = evt.target.result;
               });
             };
+            
             reader.readAsDataURL(file);
           };
           
@@ -207,28 +216,28 @@
           
           // ROTATE TRUMBNAIL
           
-        var crntCropAngle = 0;
-        
-          $scope.tmpId = null;
-          	
-          $scope.rotateThumbnail = function () {
-            	
-            crntCropAngle += constant.DFLT_STEP_ANG;
-            crntCropAngle = (crntCropAngle > constant.MAX_ANG)? constant.DFLT_STEP_ANG :  crntCropAngle;
-            
-              $scope.trumbAngle = crntCropAngle;
-              cropDataObj.ang = crntCropAngle;
-              targetObj.data['cropData'] = cropDataObj;
-              //console.info(targetObj);
-          };
+          var crntCropAngle = 0;
           
-          $scope.loadError = function(){
-            console.warn('Crop Errror');   
-          };
-        
-          $scope.loadDone = function(){
-            console.error('Crop Done');   
-          };
+            $scope.tmpId = null;
+            	
+            $scope.rotateThumbnail = function () {
+              	
+              crntCropAngle += constant.DFLT_STEP_ANG;
+              crntCropAngle = (crntCropAngle > constant.MAX_ANG)? constant.DFLT_STEP_ANG :  crntCropAngle;
+              
+                $scope.trumbAngle = crntCropAngle;
+                cropDataObj.ang = crntCropAngle;
+                targetObj.data['cropData'] = cropDataObj;
+                //console.info(targetObj);
+            };
+            
+            $scope.loadError = function(){
+              console.error('Crop Errror');   
+            };
+          
+            $scope.loadDone = function(){
+              console.warn('Crop Done');   
+            };
         
         };
         
