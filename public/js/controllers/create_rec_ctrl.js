@@ -163,8 +163,6 @@
            trumbCroppedImg: null,
         };
         
-        $scope.showCrop = {};
-        
         $scope.closeModule = function(key){
           console.log('CLOSE DONE');
           var id = '#'+key;
@@ -174,11 +172,12 @@
             $scope.image.trumbImg = null;
             $scope.image.trumbCroppedImg = null;
             $scope.trumbAngle = 0;
-            $scope.showCrop[key] = false;
+             
             $(id).closeModal();
             
         };
        
+        
         $scope.openModule = function(key, data){
           
           $scope.image.trumbImg = null;
@@ -187,14 +186,18 @@
           var id = '#'+key;
            
             targetObj = data;
-            // open dialog
-            $(id).openModal();
-            //show crope in dialog -  creates directory inside
-            $scope.showCrop[key] = true;
+           
             
-            /*$scope.getCrop = function(id, bool){
+            $(id).openModal();
+            
+            
+            $scope.crVal = key;
+           /* $scope.showCrop = function(id, bool){
+              console.log(id);
               if (id===key) return bool;
+              
             };*/
+            
             
           var getThumbnaiView = function(fdata){
            

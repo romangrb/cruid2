@@ -1,0 +1,24 @@
+    <div class="cropArea">
+     <!--   ng-if="getCrop($index)"-->
+      <img-crop 
+        image="image.trumbImg" 
+        result-image="image.trumbCroppedImg"
+        area-type="square"
+        area-min-size="128"
+        
+        on-load-done="loadDone()"
+      >
+      </img-crop>
+      
+    </div>
+    
+    <div>
+      <img 
+        rotate-trumb-dirct 
+        trumb-degrees='trumbAngle'
+        tmpid='cropRotateId'
+        ng-src="{{image.trumbCroppedImg}}"
+      />
+    </div>
+    
+  </div>
