@@ -205,6 +205,7 @@
               
              // $(id).append(cropEl);
                 
+                $scope.cropListener = key;
                 
                 
                 

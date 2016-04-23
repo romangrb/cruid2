@@ -50,9 +50,9 @@
     <!-- Modal Trigger -->
     <button ng-click='openModule($index, value)' data-target="{{$index}}" class="btn modal-trigger" >Modal</button>
 
-    <div id="{{$index}}" class="modal modal-trigger">
+    <div id="{{$index}}" class="modal">
       
-      <div class='crop-dirct' tmpid={{$index}}></div>
+      <div class='crop-dirct' crop-id='{{$index}}' crop-id-check='cropListener'></div>
      
     </div>
 
