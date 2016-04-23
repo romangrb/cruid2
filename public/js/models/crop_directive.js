@@ -11,7 +11,7 @@
             link: function (scope, element, attrs) {
                   
                   scope.$watch(attrs.cropIdCheck, function (val) {
-                   console.log(val);
+                   
                     if (val == attrs.cropId) {
                         // Load the html through $templateRequest
                         $templateRequest('views/crop_edit.html').then(function(html){
