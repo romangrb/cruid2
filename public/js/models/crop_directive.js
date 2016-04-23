@@ -6,7 +6,7 @@
     .module('galleryApp')
       .directive('cropDirct', ['$compile', '$templateRequest', function($compile, $templateRequest){
         return {
-            restrict : 'E',
+            restrict : 'C',
             scope : true,
             link: function (scope, element, attrs) {
                   

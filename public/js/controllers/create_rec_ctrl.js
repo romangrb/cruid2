@@ -188,22 +188,6 @@
           }
         );
        
-        
-      var cropEl = "<div class='cropArea'>"+
-                "<img-crop"+
-                  "image='image.trumbImg'"+
-                  "result-image='image.trumbCroppedImg'"+
-                  "area-type='square'"+
-                  "area-min-size='128'"+
-                  "on-load-done='loadDone()'"+
-                  "on-load-error='loadError()'"+
-                ">"+
-              +"</img-crop>"+
-        "</div>";
-        
-        
-       
-       
         $scope.openModule = function(key, data){
           
            var id = '#'+key;

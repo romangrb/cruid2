@@ -47,14 +47,12 @@
     <input id="this.value.tmpId" type="text" value="{{value.name}}" name="imgName" ng-click="changeName(value.name)" class="validate">
     <label for="this.value.tmpId">Name</label>
     
-    
-    
     <!-- Modal Trigger -->
     <button ng-click='openModule($index, value)' data-target="{{$index}}" class="btn modal-trigger" >Modal</button>
 
     <div id="{{$index}}" class="modal modal-trigger">
       
-      <crop-dirct></crop-dirct>
+      <div class='crop-dirct' tmpid={{$index}}></div>
      
     </div>
 
