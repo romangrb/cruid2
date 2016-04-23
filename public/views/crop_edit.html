@@ -1,0 +1,27 @@
+<div class="modal-content">
+  <h4>Croup edit</h4>
+    
+    <div class="cropArea">
+      
+      <img-crop 
+        image="image.trumbImg" 
+        result-image="image.trumbCroppedImg"
+        area-type="square"
+        area-min-size="128"
+        on-load-done="loadDone()"
+        on-load-error="loadError()"
+      >
+      </img-crop>
+      
+    </div>
+    
+    <div>
+      <img 
+        rotate-trumb-dirct 
+        trumb-degrees='trumbAngle'
+        tmpid='cropRotateId'
+        ng-src="{{image.trumbCroppedImg}}"
+      />
+    </div>
+        
+</div>

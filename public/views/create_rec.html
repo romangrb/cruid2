@@ -42,18 +42,34 @@
 </form>
 
 <ul class="collection">
-  <li class="collection-item" 
-    ng-repeat="(key, value) in file_collection track by $index"
-  >
-  <i class="material-icons prefix">account_circle</i>
-          <input id="this.value.tmpId" type="text" value="{{value.name}}" name="imgName" ng-click="changeName(value.name)" class="validate">
-          <label for="this.value.tmpId">Name</label>
-<!--  {{value.name | toShortNameImg}}</br>-->
+  <li class="collection-item" ng-repeat="(key, value) in file_collection track by $index">
+    <i class="material-icons prefix">account_circle</i>
+    <input id="this.value.tmpId" type="text" value="{{value.name}}" name="imgName" ng-click="changeName(value.name)" class="validate">
+    <label for="this.value.tmpId">Name</label>
+    
+    
+    
+    <!-- Modal Trigger -->
+    <button ng-click='openModule($index, value)' data-target="{{$index}}" class="btn modal-trigger" >Modal</button>
 
-<!-- Modal Trigger -->
+    <div id="{{$index}}" class="modal modal-trigger">
+      
+      <crop-dirct></crop-dirct>
+     
+    </div>
+
+
+
+
+
+
+
+
+
+<!-- Modal Trigger 
 <button ng-click='openModule($index, value)' data-target="{{$index}}" class="btn modal-trigger" >Modal</button>
 
-<!-- Modal Structure -->
+
 <div id="{{$index}}" class="modal">
   <div class="modal-content">
     <h4>Croup edit</h4>
@@ -84,21 +100,20 @@
     
   </div>
   <div class="modal-footer">
-    <!-- Modal Trigger -->
+    Modal Trigger 
     <button ng-click="closeModule($index)"  data-target="{{$index}}" class="btn modal-trigger" >Close</button>
     
     <button ng-click="rotateThumbnail()"  class="btn" > Rotate </button>
     
   </div>
 </div>
+-->
 
-
-</br>
   <img ngf-thumbnail="value" rotate-dirct degrees='angle' tmpid='{{this.value.tmpId}}' class="thumb"> 
       
   <a ng-click='upload(this.key, this.value)' class="waves-effect waves-light btn">upload</a>
   <a ng-click='cancel(this.key, this.value)' class="waves-effect waves-light btn">cancel</a>
-  <a ng-click="rotate(this.value.tmpId, this.value)" class="waves-effect waves-light btn">rotate</a>
-  <a ng-click="crop(this.value.tmpId, this.value)" class="waves-effect waves-light btn">crop</a>
+  <!--<a ng-click="crop(this.value.tmpId, this.value)" class="waves-effect waves-light btn">crop</a>-->
   </li>
+  
 </ul>

@@ -164,8 +164,10 @@
         };
         
         $scope.closeModule = function(key){
-          console.log('CLOSE DONE');
           var id = '#'+key;
+          $(id).closeModal();
+          console.log('CLOSE DONE');
+          /*var id = '#'+key;
             
           if ($scope.image.trumbCroppedImg) cropDataObj.data = $scope.image.trumbCroppedImg, targetObj[constant.DATA_NAME]['cropData'] = cropDataObj;
             //console.log(targetObj);
@@ -173,13 +175,92 @@
             $scope.image.trumbCroppedImg = null;
             $scope.trumbAngle = 0;
              
-            $(id).closeModal();
-            
+            $(id).closeModal();*/
         };
+        
+        $('.modal-trigger').leanModal({
+            dismissible: true, // Modal can be dismissed by clicking outside of the modal
+            opacity: .5, // Opacity of modal background
+            in_duration: 300, // Transition in duration
+            out_duration: 200, // Transition out duration
+            ready: function() { alert('Ready'); }, // Callback for Modal open
+            complete: function() { alert('Closed'); } // Callback for Modal close
+          }
+        );
+       
+        
+      var cropEl = "<div class='cropArea'>"+
+                "<img-crop"+
+                  "image='image.trumbImg'"+
+                  "result-image='image.trumbCroppedImg'"+
+                  "area-type='square'"+
+                  "area-min-size='128'"+
+                  "on-load-done='loadDone()'"+
+                  "on-load-error='loadError()'"+
+                ">"+
+              +"</img-crop>"+
+        "</div>";
+        
+        
+       
        
         $scope.openModule = function(key, data){
           
-          $scope.image.trumbImg = null;
+           var id = '#'+key;
+           console.log('OPEN DONE');
+            //targetObj = data;
+            
+            $(id).openModal({
+              dismissible: true, // Modal can be dismissed by clicking outside of the modal
+              ready: function() { 
+                console.warn('Ready'); 
+                // BEGIN
+              console.warn($(id));
+              
+              
+              
+             // $(id).append(cropEl);
+                
+                
+                
+                
+                var getThumbnaiView = function(fdata){
+               
+                var file=fdata,
+                 reader = new FileReader();
+                 
+                reader.onload = function (evt) {
+                  $scope.$apply(function($scope){
+                    $scope.image.trumbImg = evt.target.result;
+                  });
+                };
+                reader.readAsDataURL(file);
+              };
+              
+              if (data && Object.keys(data).length!=0) {
+                getThumbnaiView(data);
+              }
+                
+              $scope.loadDone = function(){
+                console.error('Crop Done');   
+              };
+              // END
+                
+              },
+              complete: function() {
+                console.warn('Closed'); 
+                
+                
+                
+                
+                
+                
+              } // Callback for Modal close
+            });
+            
+            
+            
+          /*$scope.image.trumbImg = null;
           $scope.image.trumbCroppedImg = null;
           
           var id = '#'+key;
@@ -232,7 +313,7 @@
         
           $scope.loadDone = function(){
             console.error('Crop Done');   
-          };
+          };*/
         
         };
         
