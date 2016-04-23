@@ -165,7 +165,12 @@
         
         $scope.closeModule = function(key){
           var id = '#'+key;
-          $(id).closeModal();
+          $(id).closeModal(
+            
+            
+            
+            
+          );
           console.log('CLOSE DONE');
           /*var id = '#'+key;
             
@@ -198,16 +203,8 @@
               dismissible: true, // Modal can be dismissed by clicking outside of the modal
               ready: function() { 
                 console.warn('Ready'); 
-                // BEGIN
-              console.warn($(id));
-              
-              
-              
-             // $(id).append(cropEl);
                 
                 $scope.cropListener = key;
-                
-                
                 
                 var getThumbnaiView = function(fdata){
                
@@ -234,12 +231,11 @@
               },
               complete: function() {
                 console.warn('Closed'); 
+                $scope.cropListener = null;
                 
-                
-                
-                
-                
-                
+                var el = $(id).find('.modal-content')[0];
+                $(el).remove();
+                console.log($(id).find('.modal-content')[0], 'close');
               } // Callback for Modal close
             });
             
