@@ -191,10 +191,10 @@
            console.log('OPEN DONE');
             //targetObj = data;
             $(id).openModal({
+              
               dismissible: true, // Modal can be dismissed by clicking outside of the modal
               
-              ready: function() { 
-                console.warn('Ready'); 
+              ready: function() {
                
                 $scope.cropListener = key;
                 
@@ -223,11 +223,9 @@
               
               complete: function(e) {
                 
-                console.warn('Closed'); 
-                
                 var el = $(id).find('.modal-content')[0];
-                $(el).remove();
-                el = null;
+                  $(el).remove();
+                  el = null;
               
                 //console.log($(el));
                 $scope.cropListener = null;
@@ -311,7 +309,7 @@
             };
               
             reader.readAsDataURL(file_data, reader);
-          
+            
             return  $.when(reader.onloadend());
             
         }

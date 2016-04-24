@@ -1,10 +1,6 @@
 <div class="modal-content">
-  
-  
-  <h4>Credit</h4>
-    
+  <h4>Crop edit</h4>
     <div class="cropArea">
-      
       <img-crop 
         image="image.trumbImg" 
         result-image="image.trumbCroppedImg"
@@ -12,19 +8,13 @@
         area-min-size="128"
       >
       </img-crop>
-      
     </div>
-    
     <div>
-      
       <img 
         rotate-trumb-dirct 
         trumb-degrees='trumbAngle'
         tmpid='cropRotateId'
         ng-src="{{image.trumbCroppedImg}}"
       />
-      
     </div>
-      
-        
 </div>
