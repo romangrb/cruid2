@@ -192,6 +192,7 @@
             //targetObj = data;
             $(id).openModal({
               dismissible: true, // Modal can be dismissed by clicking outside of the modal
+              //http://roubenmeschian.com/rubo/?p=51
               ready: function() { 
                 console.warn('Ready'); 
                
@@ -204,23 +205,32 @@
                 
                 
                 var getThumbnaiView = function(fdata){
-               
+                
                   var file=fdata;
                    var reader = new FileReader();
-                   
-                  reader.onloadend = function (evt) {
-                    $scope.$apply(function($scope){
-                      console.log(1);
-                      $scope.image.trumbImg = evt.target.result;
-                    });
-                     
+  /*                 
+                  reader.onload = function() {
+                    $scope.file_contents = this.result;
+                    $scope.$apply(); /<-- here
+                  }; 
+                  
+        */          
+                  reader.onload = function (evt) {
+                    
+                      $scope.$apply(function($scope){
+                        //console.log(evt.target);
+                        $scope.image.trumbImg = evt.target.result;
+                      });
                   };
+                  
                   reader.readAsDataURL(file);
+                  console.log($scope , 'RS',2);
                 };
               
                 if (data && Object.keys(data).length!=0) {
                   getThumbnaiView(data);
                 }
+                
                // END
                
               },
@@ -232,11 +242,11 @@
                 var el = $(id).find('.modal-content')[0];
                 $(el).remove();
                 el = null;
+                $scope.cropListener = null;
                 //console.log($(el));
-                /*$scope.cropListener = null;
+               /* $scope.cropListener = null;
                 $scope.image.trumbImg = null;
-                $scope.image.trumbCroppedImg = null;
-                console.log($(id).find('.modal-content')[0], 'close');*/
+                $scope.image.trumbCroppedImg = null;*/
               } // Callback for Modal close
             });
            
