@@ -1,5 +1,6 @@
 <div class="modal-content">
   <h4>Crop edit</h4>
+  
     <div class="cropArea">
       <img-crop 
         image="image.trumbImg" 
@@ -9,6 +10,7 @@
       >
       </img-crop>
     </div>
+    
     <div>
       <img 
         rotate-trumb-dirct 
@@ -17,5 +19,10 @@
         ng-src="{{image.trumbCroppedImg}}"
       />
     </div>
-    <button ng-click="rotateThumbnail()"  class="btn" > Rotate </button>
+    
+    <div class="modal-footer">
+      <button ng-click="closeModule($index)"  data-target="{{$index}}" class="btn modal-trigger" >Close</button>
+      <button ng-click="rotateThumbnail()"  class="btn" > Rotate </button>
+  </div>
+  
 </div>
