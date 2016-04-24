@@ -183,41 +183,37 @@
             $(id).closeModal();*/
         };
         
-        $('.modal-trigger').leanModal({
-            dismissible: true, // Modal can be dismissed by clicking outside of the modal
-            opacity: .5, // Opacity of modal background
-            in_duration: 300, // Transition in duration
-            out_duration: 200, // Transition out duration
-            ready: function() { alert('Ready'); }, // Callback for Modal open
-            complete: function() { alert('Closed'); } // Callback for Modal close
-          }
-        );
        
        
         $scope.openModule = function(key, data){
         
-          
            var id = '#'+key;
            console.log('OPEN DONE');
             //targetObj = data;
-            console.log(new FileReader());
             $(id).openModal({
               dismissible: true, // Modal can be dismissed by clicking outside of the modal
               ready: function() { 
                 console.warn('Ready'); 
-                
+               
                 $scope.cropListener = key;
+                
+                var z = []; $('.crop-dirct').each(function(i, e){
+                  z.push($(e).find('.modalContent'));
+                });
+                console.log(z);
+                
                 
                 var getThumbnaiView = function(fdata){
                
                   var file=fdata;
                    var reader = new FileReader();
                    
-                  reader.onload = function (evt) {
+                  reader.onloadend = function (evt) {
                     $scope.$apply(function($scope){
+                      console.log(1);
                       $scope.image.trumbImg = evt.target.result;
-                      console.log(evt);
                     });
+                     
                   };
                   reader.readAsDataURL(file);
                 };
@@ -226,24 +222,25 @@
                   getThumbnaiView(data);
                 }
                // END
-                
+               
               },
               
               complete: function(e) {
                 
                 console.warn('Closed'); 
-                $scope.cropListener = null;
                 
                 var el = $(id).find('.modal-content')[0];
                 $(el).remove();
+                el = null;
+                //console.log($(el));
+                /*$scope.cropListener = null;
                 $scope.image.trumbImg = null;
                 $scope.image.trumbCroppedImg = null;
-                console.log($(id).find('.modal-content')[0], 'close');
+                console.log($(id).find('.modal-content')[0], 'close');*/
               } // Callback for Modal close
             });
            
             $scope.loadDone = function(e){
-                  
               console.error('Crop Done', e);   
             };
             

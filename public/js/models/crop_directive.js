@@ -16,6 +16,7 @@
                         // Load the html through $templateRequest
                         $templateRequest('views/crop_edit.html').then(function(html){
                           // Convert the html to an actual DOM node
+                          console.info(element);
                           var template = angular.element(html);
                           // Append it to the directive element
                           element.append(template);
