@@ -6,13 +6,12 @@
     .module('galleryApp')
       .controller('createRecCtrl', ['$scope', '$timeout', 'RestService', 'Upload',  'constant', 'RotateService', 'random', function ($scope, $timeout,RestService, Upload, constant, RotateService,random) {
       
-      // initiate upload service
-      
-      var upload = {};
-       // rotate function for directive
-       // https://jsfiddle.net/romangrb/nz4jdwuf/7/
-       // current angle for route 
-      var crntAngle = 0;  
+        // initiate upload service
+        
+        var upload = {};
+         // rotate function for directive
+         // current angle for route 
+        var crntAngle = 0;  
        
       	$scope.tmpId = null;
       	
@@ -23,9 +22,9 @@
           crntAngle += constant.DFLT_STEP_ANG;
           crntAngle = (crntAngle>constant.MAX_ANG)? constant.DFLT_STEP_ANG :  crntAngle;
           
-            $scope.angle = crntAngle;
-            $scope.tmpId = id;
-            upTarget.data.angle = crntAngle;
+          $scope.angle = crntAngle;
+          $scope.tmpId = id;
+          upTarget.data.angle = crntAngle;
             
         };
           
@@ -35,7 +34,6 @@
         };
           
         $scope.changeName = function(file_data){
-          
           console.log(file_data, 33);
         };
             
@@ -76,7 +74,7 @@
             });
           
           $scope.getRequest(key);*/
-          console.log(72 ,value);
+          console.log(value);
           });
           
         };
@@ -136,10 +134,10 @@
         
         function createImgCollection(data){
           
-        if (!angular.isArray(data)||data.length<1) return;
-        
-        var dataHash = {};
-        
+          if (!angular.isArray(data)||data.length<1) return;
+          
+          var dataHash = {};
+          
           angular.forEach(data, function(value, key) {
             value[constant.TMP_ID_NAME] = random.makeId();
             value[constant.DATA_NAME] = {},
@@ -152,7 +150,9 @@
         // for directive eather drag is supported or not
         $scope.isDroppable = true;
         
-        var targetObj = null,
+        var targetObj = {
+            data : {'cropData' : null }
+          },
           cropDataObj = {
             ang  : null,
             data : null
@@ -166,10 +166,7 @@
         $scope.closeModule = function(key){
           var id = '#'+key;
           $(id).closeModal(
-            
-            
-            
-            
+         
           );
           console.log('CLOSE DONE');
           /*var id = '#'+key;
@@ -182,113 +179,63 @@
              
             $(id).closeModal();*/
         };
-        
-       
-       
+
         $scope.openModule = function(key, data){
         
-           var id = '#'+key;
-           console.log('OPEN DONE');
-            //targetObj = data;
-            $(id).openModal({
+         var id = '#'+key;
+          
+          $(id).openModal({
+            
+            dismissible: true, // Modal can be dismissed by clicking outside of the modal
+            
+            ready: function() {
+             
+              $scope.cropListener = key;
               
-              dismissible: true, // Modal can be dismissed by clicking outside of the modal
-              
-              ready: function() {
+              var getThumbnaiView = function(file){
+                
+                var reader = new FileReader();
                
-                $scope.cropListener = key;
-                
-                var getThumbnaiView = function(fdata){
-                
-                  var file=fdata,
-                    reader = new FileReader();
-                   
-                    reader.onload = function (evt) {
-                    
-                    $timeout(function(){
-                      $scope.image.trumbImg = evt.target.result;
-                    }, 0);
-                    
-                  };
-                  
-                  reader.readAsDataURL(file);
+                reader.onload = function (evt) {
+                  $timeout(function(){
+                    $scope.image.trumbImg = evt.target.result;
+                  }, 0);
                 };
                 
-                if (data && Object.keys(data).length!=0) {
-                  getThumbnaiView(data);
-                }
-                
-               // END
-              },
+                reader.readAsDataURL(file);
+              };
+              // run file Reader
+              if (data && Object.keys(data).length!=0) getThumbnaiView(data);
               
-              complete: function(e) {
-                
-                var el = $(id).find('.modal-content')[0];
-                  $(el).remove();
-                  el = null;
+              // ROTATE TRUMBNAIL
+              var crntCropAngle = 0;
               
-                //console.log($(el));
-                $scope.cropListener = null;
-                $scope.image.trumbImg = null;
-                $scope.image.trumbCroppedImg = null;
-              } // Callback for Modal close
-            });
+                $scope.tmpId = null;
+                	
+                $scope.rotateThumbnail = function () {
+                  	
+                  crntCropAngle += constant.DFLT_STEP_ANG;
+                  crntCropAngle = (crntCropAngle > constant.MAX_ANG)? constant.DFLT_STEP_ANG :  crntCropAngle;
+                  
+                  $scope.trumbAngle = crntCropAngle;
+                  cropDataObj.ang = crntCropAngle;
+                  targetObj.data['cropData'] = cropDataObj;
+                  console.info(targetObj);
+                };
+ 
+            },
+            // Callback for Modal close
+            complete: function(e) {
+              
+             var el = $(id).find('.modal-content')[0];
+              $(el).remove();
+                
+              $scope.cropListener = null;
+              $scope.image.trumbImg = null;
+              $scope.image.trumbCroppedImg = null;
+            } 
+          });
            
-          /*$scope.image.trumbImg = null;
-          $scope.image.trumbCroppedImg = null;
-          
-          var id = '#'+key;
-           
-            targetObj = data;
-            
-            $(id).openModal();
-            
-            $scope.showCrop = function(id){
-              if (key==id) return true;
-            };
-            
-            var getThumbnaiView = function(fdata){
-           
-            var file=fdata,
-             reader = new FileReader();
-             
-            reader.onload = function (evt) {
-              $scope.$apply(function($scope){
-                $scope.image.trumbImg = evt.target.result;
-              });
-            };
-            reader.readAsDataURL(file);
-          };
-          
-          if (data && Object.keys(data).length!=0) {
-            getThumbnaiView(data);
-          }
-          
-          // ROTATE TRUMBNAIL
-          
-        var crntCropAngle = 0;
-        
-          $scope.tmpId = null;
-          	
-          $scope.rotateThumbnail = function () {
-            	
-            crntCropAngle += constant.DFLT_STEP_ANG;
-            crntCropAngle = (crntCropAngle > constant.MAX_ANG)? constant.DFLT_STEP_ANG :  crntCropAngle;
-            
-              $scope.trumbAngle = crntCropAngle;
-              cropDataObj.ang = crntCropAngle;
-              targetObj.data['cropData'] = cropDataObj;
-              //console.info(targetObj);
-          };
-          
-          $scope.loadError = function(){
-            console.warn('Crop Errror');   
-          };
-        
-          $scope.loadDone = function(){
-            console.error('Crop Done');   
-          };*/
-        
         };
         
         function getDecodeToStr (file_data) {
@@ -310,10 +257,9 @@
               
             reader.readAsDataURL(file_data, reader);
             
-            return  $.when(reader.onloadend());
+            return  $.when(reader.onload());
             
         }
-        
         
         function cropErrListener(textStatus, errorThrown ) {
           console.error( 'Crop error: ' + errorThrown);
