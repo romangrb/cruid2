@@ -163,21 +163,22 @@
            trumbCroppedImg: null
         };
         
-        $scope.closeModule = function(key){
+        $scope.closeModule = function( key ){
           var id = '#'+key;
-          $(id).closeModal(
-         
-          );
-          console.log('CLOSE DONE');
-          /*var id = '#'+key;
-            
-          if ($scope.image.trumbCroppedImg) cropDataObj.data = $scope.image.trumbCroppedImg, targetObj[constant.DATA_NAME]['cropData'] = cropDataObj;
-            //console.log(targetObj);
-            $scope.image.trumbImg = null;
-            $scope.image.trumbCroppedImg = null;
-            $scope.trumbAngle = 0;
-             
-            $(id).closeModal();*/
+          $(id).closeModal({
+            complete: function() {
+              
+              if ($scope.image.trumbCroppedImg) cropDataObj.data = $scope.image.trumbCroppedImg, targetObj[constant.DATA_NAME]['cropData'] = cropDataObj;
+              
+              $scope.image.trumbImg = null;
+              $scope.image.trumbCroppedImg = null;
+              $scope.trumbAngle = 0;
+              console.log('COMPLETE DONE', targetObj);
+              
+              var el = $(id).find('.modal-content')[0];
+              $(el).remove();
+            }
+          });
         };
 
         $scope.openModule = function(key, data){
@@ -220,13 +221,12 @@
                   $scope.trumbAngle = crntCropAngle;
                   cropDataObj.ang = crntCropAngle;
                   targetObj.data['cropData'] = cropDataObj;
-                  console.info(targetObj);
                 };
  
             },
             // Callback for Modal close
-            complete: function(e) {
-              
+            complete: function() {
+              console.log('c' );
              var el = $(id).find('.modal-content')[0];
               $(el).remove();
                 
