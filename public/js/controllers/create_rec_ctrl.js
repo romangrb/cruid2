@@ -7,7 +7,6 @@
       .controller('createRecCtrl', ['$scope', '$timeout', 'RestService', 'Upload',  'constant', 'imgEditService', 'random', function ($scope, $timeout,RestService, Upload, constant, imgEditService, random) {
       
         // initiate upload service
-        
         var upload = {},
         // init edit service
          EditImg = new imgEditService(), 
@@ -27,7 +26,7 @@
           };
         
         // init wather for autogener id
-      	  $scope.tmpId = null; 
+      	  $scope.tmpid = null; 
          	  
       	// for directive eather drag is supported or not
           $scope.isDroppable = true;
@@ -39,7 +38,7 @@
           EditImg.rotate(id);	
           
           $scope.angle = EditImg.rotateGetVal(id);
-          $scope.tmpId = id;
+          $scope.tmpid = upTarget.tmpId;
           
           upTarget.data.angle = EditImg.rotateGetVal(id);
             
