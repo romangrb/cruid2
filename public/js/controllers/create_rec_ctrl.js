@@ -11,7 +11,8 @@
         var upload = {};
          // rotate function for directive
          // current angle for route 
-        var crntAngle = 0;  
+        var crntAngle = 0,
+        EditImg = new imgEditService();  
        
       	$scope.tmpId = null;
       	
@@ -43,9 +44,14 @@
             // add additionall crop data
           if (!file_data.data['cropData']) {
             
-            getDecodeToStr(file_data).done(function(cb) {
+            EditImg.getDecodeToStr(file_data).done(function(cb) {
               file_data.data = cb; 
             }).fail(cropErrListener);
+            console.log(EditImg);
+            /*getDecodeToStr(file_data).done(function(cb) {
+              file_data.data = cb; 
+            }).fail(cropErrListener);*/
+            
           }
             console.log(file_data);
           /*  upload[key] = Upload.upload({
