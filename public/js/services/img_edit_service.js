@@ -55,7 +55,7 @@
             
             reader.onloadend = function (evt) {
               
-              those.__OBJ_TEMPLATE['cropData'].data = cropData;
+              those.__OBJ_TEMPLATE.data = cropData;
               
               return those.__OBJ_TEMPLATE;
             };
@@ -81,7 +81,7 @@
           
           var those = this;
           
-          this.__OBJ_TEMPLATE = {'cropData': {'data' : null}};
+          this.__OBJ_TEMPLATE = {'data' : null};
           
           this.__crntAngle = {};
         }

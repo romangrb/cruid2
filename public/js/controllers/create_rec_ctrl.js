@@ -39,9 +39,9 @@
           
           $scope.angle = EditImg.rotateGetVal(id);
           $scope.tmpid = upTarget.tmpId;
+         
+          upTarget['data'].angle = EditImg.rotateGetVal(id);
           
-          upTarget.data.angle = EditImg.rotateGetVal(id);
-            
         };
           
         $scope.crop = function(dataId, data){
@@ -58,13 +58,12 @@
           if (file_data == null || key == null) return;
             // add additionall crop data
           if (!file_data.data['cropData']) {
-            
             EditImg.getDecodeToStr(file_data).done(function(cb) {
-              file_data.data = cb; 
+              file_data.data['cropData'] = cb; 
             }).fail(cropErrListener);
-            
+        
           }
-            console.log(file_data);
+          console.log(file_data);
           /*  upload[key] = Upload.upload({
               url: constant.UPLOAD_URL,
               data:{files:file_data}
@@ -82,7 +81,7 @@
             
             if (!value.data['cropData']) {
               EditImg.getDecodeToStr(value).done(function(cb) {
-                value.data = cb; 
+                value['data'] = cb; 
               }).fail(cropErrListener);
             }
             
