@@ -56,57 +56,6 @@
      
     </div>
 
-
-
-
-
-
-
-
-
-<!-- Modal Trigger 
-<button ng-click='openModule($index, value)' data-target="{{$index}}" class="btn modal-trigger" >Modal</button>
-
-
-<div id="{{$index}}" class="modal">
-  <div class="modal-content">
-    <h4>Croup edit</h4>
-    <p>In squere content you seeing the view of trumbnail</p>
-    
-    <div class="cropArea" ng-if="showCrop($index)">
-      
-      <img-crop 
-        image="image.trumbImg" 
-        result-image="image.trumbCroppedImg"
-        area-type="square"
-        area-min-size="128"
-        on-load-done="loadDone()"
-        on-load-error="loadError()"
-      >
-      </img-crop>
-      
-    </div>
-    
-    <div>
-      <img 
-        rotate-trumb-dirct 
-        trumb-degrees='trumbAngle'
-        tmpid='cropRotateId'
-        ng-src="{{image.trumbCroppedImg}}"
-      />
-    </div>
-    
-  </div>
-  <div class="modal-footer">
-    Modal Trigger 
-    <button ng-click="closeModule($index)"  data-target="{{$index}}" class="btn modal-trigger" >Close</button>
-    
-    <button ng-click="rotateThumbnail()"  class="btn" > Rotate </button>
-    
-  </div>
-</div>
--->
-
   <img ngf-thumbnail="value" rotate-dirct degrees='angle' tmpid='{{this.value.tmpId}}' class="thumb"> 
       
   <a ng-click='upload(this.key, this.value)' class="waves-effect waves-light btn">upload</a>

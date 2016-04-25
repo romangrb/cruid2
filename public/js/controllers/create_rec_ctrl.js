@@ -8,10 +8,29 @@
       
         // initiate upload service
         
-        var upload = {};
-        var EditImg = new imgEditService();  // img edit service
-       
-      	$scope.tmpId = null;
+        var upload = {},
+        // init edit service
+         EditImg = new imgEditService(), 
+        
+        // init hash for modul edit
+         targetObj = {  
+            data : {'cropData' : null }
+          },
+          cropDataObj = {
+            ang  : null,
+            data : null
+          };
+        
+          $scope.image = {
+             trumbImg: null,
+             trumbCroppedImg: null
+          };
+        
+        // init wather for autogener id
+      	  $scope.tmpId = null; 
+         	  
+      	// for directive eather drag is supported or not
+          $scope.isDroppable = true;
       	
         $scope.rotate = function (id, upTarget) {
           	
@@ -147,22 +166,6 @@
           return dataHash;
         }
         
-        // for directive eather drag is supported or not
-        $scope.isDroppable = true;
-        
-        var targetObj = {
-            data : {'cropData' : null }
-          },
-          cropDataObj = {
-            ang  : null,
-            data : null
-          };
-        
-        $scope.image = {
-           trumbImg: null,
-           trumbCroppedImg: null
-        };
-        
         $scope.closeModule = function( key ){
           var id = '#'+key;
           $(id).closeModal({
@@ -177,7 +180,7 @@
               $scope.image.trumbCroppedImg = null;
               
               EditImg.rotateClearId(constant.DFLT_TRUMB_ID);	
-              
+            // remove module from view in ng-repeat
               var el = $(id).find('.modal-content')[0];
               
               $(el).remove();
