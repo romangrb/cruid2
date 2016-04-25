@@ -18,7 +18,7 @@
       DFLT_TRUMB_ID : 'trumb',
       CROP_KEY : 'cropData',
       MODULE_VIEW_CLASS_NAME : '.modal-content',
-      IMG_PTRN : '/\.(gif|jpg|jpeg|tiff|png)$/i'
+      IMG_PTRN : '.(gif|jpg|jpeg|tiff|png)$'
       
     });
     

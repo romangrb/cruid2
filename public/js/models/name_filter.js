@@ -19,10 +19,11 @@
                          );
           }
           
-          var imgSearchId = str.search(c.IMG_PTRN);
+          var ptrn = new RegExp(c.IMG_PTRN), 
+            imgSearchId = str.search(ptrn);
             
-          str = ( imgSearchId > -1 ) ? str.slice(0, imgSearchId) : str;
-
+          str = ( imgSearchId > -1 ) ? str.slice( 0, imgSearchId ) : str;
+            
           return str;
             
         };
