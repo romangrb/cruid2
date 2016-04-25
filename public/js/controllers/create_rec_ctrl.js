@@ -43,7 +43,7 @@
           $scope.angle = EditImg.rotateGetVal(id);
           $scope.tmpid = upTarget.tmpId;
          
-          upTarget['data'].angle = EditImg.rotateGetVal(id);
+          upTarget[constant.DATA_NAME].angle = EditImg.rotateGetVal(id);
           
         };
           
