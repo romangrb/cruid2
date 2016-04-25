@@ -170,17 +170,21 @@
               
               if ($scope.image.trumbCroppedImg) cropDataObj.data = $scope.image.trumbCroppedImg, targetObj[constant.DATA_NAME]['cropData'] = cropDataObj;
               
+              $scope.cropListener = null;
+              $scope.trumbAngle = 0;
               $scope.image.trumbImg = null;
               $scope.image.trumbCroppedImg = null;
-              $scope.trumbAngle = 0;
-              console.log('COMPLETE DONE', targetObj);
               
               var el = $(id).find('.modal-content')[0];
+              
               $(el).remove();
+              
+              
             }
           });
+          
         };
-
+        
         $scope.openModule = function(key, data){
         
          var id = '#'+key;
@@ -229,8 +233,8 @@
               console.log('c' );
              var el = $(id).find('.modal-content')[0];
               $(el).remove();
-                
               $scope.cropListener = null;
+              
               $scope.image.trumbImg = null;
               $scope.image.trumbCroppedImg = null;
             } 
