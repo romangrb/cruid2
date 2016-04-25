@@ -44,7 +44,7 @@
 <ul class="collection">
   <li class="collection-item" ng-repeat="(key, value) in file_collection track by $index">
     <i class="material-icons prefix">account_circle</i>
-    <input id="this.value.tmpId" type="text" value="{{'asdasd.jpg' | toOnlyNameImg}}" ng-keydown="changeName(value, this.name)" class="validate">
+    <input id="this.value.tmpId" type="text" ng-init="name = value.name"  ng-model="name" ng-keydown="changeName(value, this.name)" class="validate">
     <label for="this.value.tmpId">Name</label>
       
     <!-- Modal Trigger -->
