@@ -4,9 +4,18 @@
 
   angular
     .module('galleryApp')
-      .factory('RotateService', function() { 
+      .factory('imgEditService', function() { 
          
-        var Rotate = {
+        /* 
+         crntAngle += constant.DFLT_STEP_ANG;
+          crntAngle = (crntAngle>constant.MAX_ANG)? constant.DFLT_STEP_ANG :  crntAngle;
+          
+          $scope.angle = crntAngle;
+          $scope.tmpId = id;
+          upTarget.data.angle = crntAngle;*/
+         
+         
+        var Img = {
           
           getDecodeToStr: function (file_data){
             
@@ -35,7 +44,7 @@
           
         };
         
-        function PrivProtMethRotate (){
+        function PrivProtMethEdit (){
           
           var those = this;
           
@@ -47,9 +56,9 @@
           
         }
         
-        PrivProtMethRotate.prototype = Rotate;
+        PrivProtMethEdit.prototype = Img;
        
-        return PrivProtMethRotate;
+        return PrivProtMethEdit;
         
       });
       

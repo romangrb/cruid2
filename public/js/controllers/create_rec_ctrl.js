@@ -4,7 +4,7 @@
   
   angular
     .module('galleryApp')
-      .controller('createRecCtrl', ['$scope', '$timeout', 'RestService', 'Upload',  'constant', 'RotateService', 'random', function ($scope, $timeout,RestService, Upload, constant, RotateService,random) {
+      .controller('createRecCtrl', ['$scope', '$timeout', 'RestService', 'Upload',  'constant', 'imgEditService', 'random', function ($scope, $timeout,RestService, Upload, constant, imgEditService, random) {
       
         // initiate upload service
         
@@ -42,6 +42,7 @@
           if (file_data == null || key == null) return;
             // add additionall crop data
           if (!file_data.data['cropData']) {
+            
             getDecodeToStr(file_data).done(function(cb) {
               file_data.data = cb; 
             }).fail(cropErrListener);
