@@ -77,7 +77,7 @@
           testName : function (name) {
             
             var ptrn = new RegExp(c.IMG_VALID_PTRN); 
-              ptrn.test(name);
+              return ptrn.test(name);
               
           },
           
