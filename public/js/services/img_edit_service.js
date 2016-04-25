@@ -4,7 +4,7 @@
 
   angular
     .module('galleryApp')
-      .factory('imgEditService', ['constant', function(constant) { 
+      .factory('imgEditService', ['constant', function(c) { 
          
         var Img = {
           
@@ -13,7 +13,7 @@
             this.__crntAngle[id] = this.__crntAngle[id] || 0 ;
             
             this.__crntAngle[id] += constant.DFLT_STEP_ANG;
-            this.__crntAngle[id] = (this.__crntAngle[id] > constant.MAX_ANG)? constant.DFLT_STEP_ANG :  this.__crntAngle[id];
+            this.__crntAngle[id] = (this.__crntAngle[id] > c.MAX_ANG)? c.DFLT_STEP_ANG :  this.__crntAngle[id];
             
           },
           
@@ -72,8 +72,14 @@
               obj[objName] = {'data' : null};
               this.__OBJ_TEMPLATE = obj;
               
-          }
+          },
           
+          testName : function (name) {
+            
+            var ptrn = new RegExp(c.IMG_VALID_PTRN); 
+              ptrn.test(name);
+              
+          },
           
         };
         
