@@ -47,13 +47,14 @@
           
         };
           
-        $scope.crop = function( dataId, data ){
-          if (!data) return;
-            console.log(data);
-        };
           
-        $scope.changeName = function( file_data ){
-          console.log(file_data, 33);
+        $scope.changeName = function( file_data, value ){
+          
+          if ( !file_data && !value ) return;
+          
+          file_data.data['name'] = value;
+          
+          console.log(file_data);
         };
             
         $scope.upload = function( key, file_data ){
