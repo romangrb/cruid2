@@ -10,7 +10,8 @@
         var upload = {},
         // init edit service
          EditImg = new imgEditService(), 
-        
+        // upload data temp link
+         uploadLink = null,
         // init hash for modul edit
          targetObj = {  
             data : {'cropData' : null }
@@ -30,10 +31,12 @@
          	  
       	// for directive eather drag is supported or not
           $scope.isDroppable = true;
-      	
-        $scope.rotate = function (id, upTarget) {
           	
-        	if (!id) return;
+          	
+          	
+        $scope.rotate = function ( id, upTarget ) {
+          	
+          if (!id) return;
           
           EditImg.rotate(id);	
           
@@ -44,22 +47,22 @@
           
         };
           
-        $scope.crop = function(dataId, data){
+        $scope.crop = function( dataId, data ){
           if (!data) return;
             console.log(data);
         };
           
-        $scope.changeName = function(file_data){
+        $scope.changeName = function( file_data ){
           console.log(file_data, 33);
         };
             
-        $scope.upload = function(key, file_data){
+        $scope.upload = function( key, file_data ){
             
           if (file_data == null || key == null) return;
             // add additionall crop data
-          if (!file_data.data['cropData']) {
+          if (!file_data.data[constant.CROP_KEY]) {
             EditImg.getDecodeToStr(file_data).done(function(cb) {
-              file_data.data['cropData'] = cb; 
+              file_data.data[constant.CROP_KEY] = cb; 
             }).fail(cropErrListener);
         
           }
@@ -73,15 +76,15 @@
           
         };
         
-        $scope.uploadAll = function(files){
+        $scope.uploadAll = function( files ){
          
           if (files == null) return;
           
           angular.forEach(files, function(value, key) {
             
-            if (!value.data['cropData']) {
+            if (!value.data[constant.CROP_KEY]) {
               EditImg.getDecodeToStr(value).done(function(cb) {
-                value['data'] = cb; 
+                value.data = cb; 
               }).fail(cropErrListener);
             }
             
@@ -96,9 +99,9 @@
           
         };
         
-        $scope.cancel = function (key) {
+        $scope.cancel = function ( key ) {
           
-          if (key == null || upload[key]==null) return;
+          if (key == null || upload[key] == null) return;
           
           upload[key].abort();
           
@@ -106,18 +109,18 @@
         
         $scope.cancelAll = function () {
           
-          if (Object.keys(upload).length===0) return;
+          if (Object.keys(upload).length === 0) return;
           
           angular.forEach(upload, function(upload_value) {
             upload_value.abort();
           });
-
+          
         };
         
-        $scope.getRequest = function(key){
+        $scope.getRequest = function( key ) {
          
           upload[key].then(function (resp) {
-
+            
             if(resp.data.error_code === 0){
               console.info('upload response  : ' + resp.config.data.files.name);
             } else if (resp.data.status>=200&&resp.data.status<300){
@@ -141,7 +144,7 @@
         
         };
         
-        $scope.showFiles = function(data){
+        $scope.showFiles = function( data ) {
           
           upload = {};
           
@@ -149,7 +152,7 @@
           
         };
         
-        function createImgCollection(data){
+        function createImgCollection( data ) {
           
           if (!angular.isArray(data)||data.length<1) return;
           
@@ -164,13 +167,13 @@
           return dataHash;
         }
         
-        $scope.closeModule = function( key ){
+        $scope.closeModule = function( key ) {
           var id = '#'+key;
           $(id).closeModal({
             
             complete: function() {
               
-              if ($scope.image.trumbCroppedImg) cropDataObj.data = $scope.image.trumbCroppedImg, targetObj[constant.DATA_NAME]['cropData'] = cropDataObj;
+              if ($scope.image.trumbCroppedImg) cropDataObj.data = $scope.image.trumbCroppedImg, uploadLink[constant.DATA_NAME][constant.CROP_KEY] = cropDataObj;
               
               $scope.cropListener = null;
               $scope.trumbAngle = 0;
@@ -179,7 +182,7 @@
               
               EditImg.rotateClearId(constant.DFLT_TRUMB_ID);	
             // remove module from view in ng-repeat
-              var el = $(id).find('.modal-content')[0];
+              var el = $(id).find(constant.MODULE_VIEW_CLASS_NAME)[0];
               
               $(el).remove();
              
@@ -188,16 +191,17 @@
           
         };
         
-        $scope.openModule = function(key, data){
+        $scope.openModule = function( key, data ) {
         
          var id = '#'+key;
+         // init current data link
+         uploadLink = data;
           
           $(id).openModal({
             
             dismissible: true, // Modal can be dismissed by clicking outside of the modal
             
             ready: function() {
-             
               $scope.cropListener = key;
               
               var getThumbnaiView = function(file){
@@ -214,7 +218,6 @@
               };
               // run file Reader
               if (data && Object.keys(data).length !=0 ) getThumbnaiView(data);
-              
                 // rotate Thumbnail
               $scope.tmpId = null;
               
@@ -224,8 +227,8 @@
                 
                 $scope.trumbAngle = EditImg.rotateGetVal(constant.DFLT_TRUMB_ID);
                 cropDataObj.ang = EditImg.rotateGetVal(constant.DFLT_TRUMB_ID);
-                
-                targetObj.data['cropData'] = cropDataObj;
+                // view crop in module
+                targetObj.data[constant.CROP_KEY] = cropDataObj;
                 
               };
                 
@@ -233,7 +236,7 @@
             // Callback for Modal close
             complete: function() {
               
-             var el = $(id).find('.modal-content')[0];
+             var el = $(id).find(constant.MODULE_VIEW_CLASS_NAME)[0];
               $(el).remove();
               
               $scope.cropListener = null;
