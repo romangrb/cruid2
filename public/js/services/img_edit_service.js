@@ -12,7 +12,7 @@
             
             this.__crntAngle[id] = this.__crntAngle[id] || 0 ;
             
-            this.__crntAngle[id] += constant.DFLT_STEP_ANG;
+            this.__crntAngle[id] += c.DFLT_STEP_ANG;
             this.__crntAngle[id] = (this.__crntAngle[id] > c.MAX_ANG)? c.DFLT_STEP_ANG :  this.__crntAngle[id];
             
           },

@@ -4,7 +4,7 @@
   
   angular
     .module('galleryApp')
-      .controller('createRecCtrl', ['$scope', '$timeout', 'RestService', 'Upload',  'constant', 'imgEditService', 'random', function ($scope, $timeout,RestService, Upload, constant, imgEditService, random) {
+      .controller('createRecCtrl', ['$scope', '$timeout', 'RestService', 'Upload',  'constant', 'imgEditService', 'random', function ($scope, $timeout,RestService, Upload, c, imgEditService, random) {
       
         // initiate upload service
         var upload = {},
@@ -32,8 +32,6 @@
       	// for directive eather drag is supported or not
           $scope.isDroppable = true;
           	
-          	
-          	
         $scope.rotate = function ( id, upTarget ) {
           	
           if (!id) return;
@@ -43,33 +41,31 @@
           $scope.angle = EditImg.rotateGetVal(id);
           $scope.tmpid = upTarget.tmpId;
          
-          upTarget[constant.DATA_NAME].angle = EditImg.rotateGetVal(id);
+          upTarget[c.DATA_NAME].angle = EditImg.rotateGetVal(id);
           
         };
-          
           
         $scope.changeName = function( file_data, value ){
           
           if ( !file_data && !value ) return;
           
-          file_data.data['name'] = value;
+          file_data.data[c.DATA_IMG_NAME] = value;
           
-          console.log(file_data);
         };
             
         $scope.upload = function( key, file_data ){
             
           if (file_data == null || key == null) return;
             // add additionall crop data
-          if (!file_data.data[constant.CROP_KEY]) {
+          if (!file_data.data[c.CROP_KEY]) {
             EditImg.getDecodeToStr(file_data).done(function(cb) {
-              file_data.data[constant.CROP_KEY] = cb; 
+              file_data.data[c.CROP_KEY] = cb; 
             }).fail(cropErrListener);
         
           }
           console.log(file_data);
           /*  upload[key] = Upload.upload({
-              url: constant.UPLOAD_URL,
+              url: c.UPLOAD_URL,
               data:{files:file_data}
             });
             
@@ -83,14 +79,14 @@
           
           angular.forEach(files, function(value, key) {
             
-            if (!value.data[constant.CROP_KEY]) {
+            if (!value.data[c.CROP_KEY]) {
               EditImg.getDecodeToStr(value).done(function(cb) {
                 value.data = cb; 
               }).fail(cropErrListener);
             }
             
             /*upload[key] = Upload.upload({
-              url: constant.UPLOAD_URL,
+              url: c.UPLOAD_URL,
               data:{files:value}
             });
           
@@ -160,8 +156,8 @@
           var dataHash = {};
           
           angular.forEach(data, function(value, key) {
-            value[constant.TMP_ID_NAME] = random.makeId();
-            value[constant.DATA_NAME] = {},
+            value[c.TMP_ID_NAME] = random.makeId();
+            value[c.DATA_NAME] = {},
             this[key] = value;
           }, dataHash);
           
@@ -174,16 +170,16 @@
             
             complete: function() {
               
-              if ($scope.image.trumbCroppedImg) cropDataObj.data = $scope.image.trumbCroppedImg, uploadLink[constant.DATA_NAME][constant.CROP_KEY] = cropDataObj;
+              if ($scope.image.trumbCroppedImg) cropDataObj.data = $scope.image.trumbCroppedImg, uploadLink[c.DATA_NAME][c.CROP_KEY] = cropDataObj;
               
               $scope.cropListener = null;
               $scope.trumbAngle = 0;
               $scope.image.trumbImg = null;
               $scope.image.trumbCroppedImg = null;
               
-              EditImg.rotateClearId(constant.DFLT_TRUMB_ID);	
+              EditImg.rotateClearId(c.DFLT_TRUMB_ID);	
             // remove module from view in ng-repeat
-              var el = $(id).find(constant.MODULE_VIEW_CLASS_NAME)[0];
+              var el = $(id).find(c.MODULE_VIEW_CLASS_NAME)[0];
               
               $(el).remove();
              
@@ -224,12 +220,12 @@
               
               $scope.rotateThumbnail = function () {
                 	
-                EditImg.rotate(constant.DFLT_TRUMB_ID);	
+                EditImg.rotate(c.DFLT_TRUMB_ID);	
                 
-                $scope.trumbAngle = EditImg.rotateGetVal(constant.DFLT_TRUMB_ID);
-                cropDataObj.ang = EditImg.rotateGetVal(constant.DFLT_TRUMB_ID);
+                $scope.trumbAngle = EditImg.rotateGetVal(c.DFLT_TRUMB_ID);
+                cropDataObj.ang = EditImg.rotateGetVal(c.DFLT_TRUMB_ID);
                 // view crop in module
-                targetObj.data[constant.CROP_KEY] = cropDataObj;
+                targetObj.data[c.CROP_KEY] = cropDataObj;
                 
               };
                 
@@ -237,14 +233,14 @@
             // Callback for Modal close
             complete: function() {
               
-             var el = $(id).find(constant.MODULE_VIEW_CLASS_NAME)[0];
+             var el = $(id).find(c.MODULE_VIEW_CLASS_NAME)[0];
               $(el).remove();
               
               $scope.cropListener = null;
               $scope.image.trumbImg = null;
               $scope.image.trumbCroppedImg = null;
               
-              EditImg.rotateClearId(constant.DFLT_TRUMB_ID);	
+              EditImg.rotateClearId(c.DFLT_TRUMB_ID);	
             } 
           });
            

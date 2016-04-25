@@ -15,6 +15,7 @@
       DFLT_STEP_ANG : 90,
       TMP_ID_NAME : 'tmpId',
       DATA_NAME : 'data',
+      DATA_IMG_NAME : 'name',
       DFLT_TRUMB_ID : 'trumb',
       CROP_KEY : 'cropData',
       MODULE_VIEW_CLASS_NAME : '.modal-content',
