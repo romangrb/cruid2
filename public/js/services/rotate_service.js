@@ -19,6 +19,8 @@
           
           getDecodeToStr: function (file_data){
             
+            if (!file_data) return; 
+            
             var reader = new FileReader(),
               cropData = null,
               those = this;

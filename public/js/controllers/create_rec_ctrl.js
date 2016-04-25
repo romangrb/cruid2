@@ -47,10 +47,6 @@
             EditImg.getDecodeToStr(file_data).done(function(cb) {
               file_data.data = cb; 
             }).fail(cropErrListener);
-            console.log(EditImg);
-            /*getDecodeToStr(file_data).done(function(cb) {
-              file_data.data = cb; 
-            }).fail(cropErrListener);*/
             
           }
             console.log(file_data);
@@ -70,7 +66,7 @@
           angular.forEach(files, function(value, key) {
             
             if (!value.data['cropData']) {
-              getDecodeToStr(value).done(function(cb) {
+              EditImg.getDecodeToStr(value).done(function(cb) {
                 value.data = cb; 
               }).fail(cropErrListener);
             }
@@ -237,7 +233,7 @@
             },
             // Callback for Modal close
             complete: function() {
-              console.log('c' );
+              
              var el = $(id).find('.modal-content')[0];
               $(el).remove();
               $scope.cropListener = null;
@@ -248,29 +244,6 @@
           });
            
         };
-        
-        function getDecodeToStr (file_data) {
-          
-           var reader = new FileReader(),
-            cropD = {
-              'cropData':{data : null}
-            },
-            cropData = null;
-             
-            reader.onload = function (evt) {
-              cropData = evt.target.result;
-            };
-            
-            reader.onloadend = function (evt) {
-              cropD['cropData'].data = cropData;
-              return cropD;
-            };
-              
-            reader.readAsDataURL(file_data, reader);
-            
-            return  $.when(reader.onload());
-            
-        }
         
         function cropErrListener(textStatus, errorThrown ) {
           console.error( 'Crop error: ' + errorThrown);
