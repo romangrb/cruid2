@@ -9,23 +9,20 @@
         // initiate upload service
         
         var upload = {};
-         // rotate function for directive
-         // current angle for route 
-        var crntAngle = 0,
-        EditImg = new imgEditService();  
+        var EditImg = new imgEditService();  // img edit service
        
       	$scope.tmpId = null;
       	
         $scope.rotate = function (id, upTarget) {
           	
         	if (!id) return;
-          	
-          crntAngle += constant.DFLT_STEP_ANG;
-          crntAngle = (crntAngle>constant.MAX_ANG)? constant.DFLT_STEP_ANG :  crntAngle;
           
-          $scope.angle = crntAngle;
+          EditImg.rotate(id);	
+          
+          $scope.angle = EditImg.rotateGetVal(id);
           $scope.tmpId = id;
-          upTarget.data.angle = crntAngle;
+          
+          upTarget.data.angle = EditImg.rotateGetVal(id);
             
         };
           
@@ -169,6 +166,7 @@
         $scope.closeModule = function( key ){
           var id = '#'+key;
           $(id).closeModal({
+            
             complete: function() {
               
               if ($scope.image.trumbCroppedImg) cropDataObj.data = $scope.image.trumbCroppedImg, targetObj[constant.DATA_NAME]['cropData'] = cropDataObj;
@@ -178,11 +176,12 @@
               $scope.image.trumbImg = null;
               $scope.image.trumbCroppedImg = null;
               
+              EditImg.rotateClearId(constant.DFLT_TRUMB_ID);	
+              
               var el = $(id).find('.modal-content')[0];
               
               $(el).remove();
-              
-              
+             
             }
           });
           
@@ -213,33 +212,34 @@
                 reader.readAsDataURL(file);
               };
               // run file Reader
-              if (data && Object.keys(data).length!=0) getThumbnaiView(data);
+              if (data && Object.keys(data).length !=0 ) getThumbnaiView(data);
               
-              // ROTATE TRUMBNAIL
-              var crntCropAngle = 0;
+                // rotate Thumbnail
+              $scope.tmpId = null;
               
-                $scope.tmpId = null;
+              $scope.rotateThumbnail = function () {
                 	
-                $scope.rotateThumbnail = function () {
-                  	
-                  crntCropAngle += constant.DFLT_STEP_ANG;
-                  crntCropAngle = (crntCropAngle > constant.MAX_ANG)? constant.DFLT_STEP_ANG :  crntCropAngle;
-                  
-                  $scope.trumbAngle = crntCropAngle;
-                  cropDataObj.ang = crntCropAngle;
-                  targetObj.data['cropData'] = cropDataObj;
-                };
- 
+                EditImg.rotate(constant.DFLT_TRUMB_ID);	
+                
+                $scope.trumbAngle = EditImg.rotateGetVal(constant.DFLT_TRUMB_ID);
+                cropDataObj.ang = EditImg.rotateGetVal(constant.DFLT_TRUMB_ID);
+                
+                targetObj.data['cropData'] = cropDataObj;
+                
+              };
+                
             },
             // Callback for Modal close
             complete: function() {
               
              var el = $(id).find('.modal-content')[0];
               $(el).remove();
-              $scope.cropListener = null;
               
+              $scope.cropListener = null;
               $scope.image.trumbImg = null;
               $scope.image.trumbCroppedImg = null;
+              
+              EditImg.rotateClearId(constant.DFLT_TRUMB_ID);	
             } 
           });
            

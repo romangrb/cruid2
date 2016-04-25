@@ -15,6 +15,7 @@
       DFLT_STEP_ANG : 90,
       TMP_ID_NAME : 'tmpId',
       DATA_NAME : 'data',
+      DFLT_TRUMB_ID : 'trumb'
       
     });
     

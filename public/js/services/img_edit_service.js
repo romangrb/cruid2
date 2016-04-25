@@ -4,18 +4,42 @@
 
   angular
     .module('galleryApp')
-      .factory('imgEditService', function() { 
-         
-        /* 
-         crntAngle += constant.DFLT_STEP_ANG;
-          crntAngle = (crntAngle>constant.MAX_ANG)? constant.DFLT_STEP_ANG :  crntAngle;
-          
-          $scope.angle = crntAngle;
-          $scope.tmpId = id;
-          upTarget.data.angle = crntAngle;*/
-         
+      .factory('imgEditService', ['constant', function(constant) { 
          
         var Img = {
+          
+          rotate: function (id){
+            
+            this.__crntAngle[id] = this.__crntAngle[id] || 0 ;
+            
+            this.__crntAngle[id] += constant.DFLT_STEP_ANG;
+            this.__crntAngle[id] = (this.__crntAngle[id] > constant.MAX_ANG)? constant.DFLT_STEP_ANG :  this.__crntAngle[id];
+            
+          },
+          
+          rotateGetVal :  function (id){
+            
+            return this.__crntAngle[id];
+            
+          },
+          
+          rotateClearAllData :  function (id){
+            
+            this.__crntAngle = {};
+            
+          },
+          
+          rotateClearId :  function (id){
+            
+            if (this.__crntAngle[id]!=null) delete this.__crntAngle[id];
+            
+          },
+          
+          rotateClearDataId :  function (id){
+            
+            this.__crntAngle[id] = 0;
+            
+          },
           
           getDecodeToStr: function (file_data){
             
@@ -58,14 +82,15 @@
           var those = this;
           
           this.__OBJ_TEMPLATE = {'cropData': {'data' : null}};
-            
+          
+          this.__crntAngle = {};
         }
         
         PrivProtMethEdit.prototype = Img;
        
         return PrivProtMethEdit;
         
-      });
+      }]);
       
 })(angular, jQuery);        
  
