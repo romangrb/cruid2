@@ -63,13 +63,13 @@
             }).fail(cropErrListener);
         
           }
-          console.log(file_data);
-          /*  upload[key] = Upload.upload({
+          //console.log(file_data);
+            upload[key] = Upload.upload({
               url: c.UPLOAD_URL,
               data:{files:file_data}
             });
             
-          $scope.getRequest(key);*/
+          $scope.getRequest(key);
           
         };
         
@@ -84,14 +84,13 @@
                 value.data = cb; 
               }).fail(cropErrListener);
             }
-            
-            /*upload[key] = Upload.upload({
+            upload[key] = Upload.upload({
               url: c.UPLOAD_URL,
               data:{files:value}
             });
           
-          $scope.getRequest(key);*/
-          console.log(value);
+          $scope.getRequest(key);
+          //console.log(value);
           });
           
         };
