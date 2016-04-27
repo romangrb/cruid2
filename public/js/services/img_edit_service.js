@@ -56,7 +56,7 @@
             reader.onloadend = function (evt) {
               
               those.__OBJ_TEMPLATE.data = cropData;
-              
+                            
               return those.__OBJ_TEMPLATE;
             };
               
@@ -64,8 +64,7 @@
           
             return  $.when(reader.onloadend());
           },
-          
-          
+         
           setProp : function (objName) {
             
             var obj = {};

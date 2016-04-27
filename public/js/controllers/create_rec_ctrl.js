@@ -14,11 +14,12 @@
          uploadLink = null,
         // init hash for modul edit
          targetObj = {  
-            data : {'cropData' : null }
-          },
-          cropDataObj = {
-            ang  : null,
-            data : null
+            data : {
+              'imgBitD' : null, 
+              'imgTrumbBitD' : null, 
+              'imgAng' : 0, 
+              'imgTrumbAng' : 0 
+            }
           };
         
           $scope.image = {
@@ -57,19 +58,18 @@
             
           if (file_data == null || key == null) return;
             // add additionall crop data
-          if (!file_data.data[c.CROP_KEY]) {
+          if (!file_data.data['imgBitD']) {
             EditImg.getDecodeToStr(file_data).done(function(cb) {
-              file_data.data[c.CROP_KEY] = cb; 
+              file_data.data['imgBitD'] = cb;
             }).fail(cropErrListener);
-        
           }
-          //console.log(file_data);
-            upload[key] = Upload.upload({
+          console.log(file_data);
+            /*upload[key] = Upload.upload({
               url: c.UPLOAD_URL,
               data:{files:file_data}
             });
             
-          $scope.getRequest(key);
+          $scope.getRequest(key);*/
           
         };
         
@@ -169,7 +169,7 @@
             
             complete: function() {
               
-              if ($scope.image.trumbCroppedImg) cropDataObj.data = $scope.image.trumbCroppedImg, uploadLink[c.DATA_NAME][c.CROP_KEY] = cropDataObj;
+              if ($scope.image.trumbCroppedImg) targetObj.imgTrumbBitD = $scope.image.trumbCroppedImg, uploadLink[c.DATA_NAME]['imgTrumbBitD'] = targetObj.imgTrumbBitD;//, uploadLink[c.DATA_NAME] = targetObj.imgTrumbBitD;
               
               $scope.cropListener = null;
               $scope.trumbAngle = 0;
@@ -222,9 +222,9 @@
                 EditImg.rotate(c.DFLT_TRUMB_ID);	
                 
                 $scope.trumbAngle = EditImg.rotateGetVal(c.DFLT_TRUMB_ID);
-                cropDataObj.ang = EditImg.rotateGetVal(c.DFLT_TRUMB_ID);
+                targetObj['imgTrumbAng'] = EditImg.rotateGetVal(c.DFLT_TRUMB_ID);
                 // view crop in module
-                targetObj.data[c.CROP_KEY] = cropDataObj;
+                //targetObj.data['imgTrumbBitD'] = cropDataObj;
                 
               };
                 
