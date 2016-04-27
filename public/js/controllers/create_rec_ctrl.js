@@ -224,7 +224,7 @@
                 $scope.trumbAngle = EditImg.rotateGetVal(c.DFLT_TRUMB_ID);
                 targetObj['imgTrumbAng'] = EditImg.rotateGetVal(c.DFLT_TRUMB_ID);
                 // view crop in module
-                //targetObj.data['imgTrumbBitD'] = cropDataObj;
+                uploadLink.data['imgTrumbAng'] = targetObj['imgTrumbAng'];
                 
               };
                 
