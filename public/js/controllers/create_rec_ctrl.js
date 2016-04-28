@@ -14,12 +14,13 @@
          uploadLink = null,
         // init hash for modul edit
          targetObj = {  
+           
             data : {
-              'imgBitD' : null, 
               'imgTrumbBitD' : null, 
               'imgAng' : 0, 
               'imgTrumbAng' : 0 
             }
+            
           };
         
           $scope.image = {
@@ -55,15 +56,21 @@
         };
             
         $scope.upload = function( key, file_data ){
-            
+             var b = {};
           if (file_data == null || key == null) return;
             // add additionall crop data
-          if (!file_data.data['imgBitD']) {
+          if (!file_data.data['imgTrumbBitD']) {
+          
             EditImg.getDecodeToStr(file_data).done(function(cb) {
-              file_data.data['imgBitD'] = cb;
+              
+              file_data.data['imgTrumbBitD'] = cb;
+             
             }).fail(cropErrListener);
+             
           }
-          console.log(file_data);
+           
+            console.log(2, b);
+          //console.log(file_data);
             /*upload[key] = Upload.upload({
               url: c.UPLOAD_URL,
               data:{files:file_data}

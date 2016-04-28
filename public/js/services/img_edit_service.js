@@ -64,6 +64,18 @@
           
             return  $.when(reader.onloadend());
           },
+          
+          convertToJSON : function (srcObj, templateObj) {
+            
+            for (var key in templateObj){
+              
+              templateObj[key] = (typeof(srcObj[key])==='String') ? srcObj[key] : templateObj[key];
+              
+            }
+            
+            return templateObj;
+              
+          },
          
           setProp : function (objName) {
             
