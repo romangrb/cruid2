@@ -59,7 +59,7 @@
           
           if (file_data == null || key == null) return;
             // add additionall crop data
-          if (!file_data.data['imgTrumbBitD']) {
+          if (!file_data.data[c.DFLT_KEY_D_BIT]) {
           
             EditImg.getDecodeToStr(file_data, file_data.data).done(function(cb) {
               
@@ -68,16 +68,13 @@
             }).fail(cropErrListener);
              
           }
-          
-          var addData = EditImg.convertToJSON(file_data.data, targetObj.data);
-          console.log(file_data, addData);
            
-            /*upload[key] = Upload.upload({
-              url: c.UPLOAD_URL,
-              data:{files:file_data}
-            });
+          upload[key] = Upload.upload({
+            url: c.UPLOAD_URL,
+            data:{files:file_data}
+          });
             
-          $scope.getRequest(key);*/
+          $scope.getRequest(key);
           
         };
         
@@ -87,17 +84,17 @@
           
           angular.forEach(files, function(value, key) {
             
-            if (!value.data[c.CROP_KEY]) {
-              EditImg.getDecodeToStr(value).done(function(cb) {
+            if (!value.data[c.DFLT_KEY_D_BIT]) {
+              EditImg.getDecodeToStr(value, value.data).done(function(cb) {
                 value.data = cb; 
               }).fail(cropErrListener);
             }
-            upload[key] = Upload.upload({
+            /*upload[key] = Upload.upload({
               url: c.UPLOAD_URL,
               data:{files:value}
             });
           
-          $scope.getRequest(key);
+          $scope.getRequest(key);*/
           //console.log(value);
           });
           
@@ -177,7 +174,7 @@
             
             complete: function() {
               
-              if ($scope.image.trumbCroppedImg) targetObj.imgTrumbBitD = $scope.image.trumbCroppedImg, uploadLink[c.DATA_NAME]['imgTrumbBitD'] = targetObj.imgTrumbBitD;//, uploadLink[c.DATA_NAME] = targetObj.imgTrumbBitD;
+              if ($scope.image.trumbCroppedImg) targetObj[c.DFLT_KEY_D_BIT] = $scope.image.trumbCroppedImg, uploadLink[c.DATA_NAME][c.DFLT_KEY_D_BIT] = targetObj[c.DFLT_KEY_D_BIT];
               
               $scope.cropListener = null;
               $scope.trumbAngle = 0;

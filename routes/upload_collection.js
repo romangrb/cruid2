@@ -18,7 +18,7 @@
   router.use(bodyParser.json());
   
   router.post('/', function(req, res, next) {
-    
+    console.log(req);
     if (req.url!=='/') next();
     
     DbCrud.create({}).save(function (err, cb) {
@@ -93,8 +93,8 @@
   
         if (errors.length == up_config.NO_ERR_LN) {
   
-          var out = fs.createWriteStream(uploadFile.path);
-            part.pipe(out);
+          /*var out = fs.createWriteStream(uploadFile.path);
+            part.pipe(out);*/
             
         } else {
        
