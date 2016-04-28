@@ -35,7 +35,7 @@
           $scope.isDroppable = true;
           	
         $scope.rotate = function ( id, upTarget ) {
-          	
+          
           if (!id) return;
           
           EditImg.rotate(id);	
@@ -43,7 +43,7 @@
           $scope.angle = EditImg.rotateGetVal(id);
           $scope.tmpid = upTarget.tmpId;
          
-          upTarget[c.DATA_NAME].angle = EditImg.rotateGetVal(id);
+          upTarget[c.DATA_NAME]['imgAng'] = EditImg.rotateGetVal(id);
           
         };
           
@@ -61,15 +61,16 @@
             // add additionall crop data
           if (!file_data.data['imgTrumbBitD']) {
           
-            EditImg.getDecodeToStr(file_data).done(function(cb) {
-             
-              file_data.data = cb;
+            EditImg.getDecodeToStr(file_data, file_data.data).done(function(cb) {
               
+              file_data.data = cb;
+             
             }).fail(cropErrListener);
              
           }
           
-          console.log(file_data);
+          var addData = EditImg.convertToJSON(file_data.data, targetObj.data);
+          console.log(file_data, addData);
            
             /*upload[key] = Upload.upload({
               url: c.UPLOAD_URL,

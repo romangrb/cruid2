@@ -41,14 +41,23 @@
             
           },
           
-          getDecodeToStr: function (file_data){
+          getDecodeToStr: function (file_data, addData){
             
             if (!file_data) return; 
             
             var reader = new FileReader(),
               cropData = null,
               those = this,
-              dataKey = those.__DFLT_KEY_D_BIT;;
+              dataKey = those.__DFLT_KEY_D_BIT,
+              backup = null;
+              
+            if (addData) {
+              
+              backup = angular.copy(file_data.data, backup);
+              
+              for (var key in backup) those.__OBJ_TEMPLATE[key] = backup[key];
+              
+            }
               
             reader.onload = function (evt) {
               cropData = evt.target.result;
@@ -67,14 +76,14 @@
           },
           
           convertToJSON : function (srcObj, templateObj) {
-            
+        
             for (var key in templateObj){
               
               templateObj[key] = (typeof(srcObj[key])==='String') ? srcObj[key] : templateObj[key];
               
             }
             
-            return templateObj;
+              return templateObj;
               
           },
          
