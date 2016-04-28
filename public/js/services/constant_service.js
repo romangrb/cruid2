@@ -14,6 +14,7 @@
       MAX_ANG : 360,
       DFLT_STEP_ANG : 90,
       TMP_ID_NAME : 'tmpId',
+      DFLT_KEY_D_BIT : 'imgTrumbBitD',
       DATA_NAME : 'data',
       DATA_IMG_NAME : 'name',
       DFLT_TRUMB_ID : 'trumb',

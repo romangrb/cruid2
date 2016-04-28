@@ -47,7 +47,8 @@
             
             var reader = new FileReader(),
               cropData = null,
-              those = this;
+              those = this,
+              dataKey = those.__DFLT_KEY_D_BIT;;
               
             reader.onload = function (evt) {
               cropData = evt.target.result;
@@ -55,7 +56,7 @@
             
             reader.onloadend = function (evt) {
               
-              those.__OBJ_TEMPLATE.data = cropData;
+              those.__OBJ_TEMPLATE[dataKey] = cropData;
                             
               return those.__OBJ_TEMPLATE;
             };
@@ -80,7 +81,7 @@
           setProp : function (objName) {
             
             var obj = {};
-              obj[objName] = {'data' : null};
+              obj[objName] = null;
               this.__OBJ_TEMPLATE = obj;
               
           },
@@ -95,12 +96,15 @@
         };
         
         function PrivProtMethEdit (){
-          
+            
           var those = this;
+            
+          this.__DFLT_KEY_D_BIT = c.DFLT_KEY_D_BIT;
           
-          this.__OBJ_TEMPLATE = {'data' : null};
+          this.__OBJ_TEMPLATE = {};
           
           this.__crntAngle = {};
+          
         }
         
         PrivProtMethEdit.prototype = Img;
