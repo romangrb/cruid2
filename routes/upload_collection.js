@@ -18,7 +18,7 @@
   router.use(bodyParser.json());
   
   router.post('/', function(req, res, next) {
-    console.log(req);
+  
     if (req.url!=='/') next();
     
     DbCrud.create({}).save(function (err, cb) {
@@ -37,9 +37,29 @@
         errors.push(err);
       });
       
+      form.parse(req, function(err, fields, files) {
+        
+        console.log(fields, files);
+        
+        /*Object.keys(fields).forEach(function(name) {
+          console.log('got field named ' + name);
+        });
+      
+        Object.keys(files).forEach(function(name) {
+          console.log('got file named ' + name);
+        });*/
+        
+        if (err) console.log('form parce error');
+        
+        console.log('Upload completed!');
+        //res.setHeader('text/plain');
+       // res.end('Received ' + files.length + ' files');
+        
+      });
+      
       form.on('close', function() {
         
-        try {
+       /* try {
             
           if (errors.length !== up_config.NO_ERR_LN) throw new Error(errors);
           
@@ -68,17 +88,21 @@
           
           res.send({status: '405', text: errors});
           
-        }
+        }*/
         
       });
-       
+      
       form.on('part', function(part) {
-        
+        console.log(part);
         part.on('error', function(){
           res.send(406 , up_config.NOT_ACCEPTABLE_MSG);
         });
         
-        uploadFile.size = part.byteCount;
+        console.log('got file named ' + part.name);
+        // ignore file's content here
+        //part.resume();
+        
+        /*uploadFile.size = part.byteCount;
         uploadFile.type = part.headers['content-type'];
         uploadFile.name = part.filename;
         uploadFile.path = up_config.UPLOAD_PATH + uploadFile.id + getTypeFormat(part.filename);
@@ -89,7 +113,7 @@
         
         if (up_config.SUPPORT_MIME_TYPES.indexOf(uploadFile.type) == -1) {
             errors.push(up_config.MIME_TYPE_ERR + uploadFile.type);
-        }
+        }*/
   
         if (errors.length == up_config.NO_ERR_LN) {
   
