@@ -71,8 +71,7 @@
            
           upload[key] = Upload.upload({
             url: c.UPLOAD_URL,
-            //headers: {'content-type' : 'multipart/form-data'},
-            data:{file:file_data, info:1434567890},
+            data:{info:1434567890, file:file_data},
             
           });
             
@@ -127,21 +126,21 @@
             if(resp.data.error_code === 0){
               console.info('upload response  : ' + resp.config.data.file.name);
             } else if (resp.data.status>=200&&resp.data.status<300){
-              console.info('file : ', resp.config.data.file.name, 'is uploaded');
+              console.info('file : ', resp.config.data.file.name || 'data', 'is uploaded');
                 if (upload[key]) delete upload[key];
               } else {
                 console.error('Error : ', resp.data);
                 if (upload[key]) delete upload[key];
               }
           }, function (resp) {
-             console.info('file : ', resp.config.data.file.name, 
+             console.info('file : ', resp.config.data.file.name || 'data', 
              'aborted', '\n'+ 'status code', resp.status);
               if (upload[key]) delete upload[key];
           }, function (evt) { 
             
             var progress = parseInt(100.0 * evt.loaded / evt.total);
             
-            console.log(progress + '% ' + evt.config.data.file.name);
+            console.log(progress + '% ' + evt.config.data.file.name || 'data');
             $scope.progress = 'progress: ' + progress + '% ';
           });
         

@@ -27,6 +27,12 @@
         
       var form = new multiparty.Form();
       
+     /* function someFn(err, fields, file){
+        
+        console.log(1, fields, file);
+        
+      }*/
+      
       var uploadFile = {uploadPath: '', type: '', size: 0, name: '', id: ''},
         errors = [],
         this_newCollectionDb = cb;
@@ -37,23 +43,8 @@
         errors.push(err);
       });
       
-      form.parse(req, function(err, fields, files) {
-        
-        console.log(fields, files);
-        
-        /*Object.keys(fields).forEach(function(name) {
-          console.log('got field named ' + name);
-        });
-      
-        Object.keys(files).forEach(function(name) {
-          console.log('got file named ' + name);
-        });*/
-        
-        if (err) console.log('form parce error');
-        
-        console.log('Upload completed!');
-        //res.setHeader('text/plain');
-       // res.end('Received ' + files.length + ' files');
+      form.on('fields', function(e, v) {
+        console.log(e, v);
         
       });
       
@@ -92,8 +83,9 @@
         
       });
       
+      
       form.on('part', function(part) {
-        console.log(part);
+       // console.log(part);
         part.on('error', function(){
           res.send(406 , up_config.NOT_ACCEPTABLE_MSG);
         });
@@ -114,7 +106,13 @@
         if (up_config.SUPPORT_MIME_TYPES.indexOf(uploadFile.type) == -1) {
             errors.push(up_config.MIME_TYPE_ERR + uploadFile.type);
         }*/
-  
+        
+        if (!part.filename) {
+          // filename is not defined when this is a field and not a file
+          console.log('got field named ' + part.name);
+          // ignore field's content
+        }
+        
         if (errors.length == up_config.NO_ERR_LN) {
   
           /*var out = fs.createWriteStream(uploadFile.path);
@@ -128,7 +126,7 @@
   
       });
       
-      form.parse(req);
+       form.parse(req);
     
     });
     
