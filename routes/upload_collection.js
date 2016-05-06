@@ -22,17 +22,21 @@
   
     if (req.url!=='/') next();
     
+    var uploadFile = {uploadPath: '', type: '', size: 0, name: '', id: ''},
+      errors = [],
+      this_newCollectionDb = null;
+    
       DbCrud.create({}).save(function (err, cb) {
             
       if (err) return console.log(up_config.DB_CREATE_ERR_MSG); // provide log!!
         
       var busboy = new Busboy({ headers: req.headers });
       
-      var uploadFile = {uploadPath: '', type: '', size: 0, name: '', id: ''},
-        errors = [],
-        this_newCollectionDb = cb;
+      
+      this_newCollectionDb = cb;
         
       uploadFile.id = this_newCollectionDb._id;
+      
       
       busboy.on('file', function(fieldname, file, filename) {
         
@@ -75,7 +79,7 @@
               if (err) return next(up_config.DB_CREATE_ERR_MSG);
               
             });
-            console.log('File [' + fieldname + '] Finished');  
+             
             res.send({status: 201 , text: 'created'});
               
           } catch (err) {
@@ -99,10 +103,13 @@
         
       });
       
+      busboy.on('error', function (err) {
+        console.log('ERROR!!!', err);
+      });
+
       busboy.on('finish', function() {
         
-         
-        
+        res.end(); 
         console.log('Done parsing form!');
         
       });
@@ -114,95 +121,16 @@
       
       req.pipe(busboy);
       
-    });   
-      /*form.on('close', function() {
-        
-        try {
-            
-          if (errors.length !== up_config.NO_ERR_LN) throw new Error(errors);
-          
-          var name = uploadFile.name,
-            src = uploadFile.path,
-            upData;
-          
-          if (name == null) throw new Error(up_config.DB_ATTR_REC_MSG); 
-          
-          upData = { name: name, src: src, is_deleted: false };
-          
-          DbCrud.updateById(this_newCollectionDb._id, upData).exec(function(err, cb) {
-            
-            if (err) return next(up_config.DB_CREATE_ERR_MSG);
-            
-          });
-            
-          res.send({status: 201 , text: 'created'});
-            
-            
-        } catch (err) {
-          
-          if (fs.existsSync(uploadFile.path)) fs.unlinkSync(uploadFile.path);
-          
-          cb.remove(this_newCollectionDb);
-          
-          res.send({status: '405', text: errors});
-          
-        }
-        
-      });
-     
-      
-      form.on('part', function(part) {
-        
-        
-        part.on('error', function(){
-          res.send(406 , up_config.NOT_ACCEPTABLE_MSG);
-        });
-        
-        if (!part.filename) {
-          // filename is not defined when this is a field and not a file
-
-          
-          // ignore field's content
-        } else {
-          
-         // if (part.headers['content-type']=='application/json') {
-            
-            console.log(part);
-         // }
-         
-          
-          uploadFile.size = part.byteCount;
-          uploadFile.type = part.headers['content-type'];
-          uploadFile.name = part.filename;
-          uploadFile.path = up_config.UPLOAD_PATH + uploadFile.id + getTypeFormat(part.filename);
-        
-          if (uploadFile.size > up_config.MAX_SIZE) {
-              errors.push(up_config.LIM_SIZE_ERR);
-          }
-          
-          if (up_config.SUPPORT_MIME_TYPES.indexOf(uploadFile.type) == -1) {
-              errors.push(up_config.MIME_TYPE_ERR + uploadFile.type);
-          }
-          
-          if (errors.length == up_config.NO_ERR_LN) {
-              
-            //var out = fs.createWriteStream(uploadFile.path);
-              //part.pipe(out);
-              
-          } else {
-         
-            part.resume();
-              
-          }
-          
-        }
-        
-  
-      });
-      
-       form.parse(req);*/
+    });
     
-   
+    req.on('close', function () {
+        console.log('FILE ABORTED CLIENT SIDE');
+        
+        if (fs.existsSync(uploadFile.path)) fs.unlinkSync(uploadFile.path);
+          
+        res.send({status: '405', text: errors});
+      
+      });
     
     
   });
