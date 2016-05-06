@@ -68,11 +68,11 @@
             }).fail(cropErrListener);
              
           }
-           
+          console.log(file_data);
+          //https://github.com/mscdex/busboy    info: Upload.jsonBlob({id: 32, name: 23}),
           upload[key] = Upload.upload({
             url: c.UPLOAD_URL,
-            data:{info:1434567890, file:file_data},
-            
+            data:{ file: Upload.jsonBlob(file_data)},
           });
             
           $scope.getRequest(key);

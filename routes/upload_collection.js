@@ -2,7 +2,7 @@
   var bodyParser = require('body-parser');
   var router = express.Router();
   var fs = require('fs');
-  var multiparty = require('multiparty');
+  var formidable  = require('formidable');
   var getTypeFormat = require('../services/convert_type');
   var DbCrud = require('../services/crud_mongose_db');
   var up_config = require('../model/upload_model_constant');
@@ -25,28 +25,13 @@
             
       if (err) return console.log(up_config.DB_CREATE_ERR_MSG); // provide log!!
         
-      var form = new multiparty.Form();
-      
-     /* function someFn(err, fields, file){
-        
-        console.log(1, fields, file);
-        
-      }*/
+      var form = new formidable.IncomingForm();
       
       var uploadFile = {uploadPath: '', type: '', size: 0, name: '', id: ''},
         errors = [],
         this_newCollectionDb = cb;
         
       uploadFile.id = this_newCollectionDb._id;
-        
-      form.on('error', function(err){
-        errors.push(err);
-      });
-      
-      form.on('fields', function(e, v) {
-        console.log(e, v);
-        
-      });
       
       form.on('close', function() {
         
@@ -83,46 +68,62 @@
         
       });
       
+      var i = 0;
       
       form.on('part', function(part) {
-       // console.log(part);
+        
+        
         part.on('error', function(){
           res.send(406 , up_config.NOT_ACCEPTABLE_MSG);
         });
         
-        console.log('got file named ' + part.name);
-        // ignore file's content here
-        //part.resume();
-        
-        /*uploadFile.size = part.byteCount;
-        uploadFile.type = part.headers['content-type'];
-        uploadFile.name = part.filename;
-        uploadFile.path = up_config.UPLOAD_PATH + uploadFile.id + getTypeFormat(part.filename);
-        
-        if (uploadFile.size > up_config.MAX_SIZE) {
-            errors.push(up_config.LIM_SIZE_ERR);
-        }
-        
-        if (up_config.SUPPORT_MIME_TYPES.indexOf(uploadFile.type) == -1) {
-            errors.push(up_config.MIME_TYPE_ERR + uploadFile.type);
-        }*/
-        
         if (!part.filename) {
           // filename is not defined when this is a field and not a file
-          console.log('got field named ' + part.name);
+           
+          
+          /*for (var k in part){
+          
+            console.log(k);
+            
+          }
+          */
+         console.log(part);
+          
           // ignore field's content
+        } else {
+          
+         // if (part.headers['content-type']=='application/json') {
+            
+            console.log(part);
+         // }
+         
+          
+          uploadFile.size = part.byteCount;
+          uploadFile.type = part.headers['content-type'];
+          uploadFile.name = part.filename;
+          uploadFile.path = up_config.UPLOAD_PATH + uploadFile.id + getTypeFormat(part.filename);
+        
+          if (uploadFile.size > up_config.MAX_SIZE) {
+              errors.push(up_config.LIM_SIZE_ERR);
+          }
+          
+          if (up_config.SUPPORT_MIME_TYPES.indexOf(uploadFile.type) == -1) {
+              errors.push(up_config.MIME_TYPE_ERR + uploadFile.type);
+          }
+          
+          if (errors.length == up_config.NO_ERR_LN) {
+              
+            /*var out = fs.createWriteStream(uploadFile.path);
+              part.pipe(out);*/
+              
+          } else {
+         
+            part.resume();
+              
+          }
+          
         }
         
-        if (errors.length == up_config.NO_ERR_LN) {
-  
-          /*var out = fs.createWriteStream(uploadFile.path);
-            part.pipe(out);*/
-            
-        } else {
-       
-            part.resume();
-            
-        }
   
       });
       
