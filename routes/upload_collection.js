@@ -21,17 +21,38 @@
   
     if (req.url!=='/') next();
     
-    DbCrud.create({}).save(function (err, cb) {
+    //DbCrud.create({}).save(function (err, cb) {
             
-      if (err) return console.log(up_config.DB_CREATE_ERR_MSG); // provide log!!
+     // if (err) return console.log(up_config.DB_CREATE_ERR_MSG); // provide log!!
         
-      var form = new Busboy();
+      var busboy = new Busboy({ headers: req.headers });
       
-      var uploadFile = {uploadPath: '', type: '', size: 0, name: '', id: ''},
-        errors = [],
-        this_newCollectionDb = cb;
+    //  var uploadFile = {uploadPath: '', type: '', size: 0, name: '', id: ''},
+    //    errors = [],
+      //  this_newCollectionDb = cb;
         
-      uploadFile.id = this_newCollectionDb._id;
+   //   uploadFile.id = this_newCollectionDb._id;
+      
+      busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
+        console.log('File [' + fieldname + ']: filename: ' + filename + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
+        file.on('data', function(data) {
+          console.log('File [' + fieldname + '] got ' + data.length + ' bytes');
+        });
+        file.on('end', function() {
+          console.log('File [' + fieldname + '] Finished');
+        });
+      });
+      
+      busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype) {
+        console.log('Field [' + fieldname + ']: value: ', val, fieldnameTruncated, valTruncated, encoding, mimetype);
+      });
+      
+      busboy.on('finish', function() {
+        console.log('Done parsing form!');
+      });
+      
+      req.pipe(busboy);
+      
       
       /*form.on('close', function() {
         
@@ -120,7 +141,7 @@
       
        form.parse(req);*/
     
-    });
+   // });
     
     
   });
