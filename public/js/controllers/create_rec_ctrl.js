@@ -68,12 +68,13 @@
             }).fail(cropErrListener);
              
           }
+          var addData = JSON.stringify({name:'roman', lastname:'hrabar'});
           console.log(file_data);
           //https://github.com/mscdex/busboy    info: Upload.jsonBlob({id: 32, name: 23}),
           upload[key] = Upload.upload({
             url : c.UPLOAD_URL,
             //data: {'trId' : file_data['name'], data : 'data' , file: file_data},
-            data: {'trId' : file_data['name'], data : 'data' , file: file_data},
+            data: {'info' : addData, file: file_data},
           });
             
           $scope.getRequest(key);

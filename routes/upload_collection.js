@@ -100,9 +100,12 @@
       
       busboy.on('field', function(fieldname, val) {
         
-        //uploadFile.name = fieldname;
-        uploadFile.additionallData[fieldname] = val;
-        
+        try {
+          uploadFile.additionallData = JSON.parse(val);
+        } catch (e) {
+          console.log('PARSE ERR');
+        }
+          
       });
       
       busboy.on('error', function (err) {
