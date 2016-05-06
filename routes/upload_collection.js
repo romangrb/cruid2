@@ -2,7 +2,7 @@
   var bodyParser = require('body-parser');
   var router = express.Router();
   var fs = require('fs');
-  var formidable  = require('formidable');
+  var Busboy  = require('busboy');
   var getTypeFormat = require('../services/convert_type');
   var DbCrud = require('../services/crud_mongose_db');
   var up_config = require('../model/upload_model_constant');
@@ -25,7 +25,7 @@
             
       if (err) return console.log(up_config.DB_CREATE_ERR_MSG); // provide log!!
         
-      var form = new formidable.IncomingForm();
+      var form = new Busboy();
       
       var uploadFile = {uploadPath: '', type: '', size: 0, name: '', id: ''},
         errors = [],
@@ -33,9 +33,9 @@
         
       uploadFile.id = this_newCollectionDb._id;
       
-      form.on('close', function() {
+      /*form.on('close', function() {
         
-       /* try {
+        try {
             
           if (errors.length !== up_config.NO_ERR_LN) throw new Error(errors);
           
@@ -64,11 +64,10 @@
           
           res.send({status: '405', text: errors});
           
-        }*/
+        }
         
       });
-      
-      var i = 0;
+     
       
       form.on('part', function(part) {
         
@@ -79,15 +78,7 @@
         
         if (!part.filename) {
           // filename is not defined when this is a field and not a file
-           
-          
-          /*for (var k in part){
-          
-            console.log(k);
-            
-          }
-          */
-         console.log(part);
+
           
           // ignore field's content
         } else {
@@ -113,8 +104,8 @@
           
           if (errors.length == up_config.NO_ERR_LN) {
               
-            /*var out = fs.createWriteStream(uploadFile.path);
-              part.pipe(out);*/
+            //var out = fs.createWriteStream(uploadFile.path);
+              //part.pipe(out);
               
           } else {
          
@@ -127,7 +118,7 @@
   
       });
       
-       form.parse(req);
+       form.parse(req);*/
     
     });
     
