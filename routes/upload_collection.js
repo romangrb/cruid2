@@ -22,7 +22,7 @@
   
     if (req.url!=='/') next();
     
-    var uploadFile = {uploadPath: '', type: '', size: 0, name: '', id: ''},
+    var uploadFile = {uploadPath: '', type: '', size: 0, name: '', id: '', additionallData : {} },
       errors = [],
       this_newCollectionDb = null;
     
@@ -39,14 +39,15 @@
       
       
       busboy.on('file', function(fieldname, file, filename) {
+         console.log(uploadFile.additionallData, 3);
         
         //uploadFile.type = req.headers;
-        uploadFile.name = filename;
+        
         uploadFile.path = up_config.UPLOAD_PATH + uploadFile.id;// + getTypeFormat(file.filename);
         
-        file.pipe(fs.createWriteStream(uploadFile.path));
+        //file.pipe(fs.createWriteStream(uploadFile.path));
         
-        file.on('data', function(data) {
+        /*file.on('data', function(data) {
           
           if (errors.length == up_config.NO_ERR_LN) {
              
@@ -58,7 +59,7 @@
               
           }
          // console.log('File [' + fieldname + '] got ' + data.length + ' bytes');
-        });
+        });*/
         
         file.on('end', function() {
           
@@ -74,11 +75,11 @@
             
             upData = { name: name, src: src, is_deleted: false };
             
-            DbCrud.updateById(this_newCollectionDb._id, upData).exec(function(err, cb) {
+           /* DbCrud.updateById(this_newCollectionDb._id, upData).exec(function(err, cb) {
               
               if (err) return next(up_config.DB_CREATE_ERR_MSG);
               
-            });
+            });*/
              
             res.send({status: 201 , text: 'created'});
               
@@ -99,7 +100,8 @@
       
       busboy.on('field', function(fieldname, val) {
         
-        console.log('Field [' + fieldname + ']: value: ', val);
+        //uploadFile.name = fieldname;
+        uploadFile.additionallData[fieldname] = val;
         
       });
       
