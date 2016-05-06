@@ -2,6 +2,7 @@
   var bodyParser = require('body-parser');
   var router = express.Router();
   var fs = require('fs');
+  var path = require('path');
   var Busboy  = require('busboy');
   var getTypeFormat = require('../services/convert_type');
   var DbCrud = require('../services/crud_mongose_db');
@@ -21,39 +22,99 @@
   
     if (req.url!=='/') next();
     
-    //DbCrud.create({}).save(function (err, cb) {
+      DbCrud.create({}).save(function (err, cb) {
             
-     // if (err) return console.log(up_config.DB_CREATE_ERR_MSG); // provide log!!
+      if (err) return console.log(up_config.DB_CREATE_ERR_MSG); // provide log!!
         
       var busboy = new Busboy({ headers: req.headers });
       
-    //  var uploadFile = {uploadPath: '', type: '', size: 0, name: '', id: ''},
-    //    errors = [],
-      //  this_newCollectionDb = cb;
+      var uploadFile = {uploadPath: '', type: '', size: 0, name: '', id: ''},
+        errors = [],
+        this_newCollectionDb = cb;
         
-   //   uploadFile.id = this_newCollectionDb._id;
+      uploadFile.id = this_newCollectionDb._id;
       
-      busboy.on('file', function(fieldname, file, filename, encoding, mimetype) {
-        console.log('File [' + fieldname + ']: filename: ' + filename + ', encoding: ' + encoding + ', mimetype: ' + mimetype);
+      busboy.on('file', function(fieldname, file, filename) {
+        
+        //uploadFile.type = req.headers;
+        uploadFile.name = filename;
+        uploadFile.path = up_config.UPLOAD_PATH + uploadFile.id;// + getTypeFormat(file.filename);
+        
+        file.pipe(fs.createWriteStream(uploadFile.path));
+        
         file.on('data', function(data) {
-          console.log('File [' + fieldname + '] got ' + data.length + ' bytes');
+          
+          if (errors.length == up_config.NO_ERR_LN) {
+             
+          } else {
+           
+           busboy.abort();
+           
+           data.resume();
+              
+          }
+         // console.log('File [' + fieldname + '] got ' + data.length + ' bytes');
         });
+        
         file.on('end', function() {
-          console.log('File [' + fieldname + '] Finished');
+          
+          try {
+            
+            if (errors.length !== up_config.NO_ERR_LN) throw new Error(errors);
+            
+            var name = uploadFile.name,
+              src = uploadFile.path,
+              upData;
+            
+            if (name == null) throw new Error(up_config.DB_ATTR_REC_MSG); 
+            
+            upData = { name: name, src: src, is_deleted: false };
+            
+            DbCrud.updateById(this_newCollectionDb._id, upData).exec(function(err, cb) {
+              
+              if (err) return next(up_config.DB_CREATE_ERR_MSG);
+              
+            });
+            console.log('File [' + fieldname + '] Finished');  
+            res.send({status: 201 , text: 'created'});
+              
+          } catch (err) {
+            
+            if (fs.existsSync(uploadFile.path)) fs.unlinkSync(uploadFile.path);
+            
+            cb.remove(this_newCollectionDb);
+            
+            res.send({status: '405', text: errors});
+            
+          }
+           
+            
         });
+        
       });
       
-      busboy.on('field', function(fieldname, val, fieldnameTruncated, valTruncated, encoding, mimetype) {
-        console.log('Field [' + fieldname + ']: value: ', val, fieldnameTruncated, valTruncated, encoding, mimetype);
+      busboy.on('field', function(fieldname, val) {
+        
+        console.log('Field [' + fieldname + ']: value: ', val);
+        
       });
       
       busboy.on('finish', function() {
+        
+         
+        
         console.log('Done parsing form!');
+        
+      });
+      
+      busboy.on('aborted', function() {
+        // DO SOMETHING HERE ... maybe return error to the client
+        console.log('aborted');
       });
       
       req.pipe(busboy);
       
-      
+    });   
       /*form.on('close', function() {
         
         try {
@@ -141,7 +202,7 @@
       
        form.parse(req);*/
     
-   // });
+   
     
     
   });
