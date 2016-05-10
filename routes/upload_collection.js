@@ -39,27 +39,25 @@
       
       
       busboy.on('file', function(fieldname, file, filename) {
-         console.log(uploadFile.additionallData, 3);
+        console.log(uploadFile.additionallData, 'addData');
         
         //uploadFile.type = req.headers;
         
         uploadFile.path = up_config.UPLOAD_PATH + uploadFile.id;// + getTypeFormat(file.filename);
         
-        //file.pipe(fs.createWriteStream(uploadFile.path));
+        file.pipe(fs.createWriteStream(uploadFile.path));
         
-        /*file.on('data', function(data) {
+        file.on('data', function(data) {
           
-          if (errors.length == up_config.NO_ERR_LN) {
-             
-          } else {
-           
+          if (errors.length != up_config.NO_ERR_LN) {
+          
            busboy.abort();
            
            data.resume();
-              
-          }
-         // console.log('File [' + fieldname + '] got ' + data.length + ' bytes');
-        });*/
+           
+          } 
+          
+        });
         
         file.on('end', function() {
           
@@ -75,11 +73,11 @@
             
             upData = { name: name, src: src, is_deleted: false };
             
-           /* DbCrud.updateById(this_newCollectionDb._id, upData).exec(function(err, cb) {
+            DbCrud.updateById(this_newCollectionDb._id, upData).exec(function(err, cb) {
               
               if (err) return next(up_config.DB_CREATE_ERR_MSG);
               
-            });*/
+            });
              
             res.send({status: 201 , text: 'created'});
               
@@ -92,7 +90,6 @@
             res.send({status: '405', text: errors});
             
           }
-           
             
         });
         
@@ -108,10 +105,6 @@
           
       });
       
-      busboy.on('error', function (err) {
-        console.log('ERROR!!!', err);
-      });
-
       busboy.on('finish', function() {
         
         res.end(); 
@@ -119,27 +112,31 @@
         
       });
       
-      busboy.on('aborted', function() {
-        // DO SOMETHING HERE ... maybe return error to the client
-        console.log('aborted');
+      busboy.on('error', function (err) {
+        console.log('ERROR!!!', err);
       });
       
-      req.pipe(busboy);
+      busboy.on('abort', function (err) {
+        console.log('ABORT !!!', err);
+      });
       
-    });
-    
-    req.on('close', function () {
+      req.on('close', function () {
         console.log('FILE ABORTED CLIENT SIDE');
         
         if (fs.existsSync(uploadFile.path)) fs.unlinkSync(uploadFile.path);
-          
+        
+        cb.remove(this_newCollectionDb);
+        
         res.send({status: '405', text: errors});
-      
+        
       });
-    
-    
+   
+      req.pipe(busboy);
+      
+    });
+      
   });
- 
+  
   router.use(function(req, res){
     res.send(404, up_config.PAGE_NOT_FOUND_MSG);
   });

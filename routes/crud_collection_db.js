@@ -41,7 +41,17 @@ router.route('/')
           
           res.format(toJSON(res, cb));
         });
-  });
+  })
+  .delete(function(req, res, next) {
+        
+        DbCrud.deleteAll().exec(function(err, cb) {
+        
+          if (err) return next(crud_config.DB_CREATE_ERR_MSG);
+          
+          res.format(toJSON(res, cb));
+        });
+      
+      });
 
 router
   .param('id', function(req, res, next, id) {
