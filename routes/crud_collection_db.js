@@ -44,10 +44,10 @@ router.route('/')
   })
   .delete(function(req, res, next) {
         
-        DbCrud.deleteAll().exec(function(err, cb) {
+        DbCrud.delete().exec(function(err, cb) {
         
           if (err) return next(crud_config.DB_CREATE_ERR_MSG);
-          
+          // returns num of collections
           res.format(toJSON(res, cb));
         });
       

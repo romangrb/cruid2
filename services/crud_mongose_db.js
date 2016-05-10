@@ -18,8 +18,10 @@ var DbCrud = {
       findByIdAndUpdate(id, data, {upsert: false});
   },
   
-  deleteAll : function () {
-    return mongoose.model(crud_config.COLLECTION_NAME).remove({});
+  delete : function (query) {
+    return (!query) ?
+     mongoose.model(crud_config.COLLECTION_NAME).remove({}) :
+     mongoose.model(crud_config.COLLECTION_NAME).remove(query);
   },
    
   findAll : function () {
