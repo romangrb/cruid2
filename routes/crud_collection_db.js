@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser'); //parses information from POST
 var methodOverride = require('method-override'); //used to manipulate POST
+var querystring = require('querystring');
 var toJSON = require('../services/convert_json');
 var DbCrud = require('../services/crud_mongose_db');
 var crud_config = require('../model/crud_model_constant');
@@ -65,15 +66,48 @@ router
   
 router.route('/:id')
   .get(function(req, res, next) {
-      
-      DbCrud.findById(req.id).exec(function(err, cb) {
+    
+      try {
         
-      if (err) return next(crud_config.DB_FIND_BY_ID_ERR_MSG);
+        var q = querystring.parse(req.id).id;
       
-      res.format(toJSON(res, cb));
+      } catch (err) {
+        
+        console.log('ERROR');
+        
+      }
+     
+      DbCrud.findById(q).exec(function(err, cb) {
+        
+        if (err) return next(crud_config.DB_FIND_BY_ID_ERR_MSG);
+        
+        res.format(toJSON(res, cb));
       
       });
+      
+})
+  .delete(function(req, res, next) {
+      
+      try {
+        
+        var q = querystring.parse(req.id).id;
+      
+      } catch (err) {
+        
+        console.log('ERROR');
+        
+      }
+      
+      DbCrud.delete(q).exec(function(err, cb) {
+        
+        if (err) return next(crud_config.DB_FIND_BY_ID_ERR_MSG);
+        
+        res.format(toJSON(res, cb));
+      
+      });    
+     
 });
+  
 
 
 module.exports = router;
