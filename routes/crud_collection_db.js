@@ -46,7 +46,7 @@ router.route('/')
   .delete(function(req, res, next) {
         
         DbCrud.delete().exec(function(err, cb) {
-        
+          
           if (err) return next(crud_config.DB_CREATE_ERR_MSG);
           // returns num of collections
           res.format(toJSON(res, cb));
@@ -63,13 +63,14 @@ router
       
       next();
 });
-  
+// RESTfull API operations by id
 router.route('/:id')
+
   .get(function(req, res, next) {
     
       try {
         
-        var q = querystring.parse(req.id).id;
+        var id = querystring.parse(req.id).id;
       
       } catch (err) {
         
@@ -77,7 +78,7 @@ router.route('/:id')
         
       }
      
-      DbCrud.findById(q).exec(function(err, cb) {
+      DbCrud.findById(id).exec(function(err, cb) {
         
         if (err) return next(crud_config.DB_FIND_BY_ID_ERR_MSG);
         
@@ -85,12 +86,34 @@ router.route('/:id')
       
       });
       
-})
+  })
+  .put(function(req, res, next) {
+      
+        try {
+          var q = querystring.parse(req.id),
+           id = q.id,
+           data = q.data;
+        
+        } catch (err) {
+          
+          console.log('ERROR');
+          
+        }
+       
+        DbCrud.updateById(id, data).exec(function(err, cb) {
+          
+          if (err) return next(crud_config.DB_FIND_BY_ID_ERR_MSG);
+          
+          res.format(toJSON(res, cb));
+        
+        });
+        
+  })
   .delete(function(req, res, next) {
       
       try {
         
-        var q = querystring.parse(req.id).id;
+        var id = querystring.parse(req.id).id;
       
       } catch (err) {
         
@@ -98,7 +121,7 @@ router.route('/:id')
         
       }
       
-      DbCrud.delete(q).exec(function(err, cb) {
+      DbCrud.delete(id).exec(function(err, cb) {
         
         if (err) return next(crud_config.DB_FIND_BY_ID_ERR_MSG);
         
@@ -107,7 +130,6 @@ router.route('/:id')
       });    
      
 });
-  
 
 
 module.exports = router;

@@ -9,6 +9,14 @@ var DbCrud = {
     return new RecCollection(obj);
   },
   
+  findAll : function () {
+    return  mongoose.model(crud_config.COLLECTION_NAME).find({});
+  },
+  
+  findById : function (id) {
+    return mongoose.model(crud_config.COLLECTION_NAME).findById(id);
+  },
+  
   update : function () {
     return  mongoose.model(crud_config.COLLECTION_NAME).update;
   },
@@ -24,13 +32,7 @@ var DbCrud = {
      mongoose.model(crud_config.COLLECTION_NAME).remove(query);
   },
    
-  findAll : function () {
-    return  mongoose.model(crud_config.COLLECTION_NAME).find({});
-  },
   
-  findById : function (id) {
-    return mongoose.model(crud_config.COLLECTION_NAME).findById(id);
-  }
   
 };
 
