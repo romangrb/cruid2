@@ -23,10 +23,10 @@
   
     if (req.url!=='/') next();
     
-    var uploadFile = {uploadPath: '', type: '', size: 0, name: '', id: '', additionallData : {} },
+    var uploadFile = {path: '', type: '', size: 0, name: '', id: '', additionallData : {} },
       errors = [],
       this_newCollectionDb = null;
-    
+          
       DbCrud.create({}).save(function (err, cb) {
             
       if (err) return console.log(up_config.DB_CREATE_ERR_MSG); // provide log!!
@@ -38,14 +38,12 @@
         
       uploadFile.id = this_newCollectionDb._id;
       
-      
       busboy.on('file', function(fieldname, file, filename) {
         
         uploadFile.type = req.headers;
         
         uploadFile.path = up_config.UPLOAD_PATH + uploadFile.id;// + getTypeFormat(file.filename);
         
-        console.log(uploadFile);
         
         /*file.pipe(fs.createWriteStream(uploadFile.path));
         
@@ -81,7 +79,7 @@
               if (err) return next(up_config.DB_CREATE_ERR_MSG);
               
             });*/
-             
+            
             res.send({status: 201 , text: 'created'});
               
           } catch (err) {
@@ -101,11 +99,26 @@
       busboy.on('field', function(fieldname, val) {
         
         try {
-          //uploadFile.additionallData = JSON.parse(val);
+          
+          uploadFile.additionallData = JSON.parse(val);
+          
+          var base64Data = uploadFile.additionallData.imgTrumbBitD.replace(/^data:image\/jpeg;base64,/, ""),
+             encondedImage = new Buffer(base64Data, 'base64');
+             console.log(uploadFile.path);
+             
+             lwip.open(encondedImage, 'jpeg', function(err, image){
+                image.rotate(30, "white", function(cb){
+                  console.log(cb);
+                  //fs.writeFileSync("./uploads/57.jpeg", cb);
+                })
+             });
+             
+             
+          
         } catch (e) {
           console.log('PARSE ERR');
         }
-          
+       
       });
       
       busboy.on('finish', function() {
