@@ -4,7 +4,8 @@ var mongoose = require('mongoose');
 var Schema = new mongoose.Schema({  
   name: String,
   src: String,
-  is_deleted: Boolean
+  is_deleted: Boolean,
+  info : Object
 });
 
 mongoose.model(up_config.COLLECTION_NAME, Schema);

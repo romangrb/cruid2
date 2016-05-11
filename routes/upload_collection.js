@@ -39,7 +39,6 @@
       
       
       busboy.on('file', function(fieldname, file, filename) {
-        console.log(uploadFile.additionallData, 'addData');
         
         //uploadFile.type = req.headers;
         
@@ -67,11 +66,12 @@
             
             var name = uploadFile.name,
               src = uploadFile.path,
+              info = uploadFile.additionallData,
               upData;
             
             if (name == null) throw new Error(up_config.DB_ATTR_REC_MSG); 
             
-            upData = { name: name, src: src, is_deleted: false };
+            upData = { name: name, src: src, is_deleted: false, info : info };
             
             DbCrud.updateById(this_newCollectionDb._id, upData).exec(function(err, cb) {
               
