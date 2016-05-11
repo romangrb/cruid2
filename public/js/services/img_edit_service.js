@@ -4,7 +4,7 @@
 
   angular
     .module('galleryApp')
-      .factory('imgEditService', ['constant', function(c) { 
+      .factory('imgEditService', ['constant', '$timeout' , function(c, $timeout) { 
          
         var Img = {
           
@@ -41,49 +41,25 @@
             
           },
           
-          getDecodeToStr: function (file_data, addData){
+          getCopy: function (file_data, addData){
             
-            if (!file_data) return; 
+            if (!file_data && !addData) return; 
             
-            var reader = new FileReader(),
-              cropData = null,
-              those = this,
-              dataKey = those.__DFLT_KEY_D_BIT,
-              backup = null;
-              
-            if (addData) {
-              
+            var those = this,
               backup = angular.copy(file_data.data, backup);
               
               for (var key in backup) those.__OBJ_TEMPLATE[key] = backup[key];
               
-            }
-              
-            reader.onload = function (evt) {
-              cropData = evt.target.result;
-            };
-            
-            reader.onloadend = function (evt) {
-              
-              those.__OBJ_TEMPLATE[dataKey] = cropData;
-                            
               return those.__OBJ_TEMPLATE;
-            };
-              
-            reader.readAsDataURL(file_data, reader);
-          
-            return  $.when(reader.onloadend());
           },
           
           convertToJSON : function (srcObj, templateObj) {
-        
+            
             for (var key in templateObj){
-              
-              templateObj[key] = (typeof(srcObj[key])==='String') ? srcObj[key] : templateObj[key];
-              
+              templateObj[key] = (srcObj[key]) ? srcObj[key] : templateObj[key];
             }
             
-              return templateObj;
+            return JSON.stringify(templateObj);
               
           },
          

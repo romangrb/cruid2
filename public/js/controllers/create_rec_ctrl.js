@@ -25,7 +25,8 @@
         
           $scope.image = {
              trumbImg: null,
-             trumbCroppedImg: null
+             trumbCroppedImg: null,
+             imgTrumbBitD: null
           };
         
         // init wather for autogener id
@@ -56,28 +57,29 @@
         };
             
         $scope.upload = function( key, file_data ){
-          
+                  
           if (file_data == null || key == null) return;
-            // add additionall crop data
-          if (!file_data.data[c.DFLT_KEY_D_BIT]) {
-          
-            EditImg.getDecodeToStr(file_data, file_data.data).done(function(cb) {
-              
-              file_data.data = cb;
-             
-            }).fail(cropErrListener);
-             
-          }
-          var addData = JSON.stringify({name:'roman', lastname:'hrabar'});
-          console.log(file_data);
-          //https://github.com/mscdex/busboy    info: Upload.jsonBlob({id: 32, name: 23}),
-          upload[key] = Upload.upload({
-            url : c.UPLOAD_URL,
-            //data: {'trId' : file_data['name'], data : 'data' , file: file_data},
-            data: {'info' : addData, file: file_data},
-          });
+         
+            var fd = createImgBit(file_data, file_data.data);
             
-          $scope.getRequest(key);
+            $scope.$watch('image.imgTrumbBitD', function (val) {
+              
+               if (val) {
+                  
+                  fd[c.DFLT_KEY_D_BIT] = val;
+                  
+                  var addData = EditImg.convertToJSON(fd, targetObj.data);
+                  
+                  upload[key] = Upload.upload({
+                    url : c.UPLOAD_URL,
+                    data: {'info' : addData, file: file_data},
+                  });
+                    
+                  $scope.getRequest(key);
+                  
+                 }
+               
+            }); 
           
         };
         
@@ -85,21 +87,34 @@
          
           if (files == null) return;
           
-          angular.forEach(files, function(value, key) {
+          /*angular.forEach(files, function(value, key) {
             
             if (!value.data[c.DFLT_KEY_D_BIT]) {
-              EditImg.getDecodeToStr(value, value.data).done(function(cb) {
-                value.data = cb; 
-              }).fail(cropErrListener);
+              
+              $scope.$watch('image.imgTrumbBitD', function (val) {
+              
+                  var fd = createImgBit(val, val.data);
+                  
+                  if (val) {
+                    
+                    fd[c.DFLT_KEY_D_BIT] = val;
+                    
+                    var addData = EditImg.convertToJSON(fd, targetObj.data);
+                    
+                    upload[key] = Upload.upload({
+                      url : c.UPLOAD_URL,
+                      data: {'info' : addData, file: val},
+                    });
+                      
+                    $scope.getRequest(key);
+                    
+                  }
+               
+              });
+        
             }
-            /*upload[key] = Upload.upload({
-              url: c.UPLOAD_URL,
-              data:{file:value}
-            });
-          
-          $scope.getRequest(key);*/
-          //console.log(value);
-          });
+            
+          });*/
           
         };
         
@@ -171,6 +186,24 @@
           return dataHash;
         }
         
+        function createImgBit(srcObj, targetObj) {
+          
+          if (srcObj.data[c.DFLT_KEY_D_BIT]) return srcObj.data;
+          
+          var reader = new FileReader(); 
+          
+          reader.onload = function (evt) {
+            $timeout(function(){
+              $scope.image.imgTrumbBitD = evt.target.result;
+            }, 0);
+          };
+            
+          reader.readAsDataURL(srcObj);
+          
+          return EditImg.getCopy(srcObj, targetObj);
+          
+        }
+        
         $scope.closeModule = function( key ) {
           var id = '#'+key;
           $(id).closeModal({
@@ -185,7 +218,7 @@
               $scope.image.trumbCroppedImg = null;
               
               EditImg.rotateClearId(c.DFLT_TRUMB_ID);	
-            // remove module from view in ng-repeat
+              // remove module from view in ng-repeat
               var el = $(id).find(c.MODULE_VIEW_CLASS_NAME)[0];
               
               $(el).remove();
