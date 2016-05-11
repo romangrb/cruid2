@@ -4,6 +4,7 @@
   var fs = require('fs');
   var path = require('path');
   var Busboy  = require('busboy');
+  var lwip  = require('lwip');
   var getTypeFormat = require('../services/convert_type');
   var DbCrud = require('../services/crud_mongose_db');
   var up_config = require('../model/upload_model_constant');
