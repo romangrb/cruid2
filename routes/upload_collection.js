@@ -40,11 +40,13 @@
       
       busboy.on('file', function(fieldname, file, filename) {
         
-        //uploadFile.type = req.headers;
+        uploadFile.type = req.headers;
         
         uploadFile.path = up_config.UPLOAD_PATH + uploadFile.id;// + getTypeFormat(file.filename);
         
-        file.pipe(fs.createWriteStream(uploadFile.path));
+        console.log(uploadFile);
+        
+        /*file.pipe(fs.createWriteStream(uploadFile.path));
         
         file.on('data', function(data) {
           
@@ -56,7 +58,7 @@
            
           } 
           
-        });
+        });*/
         
         file.on('end', function() {
           
@@ -73,11 +75,11 @@
             
             upData = { name: name, src: src, is_deleted: false, info : info };
             
-            DbCrud.updateById(this_newCollectionDb._id, upData).exec(function(err, cb) {
+           /* DbCrud.updateById(this_newCollectionDb._id, upData).exec(function(err, cb) {
               
               if (err) return next(up_config.DB_CREATE_ERR_MSG);
               
-            });
+            });*/
              
             res.send({status: 201 , text: 'created'});
               
@@ -98,7 +100,7 @@
       busboy.on('field', function(fieldname, val) {
         
         try {
-          uploadFile.additionallData = JSON.parse(val);
+          //uploadFile.additionallData = JSON.parse(val);
         } catch (e) {
           console.log('PARSE ERR');
         }
