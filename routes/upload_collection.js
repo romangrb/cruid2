@@ -4,9 +4,10 @@
   var fs = require('fs');
   var path = require('path');
   var Busboy  = require('busboy');
-  var lwip  = require('lwip');
+  //var lwip  = require('lwip');
   var getTypeFormat = require('../services/convert_type');
   var DbCrud = require('../services/crud_mongose_db');
+  var imgEdit = require('../services/edit_img');
   var up_config = require('../model/upload_model_constant');
   
   // enable CORS
@@ -102,18 +103,9 @@
           
           uploadFile.additionallData = JSON.parse(val);
           
-          var base64Data = uploadFile.additionallData.imgTrumbBitD.replace(/^data:image\/jpeg;base64,/, ""),
-             encondedImage = new Buffer(base64Data, 'base64');
-             console.log(uploadFile.path);
+          imgEdit.editFromProp(uploadFile.additionallData);
              
-             lwip.open(encondedImage, 'jpeg', function(err, image){
-                image.rotate(30, "white", function(cb){
-                  console.log(cb);
-                  //fs.writeFileSync("./uploads/57.jpeg", cb);
-                })
-             });
-             
-             
+            // fs.writeFileSync("./uploads/57.jpeg", encondedImage);
           
         } catch (e) {
           console.log('PARSE ERR');
