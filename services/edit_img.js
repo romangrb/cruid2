@@ -9,7 +9,7 @@ var ImgEdit = {
      
     if (objProp.imgTrumbBitD) {
      
-     var type = those.__getTypeBitImg(objProp.imgTrumbBitD);
+     var type = those.__getEncodImgFromBase64ToBuff(objProp.imgTrumbBitD);
      
      console.log(type);
      
@@ -26,12 +26,6 @@ function ImgEditPrivProtMethProp(){
   this.__getSizes = function(){
     
     return 'works';
-    
-  };
-  
-  this.__getEncodImg = function(str, type) {
-    
-    str.replace(/^data:image\/jpeg;base64,/, "");
     
   };
   
@@ -52,6 +46,22 @@ function ImgEditPrivProtMethProp(){
       if (those.__typePattHash[key].test(str)) return key;
     }
     return false;
+  };
+  
+  this.__getEncodImgFromBase64ToBuff = function(str) {
+    
+    var type = those.__getTypeBitImg(str);
+    
+    if (!type) return false;
+    
+    try {
+      var buffEnc =  new Buffer(str.replace(those.__typePattHash[type], ""), 'base64');
+    } catch (err) {
+      return false;
+    }
+    
+    return buffEnc;
+    
   };
   
 }
