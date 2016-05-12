@@ -1,4 +1,6 @@
 var lwip  = require('lwip');
+var events = require('events');
+var eventEmitter = new events.EventEmitter();
 var crud_config = require('../model/crud_model_constant');
 
 var ImgEdit = {
@@ -14,7 +16,7 @@ var ImgEdit = {
      if (data) {
        
        var d = those.__cropToEqSizes(data);
-       console.log(d);
+       console.log('d', d);
      }
      
     }
@@ -37,10 +39,20 @@ function ImgEditPrivProtMethProp(){
       tmp : 0
     };
     
-    lwip.open(srcObj.buff, srcObj.type, function(err, image){
+    var cb = function watch(val) {
+      srcObj.tmp = val;
+    };
+    
+    /*var fn = function(cb){
+      return cb()
+    }*/
+    // Bind the connection event with the listner1 function
+    eventEmitter.on('$watch_val', cb);
+    
+    lwip.open(srcObj.buff, srcObj.type, function(err, image) {
        
         if (err) throw err;
-       
+         
         var imgWidth = image.width(),
           imgHeight = image.height(),
           diff;
@@ -55,14 +67,9 @@ function ImgEditPrivProtMethProp(){
             imgHeight = imgHeight - diff;
           }
           
-          image.crop(imgWidth, imgHeight, function(err, cb) {
-          
-            if (err) return false;
-            
-            srcObj.tmp = 1;
-          
-          }); 
-        
+          image.crop(imgWidth, imgHeight, function(err, cb){
+             eventEmitter.emit('$watch_val', 1);
+          });      
         }
         
      });
