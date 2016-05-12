@@ -9,9 +9,13 @@ var ImgEdit = {
      
     if (objProp.imgTrumbBitD) {
      
-     var type = those.__getEncodImgFromBase64ToBuff(objProp.imgTrumbBitD);
+     var data = those.__getEncodImgFromBase64ToBuff(objProp.imgTrumbBitD);
      
-     console.log(type);
+     if (data) {
+       
+       var d = those.__cropToEqSizes(data);
+       console.log(d);
+     }
      
     }
     
@@ -23,9 +27,47 @@ function ImgEditPrivProtMethProp(){
   
   var those = this;
   
-  this.__getSizes = function(){
+  this.__imgProp = {};
+  
+  this.__cropToEqSizes = function(srcProp){
     
-    return 'works';
+    var srcObj = {
+      buff : srcProp.buff, 
+      type : srcProp.type,
+      tmp : 0
+    };
+    
+    lwip.open(srcObj.buff, srcObj.type, function(err, image){
+       
+        if (err) throw err;
+       
+        var imgWidth = image.width(),
+          imgHeight = image.height(),
+          diff;
+         
+        if (imgWidth != imgHeight) {
+          
+          diff = imgWidth-imgHeight;
+          
+          if (diff > 0) {
+            imgWidth = imgWidth - diff;
+          } else {
+            imgHeight = imgHeight - diff;
+          }
+          
+          image.crop(imgWidth, imgHeight, function(err, cb) {
+          
+            if (err) return false;
+            
+            srcObj.tmp = 1;
+          
+          }); 
+        
+        }
+        
+     });
+     
+     return srcObj;
     
   };
   
@@ -60,7 +102,7 @@ function ImgEditPrivProtMethProp(){
       return false;
     }
     
-    return buffEnc;
+    return {type:type, buff:buffEnc};
     
   };
   
@@ -73,10 +115,7 @@ var ImgEditService = new ImgEditPrivProtMethProp;
 module.exports = ImgEditService;
 
 /*
-var base64Data = uploadFile.additionallData.imgTrumbBitD.replace(/^data:image\/jpeg;base64,/, ""),
-             encondedImage = new Buffer(base64Data, 'base64');
-             //console.log(uploadFile.path);
-               
+
             lwip.open(encondedImage, 'JPEG', function(err, image){
               // check err...
               if (err) throw err;
