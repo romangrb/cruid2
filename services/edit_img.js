@@ -5,27 +5,30 @@ var crud_config = require('../model/crud_model_constant');
 
 var ImgEdit = {
   
-  editFromProp : function (objProp, cb, resultCb) {
+  createTrumb : function (objProp, cb, resultCb) {
   
-    var those = this;
+    var those = this,
+     data = those.__getEncodImgFromBase64ToBuff(objProp.data);
      
-    if (objProp.imgTrumbBitD) {
-     
-     var data = those.__getEncodImgFromBase64ToBuff(objProp.imgTrumbBitD);
-     
-     if (data) {
-       
-      those.__cropToEqSizes(data);
-      // Bind the connection event with the listner1 function
+    if (!data) return resultCb({err:'not supported data type parsing'});
+    
+    those.__cropToEqSizes(data.buff, data.type);
+    // Bind the connection event with the listner1 function
+    cb(eventEmitter.on('$watch_val', function(callback) {
       
-      cb(eventEmitter.on('$watch_val', function(callback) {
-        resultCb(callback);
-      }));
+      if (callback.err) return resultCb({err:callback.err, cb:null});
       
-       
-     }
-     
-    }
+      callback.cb.rotate(objProp.ang, 'white', function(err, rtdImg) {
+        
+        resultCb({err:err, cb:rtdImg, type:callback.type});
+        
+      });
+      
+    }));
+    
+  },
+  
+  editImg : function (objProp, cb, resultCb) {
     
   },
   
@@ -35,23 +38,9 @@ function ImgEditPrivProtMethProp(){
   
   var those = this;
   
-  this.__imgProp = {};
-  
-  this.val = null;
-  
-  this.__someFn = function(val) {
-    return those.val;
-  };
-  
-  this.__cropToEqSizes = function(srcProp){
-    
-    var srcObj = {
-      buff : srcProp.buff, 
-      type : srcProp.type,
-      tmp : 0
-    };
-    
-    lwip.open(srcObj.buff, srcObj.type, function(err, image) {
+  this.__cropToEqSizes = function(buff, type){
+
+    lwip.open(buff, type, function(err, image) {
        
         if (err) throw err;
          
@@ -72,8 +61,8 @@ function ImgEditPrivProtMethProp(){
         }
         
         image.crop(imgWidth, imgHeight, function(err, cb){
-           eventEmitter.emit('$watch_val', {err:err ,cb:cb});
-        });  
+          eventEmitter.emit('$watch_val', {err:err ,cb:cb, type:type});
+        });
         
      });
     
@@ -121,42 +110,3 @@ ImgEditPrivProtMethProp.prototype = ImgEdit;
 var ImgEditService = new ImgEditPrivProtMethProp;
 
 module.exports = ImgEditService;
-
-/*
-
-            lwip.open(encondedImage, 'JPEG', function(err, image){
-              // check err...
-              if (err) throw err;
-              // define a batch of manipulations and save to disk as JPEG:
-              var imgWidth = image.width(),
-                imgHeight = image.height();
-                
-              if (imgWidth != imgHeight) {
-                
-                var diff = imgWidth-imgHeight;
-                
-                if (diff>0) {
-                  imgWidth = imgWidth - diff;
-                } else {
-                  imgHeight = imgHeight - diff;
-                }
-                
-              }
-              
-              image.crop(imgWidth, imgHeight, function(err, cropped) {
-                if (err) throw err;
-                
-                cropped.rotate(90, 'white', function(err, rtdImg) {
-                  if (err) throw err;
-                
-                  rtdImg.writeFile("./uploads/58.jpeg", function(err){
-                    if (err) throw err;
-                  // done.
-                  });
-                
-                });
-                
-                
-              });
-          });
-          */

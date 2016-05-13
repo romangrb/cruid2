@@ -103,16 +103,32 @@
           
           uploadFile.additionallData = JSON.parse(val);
           
-          var cb = function(obj){},
-           resultCb = function(data){
-            console.log(data);
+          var prop = {
+            data : uploadFile.additionallData.imgTrumbBitD,
+            ang : uploadFile.additionallData.imgTrumbAng,
           };
           
-          imgEdit.editFromProp(uploadFile.additionallData, cb, resultCb);
-          // fs.writeFileSync("./uploads/57.jpeg", encondedImage);
+          var cb = function(obj){},
+           resultCb = function(data){
+            
+            if (data.err) return console.log(data);
+            
+            var path = uploadFile.path+'.'+data.type;
+            
+            data.cb.writeFile(path, function(err){
+              
+              if (err) throw err;
+              
+              console.log('trumbnail created', path);
+              
+            });
+            
+          };
           
+          imgEdit.createTrumb(prop, cb, resultCb);
+         
         } catch (e) {
-          console.log('PARSE ERR');
+          console.log('FN ERROR ...');
         }
        
       });
