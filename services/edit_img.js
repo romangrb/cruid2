@@ -18,8 +18,8 @@ var ImgEdit = {
       those.__cropToEqSizes(data);
       // Bind the connection event with the listner1 function
       
-      cb(eventEmitter.on('$watch_val', function(cb) {
-        resultCb(cb);
+      cb(eventEmitter.on('$watch_val', function(callback) {
+        resultCb(callback);
       }));
       
        

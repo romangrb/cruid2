@@ -104,7 +104,6 @@
           uploadFile.additionallData = JSON.parse(val);
           
           var cb = function(obj){},
-          
            resultCb = function(data){
             console.log(data);
           };
