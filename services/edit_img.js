@@ -5,7 +5,7 @@ var crud_config = require('../model/crud_model_constant');
 
 var ImgEdit = {
   
-  editFromProp : function (objProp) {
+  editFromProp : function (objProp, cb, resultCb) {
   
     var those = this;
      
@@ -15,8 +15,14 @@ var ImgEdit = {
      
      if (data) {
        
-       var d = those.__cropToEqSizes(data);
-       console.log('d', d);
+      those.__cropToEqSizes(data);
+      // Bind the connection event with the listner1 function
+      
+      cb(eventEmitter.on('$watch_val', function(cb) {
+        resultCb(cb);
+      }));
+      
+       
      }
      
     }
@@ -31,6 +37,12 @@ function ImgEditPrivProtMethProp(){
   
   this.__imgProp = {};
   
+  this.val = null;
+  
+  this.__someFn = function(val) {
+    return those.val;
+  };
+  
   this.__cropToEqSizes = function(srcProp){
     
     var srcObj = {
@@ -38,16 +50,6 @@ function ImgEditPrivProtMethProp(){
       type : srcProp.type,
       tmp : 0
     };
-    
-    var cb = function watch(val) {
-      srcObj.tmp = val;
-    };
-    
-    /*var fn = function(cb){
-      return cb()
-    }*/
-    // Bind the connection event with the listner1 function
-    eventEmitter.on('$watch_val', cb);
     
     lwip.open(srcObj.buff, srcObj.type, function(err, image) {
        
@@ -67,14 +69,13 @@ function ImgEditPrivProtMethProp(){
             imgHeight = imgHeight - diff;
           }
           
-          image.crop(imgWidth, imgHeight, function(err, cb){
-             eventEmitter.emit('$watch_val', 1);
-          });      
         }
         
+        image.crop(imgWidth, imgHeight, function(err, cb){
+           eventEmitter.emit('$watch_val', {err:err ,cb:cb});
+        });  
+        
      });
-     
-     return srcObj;
     
   };
   

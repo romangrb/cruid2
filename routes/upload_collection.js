@@ -103,9 +103,14 @@
           
           uploadFile.additionallData = JSON.parse(val);
           
-          imgEdit.editFromProp(uploadFile.additionallData);
-             
-            // fs.writeFileSync("./uploads/57.jpeg", encondedImage);
+          var cb = function(obj){},
+          
+           resultCb = function(data){
+            console.log(data);
+          };
+          
+          imgEdit.editFromProp(uploadFile.additionallData, cb, resultCb);
+          // fs.writeFileSync("./uploads/57.jpeg", encondedImage);
           
         } catch (e) {
           console.log('PARSE ERR');
