@@ -3,7 +3,8 @@ var mongoose = require('mongoose');
 
 var Schema = new mongoose.Schema({  
   name: String,
-  src: String,
+  src_img: String,
+  src_tmb: String,
   is_deleted: Boolean,
   info : Object
 });

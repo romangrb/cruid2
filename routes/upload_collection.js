@@ -2,7 +2,7 @@
   var bodyParser = require('body-parser');
   var router = express.Router();
   var fs = require('fs');
-  var path = require('path');
+  //var path = require('path');
   var Busboy  = require('busboy');
   //var lwip  = require('lwip');
   var getTypeFormat = require('../services/convert_type');
@@ -24,7 +24,7 @@
   
     if (req.url!=='/') next();
     
-    var uploadFile = {path: '', type: '', size: 0, name: '', id: '', additionallData : {} },
+    var uploadFile = {path_img: '', path_tmb: '', type: '', size: 0, name: '', id: '', additionallData : {} },
       errors = [],
       this_newCollectionDb = null;
           
@@ -34,19 +34,16 @@
         
       var busboy = new Busboy({ headers: req.headers });
       
-      
       this_newCollectionDb = cb;
         
       uploadFile.id = this_newCollectionDb._id;
+      uploadFile.type = req.headers;
+      uploadFile.path_img = up_config.UPLOAD_PATH_IMG + uploadFile.id;
+      uploadFile.path_tmb = up_config.UPLOAD_PATH_TMB + uploadFile.id;
       
       busboy.on('file', function(fieldname, file, filename) {
         
-        uploadFile.type = req.headers;
-        
-        uploadFile.path = up_config.UPLOAD_PATH + uploadFile.id;// + getTypeFormat(file.filename);
-        
-        
-        /*file.pipe(fs.createWriteStream(uploadFile.path));
+       /*file.pipe(fs.createWriteStream(uploadFile.path_img));
         
         file.on('data', function(data) {
           
@@ -67,13 +64,14 @@
             if (errors.length !== up_config.NO_ERR_LN) throw new Error(errors);
             
             var name = uploadFile.name,
-              src = uploadFile.path,
+              src_img = uploadFile.path_img,
+              src_tmb = uploadFile.path_tmb,
               info = uploadFile.additionallData,
               upData;
             
             if (name == null) throw new Error(up_config.DB_ATTR_REC_MSG); 
             
-            upData = { name: name, src: src, is_deleted: false, info : info };
+            upData = { name: name, src_img: src_img, src_tmb: src_tmb, is_deleted: false, info : info };
             
            /* DbCrud.updateById(this_newCollectionDb._id, upData).exec(function(err, cb) {
               
@@ -85,7 +83,8 @@
               
           } catch (err) {
             
-            if (fs.existsSync(uploadFile.path)) fs.unlinkSync(uploadFile.path);
+            if (fs.existsSync(uploadFile.path_img)) fs.unlinkSync(uploadFile.path_img);
+            if (fs.existsSync(uploadFile.path_tmb)) fs.unlinkSync(uploadFile.path_tmb);
             
             cb.remove(this_newCollectionDb);
             
@@ -113,13 +112,13 @@
             
             if (data.err) return console.log(data);
             
-            var path = uploadFile.path+'.'+data.type;
+            var path_tmb = uploadFile.path_tmb+'.'+data.type;
             
-            data.cb.writeFile(path, function(err){
+            data.cb.writeFile(path_tmb, function(err){
               
               if (err) throw err;
               
-              console.log('trumbnail created', path);
+              console.log('trumbnail created', path_tmb);
               
             });
             
@@ -128,6 +127,12 @@
           imgEdit.createTrumb(prop, cb, resultCb);
          
         } catch (e) {
+          
+          /*if (fs.existsSync(uploadFile.path_img)) fs.unlinkSync(uploadFile.path_img);
+          if (fs.existsSync(uploadFile.path_tmb)) fs.unlinkSync(uploadFile.path_tmb);
+        
+          cb.remove(this_newCollectionDb);
+        */
           console.log('FN ERROR ...');
         }
        
@@ -151,7 +156,8 @@
       req.on('close', function () {
         console.log('FILE ABORTED CLIENT SIDE');
         
-        if (fs.existsSync(uploadFile.path)) fs.unlinkSync(uploadFile.path);
+        if (fs.existsSync(uploadFile.path_img)) fs.unlinkSync(uploadFile.path_img);
+        if (fs.existsSync(uploadFile.path_tmb)) fs.unlinkSync(uploadFile.path_tmb);
         
         cb.remove(this_newCollectionDb);
         
