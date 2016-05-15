@@ -71,6 +71,14 @@
               
           },
           
+          getTypeBitImg : function(str) {
+    
+            for (var key in this.__typePattHash){
+              if (this.__typePattHash[key].test(str)) return key;
+            }
+            return '';
+          },
+          
           testName : function (name) {
             
             var ptrn = new RegExp(c.IMG_VALID_PTRN); 
@@ -89,6 +97,17 @@
           this.__OBJ_TEMPLATE = {};
           
           this.__crntAngle = {};
+          
+          this.__typePattHash = {
+            
+            GIF : /gif/i,
+            JPG : /jpg/i,
+            JPEG : /jpeg/i,
+            TIFF : /tiff/i,
+            PNG : /png/i,
+            BMP : /bmp/i
+        
+          };
           
         }
         

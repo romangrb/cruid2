@@ -5,8 +5,7 @@ var Schema = new mongoose.Schema({
   name: String,
   src_img: String,
   src_tmb: String,
-  is_deleted: Boolean,
-  info : Object
+  is_deleted: Boolean
 });
 
 mongoose.model(up_config.COLLECTION_NAME, Schema);

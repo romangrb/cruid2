@@ -37,13 +37,14 @@
       this_newCollectionDb = cb;
         
       uploadFile.id = this_newCollectionDb._id;
-      uploadFile.img_type = uploadFile.additionallData.type;
-      uploadFile.path_img = up_config.UPLOAD_PATH_IMG + uploadFile.id + uploadFile.img_type;
       uploadFile.path_tmb = up_config.UPLOAD_PATH_TMB + uploadFile.id;
+      uploadFile.path_img = up_config.UPLOAD_PATH_IMG + uploadFile.id;
       
       busboy.on('file', function(fieldname, file, filename) {
-        console.log(2);
-       file.pipe(fs.createWriteStream(uploadFile.path_img));
+        
+        uploadFile.path_img += '.' + uploadFile.additionallData.imgType;
+
+        file.pipe(fs.createWriteStream(uploadFile.path_img));
         
         file.on('data', function(data) {
           
@@ -66,12 +67,11 @@
             var name = uploadFile.name,
               src_img = uploadFile.path_img,
               src_tmb = uploadFile.path_tmb,
-              info = uploadFile.additionallData,
               upData;
             
             if (name == null) throw new Error(up_config.DB_ATTR_REC_MSG); 
             
-            upData = { name: name, src_img: src_img, src_tmb: src_tmb, is_deleted: false, info : info };
+            upData = { name: name, src_img: src_img, src_tmb: src_tmb, is_deleted: false};
             
             DbCrud.updateById(this_newCollectionDb._id, upData).exec(function(err, cb) {
               
@@ -128,7 +128,7 @@
          
         } catch (e) {
           
-          /*if (fs.existsSync(uploadFile.path_img)) fs.unlinkSync(uploadFile.path_img);
+        /*if (fs.existsSync(uploadFile.path_img)) fs.unlinkSync(uploadFile.path_img);
           if (fs.existsSync(uploadFile.path_tmb)) fs.unlinkSync(uploadFile.path_tmb);
         
           cb.remove(this_newCollectionDb);

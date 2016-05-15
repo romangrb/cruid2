@@ -18,7 +18,8 @@
             data : {
               'imgTrumbBitD' : null, 
               'imgAng' : 0, 
-              'imgTrumbAng' : 0 
+              'imgTrumbAng' : 0,
+              'imgType' : ''
             }
             
           };
@@ -26,7 +27,7 @@
           $scope.image = {
              trumbImg: null,
              trumbCroppedImg: null,
-             imgTrumbBitD: null
+             imgTrumbBitD: null,
           };
         
         // init wather for autogener id
@@ -179,7 +180,8 @@
           
           angular.forEach(data, function(value, key) {
             value[c.TMP_ID_NAME] = random.makeId();
-            value[c.DATA_NAME] = {},
+            value[c.DATA_NAME] = {};
+            value[c.DATA_NAME].imgType = EditImg.getTypeBitImg(value.type);
             this[key] = value;
           }, dataHash);
           
