@@ -24,7 +24,7 @@
   
     if (req.url!=='/') next();
     
-    var uploadFile = {path_img: '', path_tmb: '', type: '', size: 0, name: '', id: '', additionallData : {} },
+    var uploadFile = {path_img: '', path_tmb: '', img_type: '', size: 0, name: '', id: '', additionallData : {} },
       errors = [],
       this_newCollectionDb = null;
           
@@ -37,13 +37,13 @@
       this_newCollectionDb = cb;
         
       uploadFile.id = this_newCollectionDb._id;
-      uploadFile.type = req.headers;
-      uploadFile.path_img = up_config.UPLOAD_PATH_IMG + uploadFile.id;
+      uploadFile.img_type = uploadFile.additionallData.type;
+      uploadFile.path_img = up_config.UPLOAD_PATH_IMG + uploadFile.id + uploadFile.img_type;
       uploadFile.path_tmb = up_config.UPLOAD_PATH_TMB + uploadFile.id;
       
       busboy.on('file', function(fieldname, file, filename) {
-        
-       /*file.pipe(fs.createWriteStream(uploadFile.path_img));
+        console.log(2);
+       file.pipe(fs.createWriteStream(uploadFile.path_img));
         
         file.on('data', function(data) {
           
@@ -55,7 +55,7 @@
            
           } 
           
-        });*/
+        });
         
         file.on('end', function() {
           
@@ -73,11 +73,11 @@
             
             upData = { name: name, src_img: src_img, src_tmb: src_tmb, is_deleted: false, info : info };
             
-           /* DbCrud.updateById(this_newCollectionDb._id, upData).exec(function(err, cb) {
+            DbCrud.updateById(this_newCollectionDb._id, upData).exec(function(err, cb) {
               
               if (err) return next(up_config.DB_CREATE_ERR_MSG);
               
-            });*/
+            });
             
             res.send({status: 201 , text: 'created'});
               
@@ -112,13 +112,13 @@
             
             if (data.err) return console.log(data);
             
-            var path_tmb = uploadFile.path_tmb+'.'+data.type;
+            uploadFile.path_tmb += '.'+data.type;
             
-            data.cb.writeFile(path_tmb, function(err){
+            data.cb.writeFile(uploadFile.path_tmb, function(err){
               
               if (err) throw err;
               
-              console.log('trumbnail created', path_tmb);
+              console.log('trumbnail created', uploadFile.path_tmb);
               
             });
             
