@@ -14,7 +14,7 @@ var ImgEdit = {
     
     those.__cropToEqSizes(data.buff, data.type);
     // Bind the connection event with the listner1 function
-    cb(eventEmitter.on('$watch_val', function(callback) {
+    cb(eventEmitter.once('$watch_val', function(callback) {
       
       if (callback.err) return resultCb({err:callback.err, cb:null});
       
