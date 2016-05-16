@@ -21,6 +21,7 @@
     "multiparty": "^4.1.2",
     "path": "^0.12.7",
     "querystring": "^0.2.0",
-    "serve-favicon": "~2.2.0"
+    "serve-favicon": "~2.2.0",
+    "winston": "^2.2.0"
   }
 }
