@@ -24,13 +24,41 @@
   
     if (req.url!=='/') next();
     
-    var uploadFile = {path_img: '', path_tmb: '', img_type: '', size: 0, name: '', id: '', additionallData : {} },
-      errors = [],
+    var uploadFile = {path_img: '', path_tmb: '', name: '', id: '', additionallData : {} },
+      errors = {},
       this_newCollectionDb = null;
           
       DbCrud.create({}).save(function (err, cb) {
+        
+      function errHandler(errCode, errMsg){
+         
+         if (!errCode || !errMsg) return;
+         
+         var errObj = errMsg ,
+            arrErr = (!errors[errCode]) ? [] : errors[errCode];
+            arrErr.push(errObj);
+            errors[errCode] = arrErr;
             
-      if (err) return console.log(up_config.DB_CREATE_ERR_MSG); // provide log!!
+        /*if (fs.existsSync(uploadFile.path_img)) fs.unlinkSync(uploadFile.path_img);
+        if (fs.existsSync(uploadFile.path_tmb)) fs.unlinkSync(uploadFile.path_tmb);
+            
+        cb.remove(this_newCollectionDb);*/
+        
+        console.log(fs.existsSync(uploadFile.path_img), 'path_img');
+        console.log(fs.existsSync(uploadFile.path_tmb), 'path_tmb');
+        //console.log(cb, this_newCollectionDb);    
+        //cb.remove(this_newCollectionDb);
+        
+        console.log(errors);
+        
+      }
+      
+            
+      if (err) {
+          
+          errHandler(500, {message: 59});
+         // provide log!!
+      }
         
       var busboy = new Busboy({ headers: req.headers });
       
@@ -43,16 +71,16 @@
       busboy.on('file', function(fieldname, file, filename) {
         
         uploadFile.path_img += '.' + uploadFile.additionallData.imgType;
-
-        file.pipe(fs.createWriteStream(uploadFile.path_img));
+        //errors.push('busboy.on FILE');
+        //file.pipe(fs.createWriteStream(uploadFile.path_img));
         
         file.on('data', function(data) {
-          
+
           if (errors.length != up_config.NO_ERR_LN) {
           
-           busboy.abort();
+           errHandler(errors);
            
-           data.resume();
+           //data.resume();
            
           } 
           
@@ -62,36 +90,29 @@
           
           try {
             
-            if (errors.length !== up_config.NO_ERR_LN) throw new Error(errors);
-            
-            var name = uploadFile.name,
+            var name  = uploadFile.name,
               src_img = uploadFile.path_img,
               src_tmb = uploadFile.path_tmb,
               upData;
             
-            if (name == null) throw new Error(up_config.DB_ATTR_REC_MSG); 
+            if (name == null) throw new Error(up_config.DB_ATTR_REC_message); 
             
             upData = { name: name, src_img: src_img, src_tmb: src_tmb, is_deleted: false};
             
-            DbCrud.updateById(this_newCollectionDb._id, upData).exec(function(err, cb) {
+            /*DbCrud.updateById(this_newCollectionDb._id, upData).exec(function(err, cb) {
               
-              if (err) return next(up_config.DB_CREATE_ERR_MSG);
+              if (err) return next(up_config.DB_CREATE_ERR_message);
               
-            });
+            });*/
             
             res.send({status: 201 , text: 'created'});
+            
+            throw new Error();
               
           } catch (err) {
-            
-            if (fs.existsSync(uploadFile.path_img)) fs.unlinkSync(uploadFile.path_img);
-            if (fs.existsSync(uploadFile.path_tmb)) fs.unlinkSync(uploadFile.path_tmb);
-            
-            cb.remove(this_newCollectionDb);
-            
-            res.send({status: '405', text: errors});
-            
+            errHandler(500, {message: 113});
           }
-            
+          
         });
         
       });
@@ -110,37 +131,50 @@
           var cb = function(obj){},
            resultCb = function(data){
             
-            if (data.err) return console.log(data);
+            if (data.err) {
+              
+              errHandler(580, {message: data.err});
+                
+              return;
+            }
             
-            uploadFile.path_tmb += '.'+data.type;
+            uploadFile.path_tmb += '.'+ data.type;
             
-            data.cb.writeFile(uploadFile.path_tmb, function(err){
+            /*data.cb.writeFile(uploadFile.path_tmb, function(err){
               
               if (err) throw err;
               
               console.log('trumbnail created', uploadFile.path_tmb);
               
-            });
-            
+            });*/
+            console.log('trumbnail created', uploadFile.path_tmb);
+              
           };
           
           imgEdit.createTrumb(prop, cb, resultCb);
          
-        } catch (e) {
+        } catch (err) {
           
-        /*if (fs.existsSync(uploadFile.path_img)) fs.unlinkSync(uploadFile.path_img);
-          if (fs.existsSync(uploadFile.path_tmb)) fs.unlinkSync(uploadFile.path_tmb);
-        
-          cb.remove(this_newCollectionDb);
-        */
-          console.log('FN ERROR ...');
+          errHandler(500, {message: '158'});
+            
         }
        
       });
       
       busboy.on('finish', function() {
         
-        res.end(); 
+        try {
+          
+          res.end();
+          
+          throw new Error();
+          
+        } catch (err) {
+        
+          errHandler(500, {message : 'Problem with finish parsing data error'});
+          
+        }
+        
         console.log('Done parsing form!');
         
       });
@@ -149,19 +183,10 @@
         console.log('ERROR!!!', err);
       });
       
-      busboy.on('abort', function (err) {
-        console.log('ABORT !!!', err);
-      });
       
       req.on('close', function () {
-        console.log('FILE ABORTED CLIENT SIDE');
-        
-        if (fs.existsSync(uploadFile.path_img)) fs.unlinkSync(uploadFile.path_img);
-        if (fs.existsSync(uploadFile.path_tmb)) fs.unlinkSync(uploadFile.path_tmb);
-        
-        cb.remove(this_newCollectionDb);
-        
-        res.send({status: '405', text: errors});
+       
+        errHandler(400, {message: 'PROBLEM ON CL'});
         
       });
    
@@ -172,7 +197,7 @@
   });
   
   router.use(function(req, res){
-    res.send(404, up_config.PAGE_NOT_FOUND_MSG);
+    res.send(404, up_config.PAGE_NOT_FOUND_message);
   });
   
   module.exports = router;
