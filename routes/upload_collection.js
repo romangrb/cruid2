@@ -5,11 +5,23 @@
   //var path = require('path');
   var Busboy  = require('busboy');
   //var lwip  = require('lwip');
-  var log  = require('winston');
+  var winston  = require('winston');
   var getTypeFormat = require('../services/convert_type');
   var DbCrud = require('../services/crud_mongose_db');
   var imgEdit = require('../services/edit_img');
   var up_config = require('../model/upload_model_constant');
+  
+  var logger = new (winston.Logger)({
+    transports: [
+      new (winston.transports.Console)({ 
+        level: 'error' 
+      }),
+      new (winston.transports.File)({
+        filename: up_config.LOG_PATH + new Date(),
+        level: 'info'
+      })
+    ]
+  });
   
   // enable CORS
   router.use(function(req, res, next) {
@@ -31,14 +43,9 @@
           
       DbCrud.create({}).save(function (err, cb) {
         
-      function errHandler(errCode, errMsg){
-         
-         if (!errCode || !errMsg) return;
-         
-         var errObj = errMsg ,
-            arrErr = (!errors[errCode]) ? [] : errors[errCode];
-            arrErr.push(errObj);
-            errors[errCode] = arrErr;
+      function errHandler(errMsg){   
+            
+        errMsg = errMsg || undefined;
             
         /*if (fs.existsSync(uploadFile.path_img)) fs.unlinkSync(uploadFile.path_img);
         if (fs.existsSync(uploadFile.path_tmb)) fs.unlinkSync(uploadFile.path_tmb);
@@ -49,15 +56,15 @@
         console.log(fs.existsSync(uploadFile.path_tmb), 'path_tmb');
         //console.log(cb, this_newCollectionDb);    
         //cb.remove(this_newCollectionDb);
-        
-        console.log(errors);
+        logger.info(errMsg);
+        //console.log(errors);
         
       }
       
             
       if (err) {
           
-          errHandler(500, {message: 59});
+          errHandler({ type:500, time: new Date(), message: 1 });
          // provide log!!
       }
         
@@ -76,14 +83,6 @@
         //file.pipe(fs.createWriteStream(uploadFile.path_img));
         
         file.on('data', function(data) {
-
-          if (errors.length != up_config.NO_ERR_LN) {
-          
-           errHandler(errors);
-           
-           //data.resume();
-           
-          } 
           
         });
         
@@ -96,7 +95,7 @@
               src_tmb = uploadFile.path_tmb,
               upData;
             
-            if (name == null) throw new Error(up_config.DB_ATTR_REC_message); 
+            if (name == null) errHandler({ type:500, time: new Date(), message: 4 });
             
             upData = { name: name, src_img: src_img, src_tmb: src_tmb, is_deleted: false};
             
@@ -106,12 +105,12 @@
               
             });*/
             
-            res.send({status: 201 , text: 'created'});
+            //res.send({status: 201 , text: 'created'});
             
             throw new Error();
               
           } catch (err) {
-            errHandler(500, {message: 113});
+            errHandler({ type:500, time: new Date(), message: 3 });
           }
           
         });
@@ -134,7 +133,7 @@
             
             if (data.err) {
               
-              errHandler(580, {message: data.err});
+              errHandler({ type:580, time: new Date(), message: data.err });
                 
               return;
             }
@@ -156,7 +155,7 @@
          
         } catch (err) {
           
-          errHandler(500, {message: '158'});
+          errHandler({ type:580, time: new Date(), message:'err' });
             
         }
        
@@ -171,8 +170,8 @@
           throw new Error();
           
         } catch (err) {
-        
-          errHandler(500, {message : 'Problem with finish parsing data error'});
+          
+          errHandler({ type:580, time: new Date(), message: 'Problem with finish parsing data error' });
           
         }
         
@@ -186,8 +185,8 @@
       
       
       req.on('close', function () {
-       
-        errHandler(400, {message: 'PROBLEM ON CL'});
+        
+        errHandler(400, { type:580, time: new Date(), message: 'PROBLEM ON CL'});
         
       });
    

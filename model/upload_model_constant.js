@@ -4,6 +4,7 @@ module.exports = Object.freeze({
   SUPPORT_MIME_TYPES : ['image/jpg', 'image/jpeg', 'image/png'],
   UPLOAD_PATH_TMB : './uploads/tmb/',
   UPLOAD_PATH_IMG : './uploads/img/',
+  LOG_PATH : './logs/',
   CREATE_MSG : {status: 201, text: ' created '},
   LIM_SIZE_ERR : ' limit size err ',
   MIME_TYPE_ERR : ' Unsupported mime type ',
