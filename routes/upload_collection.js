@@ -38,38 +38,36 @@
     if (req.url!=='/') next();
     
     var uploadFile = {path_img: '', path_tmb: '', name: '', id: '', additionallData : {} },
-      errors = {},
       this_newCollectionDb = null;
           
       DbCrud.create({}).save(function (err, cb) {
         
-      function errHandler(errMsg){   
-            
-        errMsg = errMsg || undefined;
-            
-        /*if (fs.existsSync(uploadFile.path_img)) fs.unlinkSync(uploadFile.path_img);
-        if (fs.existsSync(uploadFile.path_tmb)) fs.unlinkSync(uploadFile.path_tmb);
-            
-        cb.remove(this_newCollectionDb);*/
-        
-        console.log(fs.existsSync(uploadFile.path_img), 'path_img');
-        console.log(fs.existsSync(uploadFile.path_tmb), 'path_tmb');
-        //console.log(cb, this_newCollectionDb);    
-        //cb.remove(this_newCollectionDb);
-        logger.info(errMsg);
-        //console.log(errors);
-        
-      }
+        function errHandler(errMsg){   
+              
+          errMsg = errMsg || undefined;
+              
+          if (fs.existsSync(uploadFile.path_img)) fs.unlinkSync(uploadFile.path_img);
+          if (fs.existsSync(uploadFile.path_tmb)) fs.unlinkSync(uploadFile.path_tmb);
+              
+          cb.remove(this_newCollectionDb);
+          // logging error / info
+          logger.info(errMsg);
+          
+          req.unpipe(busboy);
+          // `Connection: close` is important here, to ensure the socket is closed after
+          // we write our response.
+          res.writeHead(400, { 'Connection': 'close'});
+          res.end();
+          
+        }
       
-            
       if (err) {
           
           errHandler({ type:500, time: new Date(), message: 1 });
-         // provide log!!
+
       }
-        
-      var busboy = new Busboy({ headers: req.headers });
       
+    var busboy = new Busboy({ headers: req.headers }); 
       this_newCollectionDb = cb;
         
       uploadFile.id = this_newCollectionDb._id;
@@ -80,7 +78,7 @@
         
         uploadFile.path_img += '.' + uploadFile.additionallData.imgType;
         uploadFile.name = uploadFile.additionallData.name;
-        //errors.push('busboy.on FILE');
+        
         //file.pipe(fs.createWriteStream(uploadFile.path_img));
         
         file.on('data', function(data) {
@@ -95,16 +93,14 @@
               src_img = uploadFile.path_img,
               src_tmb = uploadFile.path_tmb,
               upData;
+            throw new Error();
+            upData = { name: name, src_img: src_img, src_tmb: src_tmb, is_deleted: false };
             
-            if (name == null) errHandler({ type:500, time: new Date(), message: 4 });
-            
-            upData = { name: name, src_img: src_img, src_tmb: src_tmb, is_deleted: false};
-            
-            /*DbCrud.updateById(this_newCollectionDb._id, upData).exec(function(err, cb) {
+            DbCrud.updateById(this_newCollectionDb._id, upData).exec(function(err, cb) {
               
-              if (err) return next(up_config.DB_CREATE_ERR_message);
+              if (err) return errHandler({ type:500, time: new Date(), message: up_config.DB_CREATE_ERR_message });
               
-            });*/
+            });
             
             res.send({status: 201 , text: 'created'});
               
@@ -166,8 +162,6 @@
           
           res.end();
           
-          throw new Error();
-          
         } catch (err) {
           
           errHandler({ type:580, time: new Date(), message: 'Problem with finish parsing data error' });
@@ -179,6 +173,8 @@
       });
       
       busboy.on('error', function (err) {
+        
+        errHandler({ type:580, time: new Date(), message: 'Bussboy error, msg :' + err });
         console.log('ERROR!!!', err);
       });
       
