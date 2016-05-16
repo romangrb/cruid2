@@ -5,6 +5,7 @@
   //var path = require('path');
   var Busboy  = require('busboy');
   //var lwip  = require('lwip');
+  var log  = require('winston');
   var getTypeFormat = require('../services/convert_type');
   var DbCrud = require('../services/crud_mongose_db');
   var imgEdit = require('../services/edit_img');
