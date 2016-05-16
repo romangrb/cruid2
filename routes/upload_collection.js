@@ -17,7 +17,7 @@
         level: 'error' 
       }),
       new (winston.transports.File)({
-        filename: up_config.LOG_PATH + new Date(),
+        filename: up_config.LOG_PATH + 'info',
         level: 'info'
       })
     ]
@@ -79,6 +79,7 @@
       busboy.on('file', function(fieldname, file, filename) {
         
         uploadFile.path_img += '.' + uploadFile.additionallData.imgType;
+        uploadFile.name = uploadFile.additionallData.name;
         //errors.push('busboy.on FILE');
         //file.pipe(fs.createWriteStream(uploadFile.path_img));
         
@@ -105,9 +106,7 @@
               
             });*/
             
-            //res.send({status: 201 , text: 'created'});
-            
-            throw new Error();
+            res.send({status: 201 , text: 'created'});
               
           } catch (err) {
             errHandler({ type:500, time: new Date(), message: 3 });

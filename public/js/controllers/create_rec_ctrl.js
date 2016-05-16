@@ -19,7 +19,8 @@
               'imgTrumbBitD' : null, 
               'imgAng' : 0, 
               'imgTrumbAng' : 0,
-              'imgType' : ''
+              'imgType' : '',
+              'name' : ''
             }
             
           };
@@ -54,7 +55,6 @@
           if ( !file_data && !value ) return;
           
           file_data.data[c.DATA_IMG_NAME] = value;
-          
         };
             
         $scope.upload = function( key, file_data ){
@@ -69,7 +69,7 @@
                   
                   fd[c.DFLT_KEY_D_BIT] = val;
                   
-                  var addData = EditImg.convertToJSON(fd, targetObj.data);
+                var addData = EditImg.convertToJSON(fd, targetObj.data);
                   
                   upload[key] = Upload.upload({
                     url : c.UPLOAD_URL,
@@ -182,6 +182,7 @@
             value[c.TMP_ID_NAME] = random.makeId();
             value[c.DATA_NAME] = {};
             value[c.DATA_NAME].imgType = EditImg.getTypeBitImg(value.type);
+            value[c.DATA_NAME].name = value[c.DATA_NAME].name || value[c.DATA_IMG_NAME];
             this[key] = value;
           }, dataHash);
           
