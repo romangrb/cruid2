@@ -7,3 +7,18 @@
 {"type":580,"time":"2016-05-17T14:25:39.701Z","message":"not supported data type parsing","level":"info","timestamp":"2016-05-17T14:25:39.704Z"}
 {"type":580,"time":"2016-05-17T14:25:39.718Z","message":"not supported data type parsing","level":"info","timestamp":"2016-05-17T14:25:39.719Z"}
 {"type":580,"time":"2016-05-17T14:25:39.723Z","message":"not supported data type parsing","level":"info","timestamp":"2016-05-17T14:25:39.724Z"}
+{"type":580,"time":"2016-05-17T18:55:20.191Z","message":"not supported data type parsing","level":"info","timestamp":"2016-05-17T18:55:20.197Z"}
+{"type":580,"time":"2016-05-17T18:55:47.340Z","message":"not supported data type parsing","level":"info","timestamp":"2016-05-17T18:55:47.344Z"}
+{"type":580,"time":"2016-05-17T18:58:22.938Z","message":"not supported data type parsing","level":"info","timestamp":"2016-05-17T18:58:22.939Z"}
+{"type":580,"time":"2016-05-17T19:08:32.495Z","message":"not supported data type parsing","level":"info","timestamp":"2016-05-17T19:08:32.500Z"}
+{"type":560,"message":"not supported data type parsing","level":"info","timestamp":"2016-05-17T19:09:34.120Z"}
+{"type":560,"message":"not supported data type parsing","level":"info","timestamp":"2016-05-17T19:13:37.361Z"}
+{"type":560,"message":"not supported data type parsing","level":"info","timestamp":"2016-05-17T19:15:20.470Z"}
+{"type":570,"message":"err","level":"info","timestamp":"2016-05-17T19:24:36.482Z"}
+{"type":570,"message":"err","level":"info","timestamp":"2016-05-17T19:24:47.579Z"}
+{"type":570,"message":"err","level":"info","timestamp":"2016-05-17T19:25:38.460Z"}
+{"type":570,"message":"err","level":"info","timestamp":"2016-05-17T19:27:16.914Z"}
+{"type":570,"message":"err","level":"info","timestamp":"2016-05-17T19:27:57.632Z"}
+{"type":560,"message":"not supported data type parsing","level":"info","timestamp":"2016-05-17T19:38:57.318Z"}
+{"type":560,"message":"not supported data type parsing","level":"info","timestamp":"2016-05-17T19:44:38.126Z"}
+{"type":560,"message":"not supported data type parsing","level":"info","timestamp":"2016-05-17T19:47:37.594Z"}

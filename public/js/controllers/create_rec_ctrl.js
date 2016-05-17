@@ -46,7 +46,7 @@
           $scope.angle = EditImg.rotateGetVal(id);
           $scope.tmpid = upTarget.tmpId;
          
-          upTarget[c.DATA_NAME]['imgAng'] = EditImg.rotateGetVal(id);
+          upTarget[c.DATA_NAME]['imgAng'] = upTarget[c.DATA_NAME]['imgTrumbAng'] = EditImg.rotateGetVal(id);
           
         };
           
@@ -61,44 +61,38 @@
           
           if (file_data == null || key == null) return;
           
-          var fd = createImgBit(file_data, file_data.data), 
-            addData = null;
+          var fd = createImgBit(file_data, file_data.data);
           
           if (file_data.data.imgTrumbBitD) {
            
-            addData = EditImg.convertToJSON(fd, targetObj.data);
-               
-            upload[key] = Upload.upload({
-              url : c.UPLOAD_URL,
-              data: {'info' : addData, file: file_data},
-            });
-              
-            $scope.getRequest(key);
+            getRequest(fd, key, targetObj, file_data);
           
           } else {
           
             $scope.$watch('image.imgTrumbBitD', function (val) {
+          
+              fd[c.DFLT_KEY_D_BIT] = val;
+                
+              getRequest(fd, key, targetObj, file_data);
                   
-                if (val) {
-                  
-                fd[c.DFLT_KEY_D_BIT] = val;
-                  
-                addData = EditImg.convertToJSON(fd, targetObj.data);
-                  console.log(addData, 123);
-                  /*upload[key] = Upload.upload({
-                    url : c.UPLOAD_URL,
-                    data: {'info' : addData, file: file_data},
-                  });
-                    
-                  $scope.getRequest(key);*/
-                  
-                 }
-               
             });
             
           }
           
         };
+        
+        function getRequest(fd, key, targetObj, file_data){
+        
+          var addData = EditImg.convertToJSON(fd, targetObj.data);
+                 
+          upload[key] = Upload.upload({
+            url : c.UPLOAD_URL,
+            data: {'info' : addData, file: file_data},
+          });
+                
+          $scope.getRequest(key);
+              
+        }
         
         $scope.uploadAll = function( files ){
          

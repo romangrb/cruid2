@@ -128,7 +128,7 @@
             
             if (data.err) {
               
-              errHandler({ type:580, time: new Date(), message: data.err });
+              errHandler({ type:560, message: data.err });
                 
               return;
             }
@@ -142,7 +142,6 @@
               console.log('trumbnail created', uploadFile.path_tmb);
               
             });
-            console.log('trumbnail created', uploadFile.path_tmb);
               
           };
           
@@ -150,7 +149,7 @@
          
         } catch (err) {
           
-          errHandler({ type:580, time: new Date(), message:'err' });
+          errHandler({ type:570, message:'err' });
             
         }
        
