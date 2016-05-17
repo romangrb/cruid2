@@ -47,7 +47,14 @@ function ImgEditPrivProtMethProp(){
         var imgWidth = image.width(),
           imgHeight = image.height(),
           diff;
-         
+        
+        if (imgWidth > 800 || imgHeight > 800) {
+          
+          imgWidth = (imgWidth > 800) ? imgWidth = 800 : imgWidth;
+          imgHeight = (imgHeight > 800) ? imgHeight = 800 : imgHeight;
+          
+        }
+        
         if (imgWidth != imgHeight) {
           
           diff = imgWidth-imgHeight;

@@ -4,3 +4,6 @@
 {"type":500,"time":"2016-05-16T22:39:18.330Z","message":3,"level":"info","timestamp":"2016-05-16T22:39:18.337Z"}
 {"type":500,"time":"2016-05-16T22:42:03.062Z","message":3,"level":"info","timestamp":"2016-05-16T22:42:03.066Z"}
 {"type":500,"time":"2016-05-16T22:44:09.035Z","message":3,"level":"info","timestamp":"2016-05-16T22:44:09.039Z"}
+{"type":580,"time":"2016-05-17T14:25:39.701Z","message":"not supported data type parsing","level":"info","timestamp":"2016-05-17T14:25:39.704Z"}
+{"type":580,"time":"2016-05-17T14:25:39.718Z","message":"not supported data type parsing","level":"info","timestamp":"2016-05-17T14:25:39.719Z"}
+{"type":580,"time":"2016-05-17T14:25:39.723Z","message":"not supported data type parsing","level":"info","timestamp":"2016-05-17T14:25:39.724Z"}

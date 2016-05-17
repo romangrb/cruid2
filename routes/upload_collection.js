@@ -76,7 +76,7 @@
       
       busboy.on('file', function(fieldname, file, filename) {
         
-        uploadFile.path_img += '.' + uploadFile.additionallData.imgType;
+        uploadFile.path_img += '.' + up_config.DFLT_TRUMB_TYPE;
         uploadFile.name = uploadFile.additionallData.name;
         
         //file.pipe(fs.createWriteStream(uploadFile.path_img));
@@ -93,7 +93,7 @@
               src_img = uploadFile.path_img,
               src_tmb = uploadFile.path_tmb,
               upData;
-            throw new Error();
+            
             upData = { name: name, src_img: src_img, src_tmb: src_tmb, is_deleted: false };
             
             DbCrud.updateById(this_newCollectionDb._id, upData).exec(function(err, cb) {
@@ -133,15 +133,15 @@
               return;
             }
             
-            uploadFile.path_tmb += '.'+ data.type;
+            uploadFile.path_tmb += '.'+ up_config.DFLT_TRUMB_TYPE;
             
-            /*data.cb.writeFile(uploadFile.path_tmb, function(err){
+            data.cb.writeFile(uploadFile.path_tmb, function(err){
               
               if (err) throw err;
               
               console.log('trumbnail created', uploadFile.path_tmb);
               
-            });*/
+            });
             console.log('trumbnail created', uploadFile.path_tmb);
               
           };

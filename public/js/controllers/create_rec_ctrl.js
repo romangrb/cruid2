@@ -27,8 +27,8 @@
         
           $scope.image = {
              trumbImg: null,
-             trumbCroppedImg: null,
              imgTrumbBitD: null,
+             imgTrumbBitModuleD:null
           };
         
         // init wather for autogener id
@@ -58,29 +58,45 @@
         };
             
         $scope.upload = function( key, file_data ){
-                  
+          
           if (file_data == null || key == null) return;
-         
-            var fd = createImgBit(file_data, file_data.data);
-            
-            $scope.$watch('image.imgTrumbBitD', function (val) {
+          
+          var fd = createImgBit(file_data, file_data.data), 
+            addData = null;
+          
+          if (file_data.data.imgTrumbBitD) {
+           
+            addData = EditImg.convertToJSON(fd, targetObj.data);
+               
+            upload[key] = Upload.upload({
+              url : c.UPLOAD_URL,
+              data: {'info' : addData, file: file_data},
+            });
               
-               if (val) {
+            $scope.getRequest(key);
+          
+          } else {
+          
+            $scope.$watch('image.imgTrumbBitD', function (val) {
                   
-                  fd[c.DFLT_KEY_D_BIT] = val;
+                if (val) {
                   
-                var addData = EditImg.convertToJSON(fd, targetObj.data);
+                fd[c.DFLT_KEY_D_BIT] = val;
                   
-                  upload[key] = Upload.upload({
+                addData = EditImg.convertToJSON(fd, targetObj.data);
+                  console.log(addData, 123);
+                  /*upload[key] = Upload.upload({
                     url : c.UPLOAD_URL,
                     data: {'info' : addData, file: file_data},
                   });
                     
-                  $scope.getRequest(key);
+                  $scope.getRequest(key);*/
                   
                  }
                
-            }); 
+            });
+            
+          }
           
         };
         
@@ -213,12 +229,13 @@
             
             complete: function() {
               
-              if ($scope.image.trumbCroppedImg) targetObj[c.DFLT_KEY_D_BIT] = $scope.image.trumbCroppedImg, uploadLink[c.DATA_NAME][c.DFLT_KEY_D_BIT] = targetObj[c.DFLT_KEY_D_BIT];
+              if ($scope.image.imgTrumbBitModuleD) targetObj[c.DFLT_KEY_D_BIT] = $scope.image.imgTrumbBitModuleD, uploadLink[c.DATA_NAME][c.DFLT_KEY_D_BIT] = targetObj[c.DFLT_KEY_D_BIT];
               
               $scope.cropListener = null;
               $scope.trumbAngle = 0;
               $scope.image.trumbImg = null;
-              $scope.image.trumbCroppedImg = null;
+              $scope.image.imgTrumbBitD = null;
+              $scope.image.imgTrumbBitModuleD = null;
               
               EditImg.rotateClearId(c.DFLT_TRUMB_ID);	
               // remove module from view in ng-repeat
@@ -281,7 +298,8 @@
               
               $scope.cropListener = null;
               $scope.image.trumbImg = null;
-              $scope.image.trumbCroppedImg = null;
+              $scope.image.imgTrumbBitD = null;
+               $scope.image.imgTrumbBitD.imgTrumbBitModuleD = null;
               
               EditImg.rotateClearId(c.DFLT_TRUMB_ID);	
             } 
