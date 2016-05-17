@@ -28,7 +28,20 @@ var ImgEdit = {
     
   },
   
-  editImg : function (objProp, cb, resultCb) {
+  rotateImg : function (objProp, cb, resultCb) {
+    
+      // Bind the connection event with the listner1 function
+      cb(eventEmitter.once('$watch_val', function(callback) {
+        
+        if (callback.err) return resultCb({err:callback.err, cb:null});
+        
+        callback.cb.rotate(objProp.ang, 'white', function(err, rtdImg) {
+          
+          resultCb({err:err, cb:rtdImg});
+          
+        });
+        
+      }));
     
   },
   
